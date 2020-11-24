@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>example-bukkit</artifactId>
+    <artifactId>textchain-example-bukkit</artifactId>
     <name>TextChainExamplePlugin</name>
 
     <properties>
