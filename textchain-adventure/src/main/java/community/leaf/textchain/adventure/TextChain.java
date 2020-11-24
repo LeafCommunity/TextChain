@@ -19,20 +19,28 @@ public class TextChain implements ComponentLike
 {
     public static TextChain empty() { return new TextChain(); }
     
-    public static TextChain of(String text) { return new TextChain(text); }
+    public static TextChain of(String text) { return new TextChain().then(text); }
     
-    private final Deque<TextChain> children = new LinkedList<>();
-    private final TextComponent.Builder builder;
+    public static TextChain of(TextComponent component) { return new TextChain().then(component); }
+    
+    public static TextChain of(TextChain other) { return new TextChain().then(other); }
+    
+    public static TextChain of(Component component) throws IllegalArgumentException
+    {
+        if (component instanceof TextComponent) { return of((TextComponent) component); }
+        
+        throw new IllegalArgumentException(
+            "Cannot accept component: not a TextComponent instance: " +
+            Objects.requireNonNull(component, "component").getClass().getName()
+        );
+    }
+    
+    protected final Deque<TextChain> children = new LinkedList<>();
+    protected final TextComponent.Builder builder;
     
     public TextChain(TextComponent.Builder builder) { this.builder = Objects.requireNonNull(builder, "builder"); }
     
     public TextChain() { this(Component.text()); }
-    
-    public TextChain(String text)
-    {
-        this();
-        then(text);
-    }
     
     public TextChain(TextComponent component) { this(component.toBuilder()); }
     
@@ -46,14 +54,16 @@ public class TextChain implements ComponentLike
         return aggregate.build();
     }
     
-    protected void createNextChildWithBuilder(TextComponent.Builder builder)
-    {
-        children.add(new TextChain(builder));
-    }
-    
     protected TextChain createNextChild()
     {
         TextChain child = new TextChain();
+        children.add(child);
+        return child;
+    }
+    
+    protected TextChain createNextChildWithBuilder(TextComponent.Builder builder)
+    {
+        TextChain child = new TextChain(builder);
         children.add(child);
         return child;
     }
@@ -82,6 +92,13 @@ public class TextChain implements ComponentLike
         return this;
     }
     
+    public TextChain thenExtra(Consumer<TextChain> consumer)
+    {
+        Objects.requireNonNull(consumer, "consumer");
+        consumer.accept(createNextChild());
+        return this;
+    }
+    
     public TextChain then(TextComponent.Builder builder)
     {
         Objects.requireNonNull(builder, "builder");
@@ -105,9 +122,9 @@ public class TextChain implements ComponentLike
     {
         Objects.requireNonNull(text, "text");
         return then(
-        (parseLegacyColors)
-        ? LegacyComponentSerializer.legacyAmpersand().deserialize(text).toBuilder()
-        : Component.text().content(text)
+            (parseLegacyColors)
+                ? LegacyComponentSerializer.legacyAmpersand().deserialize(text).toBuilder()
+                : Component.text().content(text)
         );
     }
     
@@ -140,6 +157,13 @@ public class TextChain implements ComponentLike
         return this;
     }
     
+    public TextChain format(TextDecoration decoration)
+    {
+        Objects.requireNonNull(decoration, "decoration");
+        peekThenApply(child -> child.decorate(decoration));
+        return this;
+    }
+    
     public TextChain format(TextDecoration ... decorations)
     {
         Objects.requireNonNull(decorations, "decorations");
@@ -147,35 +171,50 @@ public class TextChain implements ComponentLike
         return this;
     }
     
-    public TextChain bold()
+    public TextChain format(TextDecoration decoration, boolean state)
     {
-        peekThenApply(child -> child.decorate(TextDecoration.BOLD));
+        Objects.requireNonNull(decoration, "decoration");
+        peekThenApply(child -> child.decoration(decoration, state));
         return this;
     }
     
-    public TextChain italic()
+    public TextChain format(TextDecoration decoration, TextDecoration.State state)
     {
-        peekThenApply(child -> child.decorate(TextDecoration.ITALIC));
+        Objects.requireNonNull(decoration, "decoration");
+        Objects.requireNonNull(state, "state");
+        peekThenApply(child -> child.decoration(decoration, state));
         return this;
     }
     
-    public TextChain magic()
-    {
-        peekThenApply(child -> child.decorate(TextDecoration.OBFUSCATED));
-        return this;
-    }
+    public TextChain bold() { return format(TextDecoration.BOLD); }
     
-    public TextChain strikethrough()
-    {
-        peekThenApply(child -> child.decorate(TextDecoration.STRIKETHROUGH));
-        return this;
-    }
+    public TextChain bold(boolean state) { return format(TextDecoration.BOLD, state); }
     
-    public TextChain underline()
-    {
-        peekThenApply(child -> child.decorate(TextDecoration.UNDERLINED));
-        return this;
-    }
+    public TextChain bold(TextDecoration.State state) { return format(TextDecoration.BOLD, state); }
+    
+    public TextChain italic() { return format(TextDecoration.ITALIC); }
+    
+    public TextChain italic(boolean state) { return format(TextDecoration.ITALIC, state); }
+    
+    public TextChain italic(TextDecoration.State state) { return format(TextDecoration.ITALIC, state); }
+    
+    public TextChain obfuscate() { return format(TextDecoration.OBFUSCATED); }
+    
+    public TextChain obfuscate(boolean state) { return format(TextDecoration.OBFUSCATED, state); }
+    
+    public TextChain obfuscate(TextDecoration.State state) { return format(TextDecoration.OBFUSCATED, state); }
+    
+    public TextChain strikethrough() { return format(TextDecoration.STRIKETHROUGH); }
+    
+    public TextChain strikethrough(boolean state) { return format(TextDecoration.STRIKETHROUGH, state); }
+    
+    public TextChain strikethrough(TextDecoration.State state) { return format(TextDecoration.STRIKETHROUGH, state); }
+    
+    public TextChain underline() { return format(TextDecoration.UNDERLINED); }
+    
+    public TextChain underline(boolean state) { return format(TextDecoration.UNDERLINED, state); }
+    
+    public TextChain underline(TextDecoration.State state) { return format(TextDecoration.UNDERLINED, state); }
     
     public TextChain command(String command)
     {
@@ -197,7 +236,6 @@ public class TextChain implements ComponentLike
         peekThenApply(child -> child.clickEvent(ClickEvent.openUrl(link)));
         return this;
     }
-    
     
     public TextChain insertion(String insert)
     {

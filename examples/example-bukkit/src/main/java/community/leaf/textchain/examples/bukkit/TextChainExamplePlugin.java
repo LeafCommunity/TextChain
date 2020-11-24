@@ -7,7 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class TextChainExamplePlugin extends JavaPlugin
 {
-    BukkitAudiences audiences;
+    private BukkitAudiences audiences;
     
     @Override
     public void onEnable()
@@ -15,4 +15,6 @@ public class TextChainExamplePlugin extends JavaPlugin
         this.audiences = BukkitAudiences.create(this);
         audiences.console().sendMessage(TextChain.of("Loaded successfully.").color(NamedTextColor.GOLD));
     }
+    
+    public BukkitAudiences getAudiences() { return audiences; }
 }
