@@ -1,0 +1,4 @@
+main: community.leaf.textchain.examples.bukkit.TextChainExamplePlugin
+name: ${project.name}
+version: ${revision}
+api-version: 1.13

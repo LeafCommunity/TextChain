@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>textchain-examples</artifactId>
+        <groupId>community.leaf</groupId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>example-bukkit</artifactId>
+    <name>TextChainExamplePlugin</name>
+
+    <properties>
+        <versions.paper.api>1.16.4-R0.1-SNAPSHOT</versions.paper.api>
+        <shade.relocation>community.leaf.textchain.examples.bukkit.shaded</shade.relocation>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>papermc-repo</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!--
+        Paper API (via papermc-repo)
+        -->
+        <dependency>
+            <groupId>com.destroystokyo.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>${versions.paper.api}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--
+        TextChain (via project)
+        -->
+        <dependency>
+            <groupId>community.leaf</groupId>
+            <artifactId>textchain-adventure</artifactId>
+            <version>${revision}</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>${project.name}-v${project.version}</finalName>
+        <plugins>
+            <!--
+            Shade dependencies.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
+                    <relocations>
+                        <!--
+                        TextChain
+                        -->
+                        <relocation>
+                            <pattern>community.leaf.textchain.adventure</pattern>
+                            <shadedPattern>${shade.relocation}.textchain.adventure</shadedPattern>
+                        </relocation>
+                        <!--
+                        Kyori Adventure
+                        -->
+                        <relocation>
+                            <pattern>net.kyori</pattern>
+                            <shadedPattern>${shade.relocation}.net.kyori</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.checkerframework</pattern>
+                            <shadedPattern>${shade.relocation}.org.checkerframework</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
