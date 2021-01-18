@@ -2,3 +2,8 @@ main: community.leaf.textchain.examples.bukkit.TextChainExamplePlugin
 name: ${project.name}
 version: ${revision}
 api-version: 1.13
+
+commands:
+  textchain:
+    aliases: [test-text-chain, testtextchain, ttc]
+    permission: textchain.test

@@ -12,4 +12,7 @@
 
     <artifactId>textchain-adventure</artifactId>
 
+    <build>
+        <defaultGoal>install</defaultGoal>
+    </build>
 </project>

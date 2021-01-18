@@ -14,7 +14,7 @@
     <name>TextChainExamplePlugin</name>
 
     <properties>
-        <versions.paper.api>1.16.4-R0.1-SNAPSHOT</versions.paper.api>
+        <versions.paper.api>1.16.5-R0.1-SNAPSHOT</versions.paper.api>
         <shade.relocation>community.leaf.textchain.examples.bukkit.shaded</shade.relocation>
     </properties>
 
@@ -42,6 +42,15 @@
             <groupId>community.leaf</groupId>
             <artifactId>textchain-adventure</artifactId>
             <version>${revision}</version>
+            <scope>compile</scope>
+        </dependency>
+        <!--
+        Kyori Adventure API (via sonatype-oss)
+        -->
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-platform-bukkit</artifactId>
+            <version>4.0.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -84,11 +93,16 @@
                             <pattern>net.kyori</pattern>
                             <shadedPattern>${shade.relocation}.net.kyori</shadedPattern>
                         </relocation>
-                        <relocation>
-                            <pattern>org.checkerframework</pattern>
-                            <shadedPattern>${shade.relocation}.org.checkerframework</shadedPattern>
-                        </relocation>
                     </relocations>
+                    <artifactSet>
+                        <!--
+                        Exclude annotations from built jar.
+                        -->
+                        <excludes>
+                            <exclude>org.checkerframework:*</exclude>
+                            <exclude>org.jetbrains*</exclude>
+                        </excludes>
+                    </artifactSet>
                 </configuration>
             </plugin>
         </plugins>

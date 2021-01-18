@@ -16,7 +16,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <versions.kyori.adventure>4.0.0-SNAPSHOT</versions.kyori.adventure>
+        <versions.kyori.adventure>4.4.0</versions.kyori.adventure>
     </properties>
 
     <repositories>
@@ -28,11 +28,19 @@
 
     <dependencies>
         <!--
-        Kyori Adventure (via sonatype-oss)
+        Kyori Adventure API (via sonatype-oss)
         -->
         <dependency>
             <groupId>net.kyori</groupId>
-            <artifactId>adventure-platform-bukkit</artifactId>
+            <artifactId>adventure-api</artifactId>
+            <version>${versions.kyori.adventure}</version>
+        </dependency>
+        <!--
+        Kyori Adventure Legacy Text Serializer (via sonatype-oss)
+        -->
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-legacy</artifactId>
             <version>${versions.kyori.adventure}</version>
         </dependency>
     </dependencies>
