@@ -36,11 +36,10 @@ public class TextChainExamplePlugin extends JavaPlugin
                 .color(TextColor.color(0xFF0000))
                 .tooltip("Click here to respond with \"pretty good\"")
                 .suggest("pretty good")
+            .send(audiences.sender(sender))
             .asComponent();
         
-        audiences.sender(sender).sendMessage(component);
         sender.sendMessage("As JSON: " + GsonComponentSerializer.gson().serialize(component));
-        
         return true;
     }
 }

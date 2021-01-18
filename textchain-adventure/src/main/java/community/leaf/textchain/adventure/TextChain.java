@@ -1,5 +1,6 @@
 package community.leaf.textchain.adventure;
 
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TextComponent;
@@ -37,6 +38,7 @@ public class TextChain implements ComponentLike
     
     protected final Deque<TextChain> children = new LinkedList<>();
     protected final TextComponent.Builder builder;
+    protected TextComponent result = null;
     
     public TextChain(TextComponent.Builder builder) { this.builder = Objects.requireNonNull(builder, "builder"); }
     
@@ -47,15 +49,24 @@ public class TextChain implements ComponentLike
     @Override
     public @NonNull TextComponent asComponent()
     {
+        // Store the result to avoid constantly rebuilding the component.
+        return (result != null) ? result : (result = aggregateThenBuildComponent());
+    }
+    
+    // This method will *always* rebuild the component (and child components).
+    protected TextComponent aggregateThenBuildComponent()
+    {
         if (children.isEmpty()) { return builder.build(); }
-        
+    
+        // Create a copy of the builder in order to avoid editing the mutable builder instance within this TextChain.
         TextComponent.Builder aggregate = builder.build().toBuilder();
-        for (TextChain child : children) { aggregate.append(child.asComponent()); }
+        for (TextChain child : children) { aggregate.append(child.aggregateThenBuildComponent()); }
         return aggregate.build();
     }
     
     protected TextChain createNextChild()
     {
+        result = null;
         TextChain child = new TextChain();
         children.add(child);
         return child;
@@ -63,6 +74,7 @@ public class TextChain implements ComponentLike
     
     protected TextChain createNextChildWithBuilder(TextComponent.Builder builder)
     {
+        result = null;
         TextChain child = new TextChain(builder);
         children.add(child);
         return child;
@@ -70,11 +82,13 @@ public class TextChain implements ComponentLike
     
     protected TextChain peekOrCreateChild()
     {
+        result = null;
         return (children.isEmpty()) ? createNextChild() : children.getLast();
     }
     
     protected void peekThenApply(Consumer<TextComponent.Builder> action)
     {
+        result = null;
         action.accept(peekOrCreateChild().builder);
     }
     
@@ -261,5 +275,11 @@ public class TextChain implements ComponentLike
     {
         Objects.requireNonNull(tooltipString, "tooltipString");
         return tooltip(LegacyComponentSerializer.legacyAmpersand().deserialize(tooltipString));
+    }
+    
+    public TextChain send(Audience audience)
+    {
+        audience.sendMessage(this); // calls asComponent() -> stores result in case this is called multiple times.
+        return this;
     }
 }
