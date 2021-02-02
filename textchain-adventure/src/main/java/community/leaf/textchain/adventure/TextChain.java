@@ -1,6 +1,8 @@
 package community.leaf.textchain.adventure;
 
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.identity.Identified;
+import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TextComponent;
@@ -280,6 +282,24 @@ public class TextChain implements ComponentLike
     public TextChain send(Audience audience)
     {
         audience.sendMessage(this); // calls asComponent() -> stores result in case this is called multiple times.
+        return this;
+    }
+    
+    public TextChain send(Identity source, Audience audience)
+    {
+        audience.sendMessage(source, this);
+        return this;
+    }
+    
+    public TextChain send(Identified source, Audience audience)
+    {
+        audience.sendMessage(source, this);
+        return this;
+    }
+    
+    public TextChain actionBar(Audience audience)
+    {
+        audience.sendActionBar(this);
         return this;
     }
 }
