@@ -11,7 +11,7 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import pl.tlinkowski.annotation.basic.NullOr;
 
 import java.util.Deque;
 import java.util.LinkedList;
@@ -40,7 +40,7 @@ public class TextChain implements ComponentLike
     
     protected final Deque<TextChain> children = new LinkedList<>();
     protected final TextComponent.Builder builder;
-    protected TextComponent result = null;
+    protected @NullOr TextComponent result = null;
     
     public TextChain(TextComponent.Builder builder) { this.builder = Objects.requireNonNull(builder, "builder"); }
     
@@ -49,7 +49,7 @@ public class TextChain implements ComponentLike
     public TextChain(TextComponent component) { this(component.toBuilder()); }
     
     @Override
-    public @NonNull TextComponent asComponent()
+    public TextComponent asComponent()
     {
         // Store the result to avoid constantly rebuilding the component.
         return (result != null) ? result : (result = aggregateThenBuildComponent());

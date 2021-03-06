@@ -8,6 +8,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import pl.tlinkowski.annotation.basic.NullOr;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,21 +32,21 @@ public class TextChainSerializer
         
         String upperCaseOption = option.toUpperCase().replace("-", "_");
         
-        NamedTextColor named = NamedTextColor.NAMES.value(upperCaseOption);
+        @NullOr NamedTextColor named = NamedTextColor.NAMES.value(upperCaseOption);
         if (named != null)
         {
             chain.color(named);
             return;
         }
     
-        TextDecoration decoration = TextDecoration.NAMES.value(upperCaseOption);
+        @NullOr TextDecoration decoration = TextDecoration.NAMES.value(upperCaseOption);
         if (decoration != null)
         {
             chain.format(decoration);
             return;
         }
     
-        TextColor color = TextColor.fromCSSHexString(option);
+        @NullOr TextColor color = TextColor.fromCSSHexString(option);
         if (color != null)
         {
             chain.color(color);
@@ -113,7 +114,7 @@ public class TextChainSerializer
             .ifPresent(tooltip -> values.put("tooltip", tooltip));
         
         // Clickables
-        ClickEvent click = component.clickEvent();
+        @NullOr ClickEvent click = component.clickEvent();
         
         if (click != null && !click.value().isEmpty())
         {
@@ -126,17 +127,17 @@ public class TextChainSerializer
         }
         
         // Insertion
-        String insertion = component.insertion();
+        @NullOr String insertion = component.insertion();
         if (insertion != null && !insertion.isEmpty()) { values.put("insertion", insertion); }
         
         // Styles
         List<String> style = new ArrayList<>();
-        
-        TextColor color = component.color();
+    
+        @NullOr TextColor color = component.color();
         if (color != null)
         {
             NamedTextColor namedColorValue = NamedTextColor.nearestTo(color);
-            String namedColorName = NamedTextColor.NAMES.key(namedColorValue);
+            @NullOr String namedColorName = NamedTextColor.NAMES.key(namedColorValue);
             
             if (namedColorValue.value() == color.value() && namedColorName != null)
             {
