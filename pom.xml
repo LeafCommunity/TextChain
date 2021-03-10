@@ -12,7 +12,6 @@
     <modules>
         <module>textchain-adventure</module>
         <module>textchain-bukkit</module>
-        <module>examples</module>
     </modules>
 
     <properties>
@@ -20,6 +19,25 @@
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <profiles>
+        <!-- Development: entire project, including 'example' modules -->
+        <profile>
+            <id>development</id>
+            <activation>
+                <!--
+                Since jitpack will skip tests (-DskipTests), this profile avoids
+                building the example plugins if that property is set.
+                -->
+                <property>
+                    <name>!skipTests</name>
+                </property>
+            </activation>
+            <modules>
+                <module>examples</module>
+            </modules>
+        </profile>
+    </profiles>
 
     <build>
         <defaultGoal>package</defaultGoal>
