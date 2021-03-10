@@ -13,7 +13,6 @@
     <artifactId>textchain-example-bukkit</artifactId>
 
     <properties>
-        <versions.spigot.api>1.16.5-R0.1-SNAPSHOT</versions.spigot.api>
         <shade.relocation>community.leaf.textchain.examples.bukkit.shaded</shade.relocation>
     </properties>
 
@@ -35,11 +34,11 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>${versions.spigot.api}</version>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <!--
-        TextChain (via project)
+        TextChain (via local project)
         -->
         <dependency>
             <groupId>community.leaf</groupId>
@@ -59,9 +58,7 @@
     <build>
         <finalName>${project.name}-v${project.version}</finalName>
         <plugins>
-            <!--
-            Shade dependencies.
-            -->
+            <!-- Shade dependencies -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -79,25 +76,19 @@
                 </executions>
                 <configuration>
                     <relocations>
-                        <!--
-                        TextChain
-                        -->
+                        <!-- TextChain -->
                         <relocation>
                             <pattern>community.leaf.textchain.adventure</pattern>
                             <shadedPattern>${shade.relocation}.textchain.adventure</shadedPattern>
                         </relocation>
-                        <!--
-                        Kyori Adventure
-                        -->
+                        <!-- Kyori Adventure -->
                         <relocation>
                             <pattern>net.kyori</pattern>
                             <shadedPattern>${shade.relocation}.net.kyori</shadedPattern>
                         </relocation>
                     </relocations>
                     <artifactSet>
-                        <!--
-                        Exclude annotations from built jar.
-                        -->
+                        <!-- Exclude annotations from built jar -->
                         <excludes>
                             <exclude>org.checkerframework:checker-qual</exclude>
                             <exclude>org.jetbrains:annotations</exclude>

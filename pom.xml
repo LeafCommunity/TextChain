@@ -15,9 +15,22 @@
     </modules>
 
     <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <versions.kyori.adventure>4.6.0</versions.kyori.adventure>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>production</id>
+            <modules>
+                <module>textchain-adventure</module>
+            </modules>
+            <build>
+                <defaultGoal>clean install</defaultGoal>
+            </build>
+        </profile>
+    </profiles>
 
     <dependencies>
         <!--
@@ -26,7 +39,7 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-api</artifactId>
-            <version>${versions.kyori.adventure}</version>
+            <version>4.7.0</version>
         </dependency>
         <!--
         Kyori Adventure Legacy Text Serializer (via maven-central)
@@ -34,7 +47,7 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-legacy</artifactId>
-            <version>${versions.kyori.adventure}</version>
+            <version>4.7.0</version>
         </dependency>
         <!--
         Nullness Annotations: @NullOr (via maven-central)
@@ -50,16 +63,14 @@
     <build>
         <defaultGoal>package</defaultGoal>
         <plugins>
-            <!--
-            Compile project.
-            -->
+            <!-- Compile project -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
                     <compilerArgs>
                         <arg>-parameters</arg>
                     </compilerArgs>
@@ -75,6 +86,7 @@
                 <version>1.2.2</version>
                 <configuration>
                     <updatePomFile>true</updatePomFile>
+                    <flattenMode>oss</flattenMode>
                 </configuration>
                 <executions>
                     <execution>
@@ -95,9 +107,7 @@
             </plugin>
         </plugins>
         <resources>
-            <!--
-            Filter resource files
-            -->
+            <!-- Filter resource files -->
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
