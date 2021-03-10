@@ -38,20 +38,20 @@
             <scope>provided</scope>
         </dependency>
         <!--
-        TextChain (via local project)
-        -->
-        <dependency>
-            <groupId>community.leaf</groupId>
-            <artifactId>textchain-adventure</artifactId>
-            <version>${revision}</version>
-        </dependency>
-        <!--
         Kyori Adventure Bukkit Platform (via sonatype-oss)
         -->
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
             <version>4.0.0-SNAPSHOT</version>
+        </dependency>
+        <!--
+        TextChain Bukkit (via local project)
+        -->
+        <dependency>
+            <groupId>community.leaf</groupId>
+            <artifactId>textchain-bukkit</artifactId>
+            <version>${revision}</version>
         </dependency>
     </dependencies>
 

@@ -39,6 +39,12 @@ public class TextChain implements ComponentLike
         );
     }
     
+    private static <T> T chain(T thing, Consumer<T> consumer)
+    {
+        consumer.accept(thing);
+        return thing;
+    }
+    
     protected final Deque<TextChain> children = new LinkedList<>();
     protected final TextComponent.Builder builder;
     protected @NullOr TextComponent result = null;
@@ -279,6 +285,12 @@ public class TextChain implements ComponentLike
     {
         Objects.requireNonNull(tooltipString, "tooltipString");
         return tooltip(LegacyComponentSerializer.legacyAmpersand().deserialize(tooltipString));
+    }
+    
+    public TextChain tooltip(Consumer<TextChain> tooltipConsumer)
+    {
+        Objects.requireNonNull(tooltipConsumer, "tooltipConsumer");
+        return tooltip(chain(TextChain.empty(), tooltipConsumer));
     }
     
     public TextChain send(Audience audience)
