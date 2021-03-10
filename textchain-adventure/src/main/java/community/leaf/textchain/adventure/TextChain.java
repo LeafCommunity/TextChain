@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+@SuppressWarnings({"UnusedReturnValue", "unused"})
 public class TextChain implements ComponentLike
 {
     public static TextChain empty() { return new TextChain(); }
@@ -58,8 +59,9 @@ public class TextChain implements ComponentLike
     // This method will *always* rebuild the component (and child components).
     protected TextComponent aggregateThenBuildComponent()
     {
-        if (children.isEmpty()) { return builder.build(); }
-    
+        result = null; // Invalidate existing result since it is being rebuilt (guarantees fresh results of children).
+        if (children.isEmpty()) { return builder.build(); } // No children - simply build the builder.
+        
         // Create a copy of the builder in order to avoid editing the mutable builder instance within this TextChain.
         TextComponent.Builder aggregate = builder.build().toBuilder();
         for (TextChain child : children) { aggregate.append(child.aggregateThenBuildComponent()); }
@@ -269,7 +271,7 @@ public class TextChain implements ComponentLike
     
     public TextChain tooltip(TextChain tooltipTextChain)
     {
-        Objects.requireNonNull(tooltipTextChain, "tooltipTellable");
+        Objects.requireNonNull(tooltipTextChain, "tooltipTextChain");
         return tooltip(tooltipTextChain.asComponent());
     }
     

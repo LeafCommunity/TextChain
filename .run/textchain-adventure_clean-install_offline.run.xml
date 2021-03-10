@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="textchain-parent -&gt; build: production" type="MavenRunConfiguration" factoryName="Maven">
+  <configuration default="false" name="textchain-adventure_clean-install_offline" type="MavenRunConfiguration" factoryName="Maven">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
@@ -9,13 +9,17 @@
             <set />
           </option>
           <option name="goals">
-            <list />
+            <list>
+              <option value="clean" />
+              <option value="install" />
+              <option value="--projects" />
+              <option value="textchain-adventure" />
+              <option value="--offline" />
+            </list>
           </option>
           <option name="pomFileName" />
           <option name="profilesMap">
-            <map>
-              <entry key="production" value="true" />
-            </map>
+            <map />
           </option>
           <option name="resolveToWorkspace" value="false" />
           <option name="workingDirPath" value="$PROJECT_DIR$" />

@@ -10,30 +10,26 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>textchain-example-bukkit</artifactId>
+    <artifactId>textchain-example-paper</artifactId>
 
     <properties>
-        <shade.relocation>community.leaf.textchain.examples.bukkit.shaded</shade.relocation>
+        <shade.relocation>community.leaf.textchain.examples.paper.shaded</shade.relocation>
     </properties>
 
     <repositories>
         <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>sonatype-oss</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <id>papermc-repo</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
     </repositories>
 
     <dependencies>
         <!--
-        Spigot API (via spigot-repo)
+        Paper API (via papermc-repo)
         -->
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
+            <groupId>com.destroystokyo.paper</groupId>
+            <artifactId>paper-api</artifactId>
             <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
@@ -44,14 +40,6 @@
             <groupId>community.leaf</groupId>
             <artifactId>textchain-adventure</artifactId>
             <version>${revision}</version>
-        </dependency>
-        <!--
-        Kyori Adventure Bukkit Platform (via sonatype-oss)
-        -->
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.0.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
@@ -80,11 +68,6 @@
                         <relocation>
                             <pattern>community.leaf.textchain.adventure</pattern>
                             <shadedPattern>${shade.relocation}.textchain.adventure</shadedPattern>
-                        </relocation>
-                        <!-- Kyori Adventure -->
-                        <relocation>
-                            <pattern>net.kyori</pattern>
-                            <shadedPattern>${shade.relocation}.net.kyori</shadedPattern>
                         </relocation>
                     </relocations>
                     <artifactSet>

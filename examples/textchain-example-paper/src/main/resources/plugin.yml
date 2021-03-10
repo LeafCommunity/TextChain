@@ -1,4 +1,4 @@
-main: community.leaf.textchain.examples.bukkit.TextChainExampleBukkitPlugin
+main: community.leaf.textchain.examples.paper.TextChainExamplePaperPlugin
 name: ${project.name}
 version: ${revision}
 api-version: 1.13

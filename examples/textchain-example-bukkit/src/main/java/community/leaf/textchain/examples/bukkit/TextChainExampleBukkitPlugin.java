@@ -10,7 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class TextChainExamplePlugin extends JavaPlugin
+public class TextChainExampleBukkitPlugin extends JavaPlugin
 {
     private BukkitAudiences audiences;
     
