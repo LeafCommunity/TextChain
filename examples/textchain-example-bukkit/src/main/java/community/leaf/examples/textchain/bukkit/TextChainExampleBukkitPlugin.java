@@ -73,9 +73,17 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements Listener
             TextChain.of("You broke ")
                 .then(ShowItems.asText(broken))
                     .color(NamedTextColor.RED)
+                .then(" ")
+                .thenExtra(extra -> extra.then("(").then(ShowItems.asProperName(broken)).then(")"))
+                    .italic()
+                    .color(NamedTextColor.DARK_RED)
                 .then(" using ")
                 .then(ShowItems.asText(tool))
                     .color(NamedTextColor.AQUA)
+                .then(" ")
+                .thenExtra(extra -> extra.then("(").then(ShowItems.asProperName(tool)).then(")"))
+                    .italic()
+                    .color(NamedTextColor.DARK_AQUA)
                 .send(audiences.player(player));
         
         showcase(chain);
