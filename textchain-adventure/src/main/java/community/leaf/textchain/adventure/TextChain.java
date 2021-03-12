@@ -26,19 +26,9 @@ public class TextChain implements ComponentLike
     
     public static TextChain of(String text) { return new TextChain().then(text); }
     
-    public static TextChain of(TextComponent component) { return new TextChain().then(component); }
+    public static TextChain of(Component component) { return new TextChain().then(component); }
     
     public static TextChain of(TextChain other) { return new TextChain().then(other); }
-    
-    public static TextChain of(Component component) throws IllegalArgumentException
-    {
-        if (component instanceof TextComponent) { return of((TextComponent) component); }
-        
-        throw new IllegalArgumentException(
-            "Cannot accept component: not a TextComponent instance: " +
-            Objects.requireNonNull(component, "component").getClass().getName()
-        );
-    }
     
     private static <T> T chain(T thing, Consumer<T> consumer)
     {
@@ -131,16 +121,18 @@ public class TextChain implements ComponentLike
         return this;
     }
     
-    public TextChain then(TextComponent component)
+    public TextChain then(Component component)
     {
         Objects.requireNonNull(component, "component");
-        return then(component.toBuilder());
+        if (component instanceof TextComponent) { return then(((TextComponent) component).toBuilder()); }
+        createNextChild().builder.append(component);
+        return this;
     }
     
     public TextChain then(TextChain other)
     {
         Objects.requireNonNull(other, "other");
-        return then(other.asComponent());
+        return then(other.asComponent().toBuilder());
     }
     
     public TextChain then(String text, boolean parseLegacyColors)
@@ -241,25 +233,29 @@ public class TextChain implements ComponentLike
     
     public TextChain underline(TextDecoration.State state) { return format(TextDecoration.UNDERLINED, state); }
     
+    public TextChain click(ClickEvent event)
+    {
+        Objects.requireNonNull(event, "event");
+        peekThenApply(child -> child.clickEvent(event));
+        return this;
+    }
+    
     public TextChain command(String command)
     {
         Objects.requireNonNull(command, "command");
-        peekThenApply(child -> child.clickEvent(ClickEvent.runCommand(command)));
-        return this;
+        return click(ClickEvent.runCommand(command));
     }
     
     public TextChain suggest(String suggestion)
     {
         Objects.requireNonNull(suggestion, "suggestion");
-        peekThenApply(child -> child.clickEvent(ClickEvent.suggestCommand(suggestion)));
-        return this;
+        return click(ClickEvent.suggestCommand(suggestion));
     }
     
     public TextChain link(String link)
     {
         Objects.requireNonNull(link, "link");
-        peekThenApply(child -> child.clickEvent(ClickEvent.openUrl(link)));
-        return this;
+        return click(ClickEvent.openUrl(link));
     }
     
     public TextChain insertion(String insert)
@@ -269,11 +265,17 @@ public class TextChain implements ComponentLike
         return this;
     }
     
+    public TextChain hover(HoverEventSource<?> eventSource)
+    {
+        Objects.requireNonNull(eventSource, "eventSource");
+        peekThenApply(child -> child.hoverEvent(eventSource));
+        return this;
+    }
+    
     public TextChain tooltip(Component tooltipComponent)
     {
         Objects.requireNonNull(tooltipComponent, "tooltipComponent");
-        peekThenApply(child -> child.hoverEvent(HoverEvent.showText(tooltipComponent)));
-        return this;
+        return hover(HoverEvent.showText(tooltipComponent));
     }
     
     public TextChain tooltip(TextChain tooltipTextChain)
@@ -294,26 +296,19 @@ public class TextChain implements ComponentLike
         return tooltip(chain(TextChain.empty(), tooltipConsumer));
     }
     
-    public TextChain hover(HoverEventSource<? extends Component> eventSource)
-    {
-        Objects.requireNonNull(eventSource, "eventSource");
-        peekThenApply(child -> child.hoverEvent(eventSource));
-        return this;
-    }
-    
     public TextChain send(Audience audience)
     {
         audience.sendMessage(this); // calls asComponent() -> stores result in case this is called multiple times.
         return this;
     }
     
-    public TextChain send(Identity source, Audience audience)
+    public TextChain send(Audience audience, Identity source)
     {
         audience.sendMessage(source, this);
         return this;
     }
     
-    public TextChain send(Identified source, Audience audience)
+    public TextChain send(Audience audience, Identified source)
     {
         audience.sendMessage(source, this);
         return this;
