@@ -18,21 +18,35 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Dependency versions -->
+        <versions.kyori.adventure>4.7.0</versions.kyori.adventure>
+        <versions.kyori.adventure-platform>4.0.0-SNAPSHOT</versions.kyori.adventure-platform>
+        <versions.minecraft.spigot>1.16.5-R0.1-SNAPSHOT</versions.minecraft.spigot>
     </properties>
 
     <profiles>
-        <!-- Development: entire project, including 'example' modules -->
+        <!--
+        Development: enabled by default, unless tests are skipped.
+        Includes entire project (including 'example' modules) and skips javadocs.
+
+        If it is disabled by skipping tests with -DskipTests, then the
+        example plugins will not be built and javadocs will be generated.
+        -->
         <profile>
             <id>development</id>
             <activation>
                 <!--
-                Since jitpack will skip tests (-DskipTests), this profile avoids
-                building the example plugins if that property is set.
+                Since jitpack will skip tests (-DskipTests), this profile
+                is only active when that property is not set.
                 -->
                 <property>
                     <name>!skipTests</name>
                 </property>
             </activation>
+            <properties>
+                <maven.javadoc.skip>true</maven.javadoc.skip>
+            </properties>
             <modules>
                 <module>examples</module>
             </modules>
@@ -80,6 +94,20 @@
                         <phase>clean</phase>
                         <goals>
                             <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Generate javadocs -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
                         </goals>
                     </execution>
                 </executions>

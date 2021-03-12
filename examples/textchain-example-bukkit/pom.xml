@@ -34,7 +34,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <version>${versions.minecraft.spigot}</version>
             <scope>provided</scope>
         </dependency>
         <!--
@@ -43,7 +43,7 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.0.0-SNAPSHOT</version>
+            <version>${versions.kyori.adventure-platform}</version>
         </dependency>
         <!--
         TextChain Bukkit (via local project)

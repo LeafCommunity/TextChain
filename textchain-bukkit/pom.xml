@@ -26,7 +26,16 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <version>${versions.minecraft.spigot}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--
+        Kyori Adventure GSON Serializer (via maven-central)
+        -->
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-gson</artifactId>
+            <version>${versions.kyori.adventure}</version>
             <scope>provided</scope>
         </dependency>
         <!--
