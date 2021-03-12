@@ -8,6 +8,7 @@ import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.event.HoverEventSource;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -291,6 +292,13 @@ public class TextChain implements ComponentLike
     {
         Objects.requireNonNull(tooltipConsumer, "tooltipConsumer");
         return tooltip(chain(TextChain.empty(), tooltipConsumer));
+    }
+    
+    public TextChain hover(HoverEventSource<? extends Component> eventSource)
+    {
+        Objects.requireNonNull(eventSource, "eventSource");
+        peekThenApply(child -> child.hoverEvent(eventSource));
+        return this;
     }
     
     public TextChain send(Audience audience)

@@ -1,4 +1,4 @@
-package community.leaf.textchain.examples.paper;
+package community.leaf.examples.textchain.paper;
 
 import community.leaf.textchain.adventure.TextChain;
 import net.kyori.adventure.text.format.TextColor;

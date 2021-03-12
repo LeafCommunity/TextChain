@@ -13,7 +13,7 @@
     <artifactId>textchain-example-bukkit</artifactId>
 
     <properties>
-        <shade.relocation>community.leaf.textchain.examples.bukkit.shaded</shade.relocation>
+        <shade.relocation>community.leaf.examples.textchain.bukkit.shaded</shade.relocation>
     </properties>
 
     <repositories>
@@ -78,8 +78,8 @@
                     <relocations>
                         <!-- TextChain -->
                         <relocation>
-                            <pattern>community.leaf.textchain.adventure</pattern>
-                            <shadedPattern>${shade.relocation}.textchain.adventure</shadedPattern>
+                            <pattern>community.leaf.textchain</pattern>
+                            <shadedPattern>${shade.relocation}.textchain</shadedPattern>
                         </relocation>
                         <!-- Kyori Adventure -->
                         <relocation>
