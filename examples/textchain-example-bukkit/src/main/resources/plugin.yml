@@ -4,6 +4,6 @@ version: ${revision}
 api-version: 1.13
 
 commands:
-  textchain:
-    aliases: [test-text-chain, testtextchain, ttc]
+  textchainbukkit:
+    aliases: [test-text-chain-bukkit, testtextchainbukkit, ttcb]
     permission: textchain.test

@@ -21,6 +21,10 @@
             <id>papermc-repo</id>
             <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
+        <repository>
+            <id>sonatype-oss</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -40,6 +44,21 @@
             <groupId>community.leaf</groupId>
             <artifactId>textchain-bukkit</artifactId>
             <version>${revision}</version>
+        </dependency>
+        <!--
+        Kyori Adventure Craftbukkit serializer (via sonatype-oss)
+        TODO: avoid this hard dependency
+        -->
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-craftbukkit</artifactId>
+            <version>${versions.kyori.adventure-platform}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
@@ -68,6 +87,11 @@
                         <relocation>
                             <pattern>community.leaf.textchain.adventure</pattern>
                             <shadedPattern>${shade.relocation}.textchain.adventure</shadedPattern>
+                        </relocation>
+                        <!-- Adventure -->
+                        <relocation>
+                            <pattern>net.kyori.adventure.text.serializer.craftbukkit</pattern>
+                            <shadedPattern>${shade.relocation}.serializer.craftbukkit</shadedPattern>
                         </relocation>
                     </relocations>
                     <artifactSet>
