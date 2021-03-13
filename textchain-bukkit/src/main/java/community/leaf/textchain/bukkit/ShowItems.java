@@ -1,18 +1,16 @@
 package community.leaf.textchain.bukkit;
 
+import community.leaf.textchain.adventure.ItemRarity;
 import community.leaf.textchain.adventure.TextChain;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.nbt.api.BinaryTagHolder;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.event.HoverEvent.ShowItem;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.craftbukkit.MinecraftReflection;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.kyori.adventure.util.RGBLike;
 import net.md_5.bungee.chat.TranslationRegistry;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -23,7 +21,8 @@ import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Consumer;
+
+import static community.leaf.textchain.adventure.ConditionalChains.ifNotEmpty;
 
 @SuppressWarnings("UnstableApiUsage")
 public class ShowItems
@@ -138,11 +137,6 @@ public class ShowItems
         return asDisplayName(item).orElseGet(() -> asTranslatable(item));
     }
     
-    private static Consumer<TextChain> ifNotEmpty(String text)
-    {
-        return chain -> { if (!text.isEmpty()) { chain.then(text); }};
-    }
-    
     public static TextComponent asComponent(ItemStack item, String prefix, String suffix)
     {
         return TextChain.empty()
@@ -166,74 +160,34 @@ public class ShowItems
         return asClientName(item.getType());
     }
     
-    public static Rarity rarity(Material material)
+    public static ItemRarity rarity(Material material)
     {
         Objects.requireNonNull(material, "material");
-        if (!material.isItem()) { return Rarity.COMMON; }
+        if (!material.isItem()) { return ItemRarity.COMMON; }
         
         try
         {
             Object nmsItem = GET_ITEM_BY_MATERIAL.invoke(material);
             Object nmsRarity = NMS_ITEM_RARITY.get(nmsItem);
-            return Rarity.resolveByNameOrCommon(String.valueOf(nmsRarity));
+            return ItemRarity.resolveByName(String.valueOf(nmsRarity)).orElse(ItemRarity.COMMON);
         }
         catch (Throwable throwable) { throw new RuntimeException(throwable); }
     }
     
-    public static Rarity rarity(ItemStack item)
+    public static ItemRarity rarity(ItemStack item)
     {
         Objects.requireNonNull(item, "item");
         
         Material material = item.getType();
-        if (!material.isItem()) { return Rarity.COMMON; }
+        if (!material.isItem()) { return ItemRarity.COMMON; }
         
         try
         {
             Object nmsItem = GET_ITEM_BY_MATERIAL.invoke(material);
             Object nmsItemStack = AS_NMS_COPY.invoke(item);
             Object nmsRarity = GET_ITEM_RARITY.invoke(nmsItem, nmsItemStack);
-            return Rarity.resolveByNameOrCommon(String.valueOf(nmsRarity));
+            return ItemRarity.resolveByName(String.valueOf(nmsRarity)).orElse(ItemRarity.COMMON);
         }
         catch (Throwable throwable) { throw new RuntimeException(throwable); }
-    }
-    
-    public enum Rarity implements ComponentLike, RGBLike
-    {
-        COMMON(NamedTextColor.WHITE),
-        UNCOMMON(NamedTextColor.YELLOW),
-        RARE(NamedTextColor.AQUA),
-        EPIC(NamedTextColor.LIGHT_PURPLE);
-        
-        private final NamedTextColor color;
-        private final TextComponent component;
-        
-        Rarity(NamedTextColor color)
-        {
-            this.color = color;
-            this.component = Component.text().content(name()).color(color).build();
-        }
-        
-        public NamedTextColor getColor() { return color; }
-        
-        @Override
-        public Component asComponent() { return component; }
-        
-        @Override
-        public int red() { return color.red(); }
-    
-        @Override
-        public int green() { return color.green(); }
-    
-        @Override
-        public int blue() { return color.blue(); }
-    
-        public static Rarity resolveByNameOrCommon(String name)
-        {
-            for (Rarity rarity : values())
-            {
-                if (rarity.name().equalsIgnoreCase(name)) { return rarity; }
-            }
-            return COMMON;
-        }
     }
 }

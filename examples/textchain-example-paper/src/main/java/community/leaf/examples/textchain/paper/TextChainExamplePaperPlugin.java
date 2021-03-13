@@ -1,5 +1,6 @@
 package community.leaf.examples.textchain.paper;
 
+import community.leaf.textchain.adventure.ItemRarity;
 import community.leaf.textchain.adventure.TextChain;
 import community.leaf.textchain.bukkit.ShowEntities;
 import community.leaf.textchain.bukkit.ShowItems;
@@ -90,7 +91,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
             .send(player)
             .send(showcase);
     
-        ShowItems.Rarity rarity = ShowItems.rarity(hand);
+        ItemRarity rarity = ShowItems.rarity(hand);
         
         TextChain.of("Rarity of ")
             .then(ShowItems.asComponentInBrackets(hand))

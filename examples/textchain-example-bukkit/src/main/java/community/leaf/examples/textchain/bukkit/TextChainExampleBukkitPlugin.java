@@ -1,5 +1,6 @@
 package community.leaf.examples.textchain.bukkit;
 
+import community.leaf.textchain.adventure.ItemRarity;
 import community.leaf.textchain.adventure.TextChain;
 import community.leaf.textchain.bukkit.ShowEntities;
 import community.leaf.textchain.bukkit.ShowItems;
@@ -89,7 +90,7 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements Listener
             .send(getAudiences().player(player))
             .send(showcase);
     
-        ShowItems.Rarity rarity = ShowItems.rarity(tool);
+        ItemRarity rarity = ShowItems.rarity(tool);
         
         TextChain.of("Rarity of ")
             .then(ShowItems.asComponentInBrackets(tool))

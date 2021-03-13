@@ -29,12 +29,6 @@ public class TextChain implements ComponentLike
     
     public static TextChain of(ComponentLike componentLike) { return new TextChain().then(componentLike); }
     
-    private static <T> T chain(T thing, Consumer<T> consumer)
-    {
-        consumer.accept(thing);
-        return thing;
-    }
-    
     protected final Deque<TextChain> children = new LinkedList<>();
     protected final TextComponent.Builder builder;
     protected @NullOr TextComponent result = null;
@@ -270,28 +264,38 @@ public class TextChain implements ComponentLike
         return this;
     }
     
-    public TextChain tooltip(Component tooltipComponent)
+    public TextChain tooltip(ComponentLike componentLike)
     {
-        Objects.requireNonNull(tooltipComponent, "tooltipComponent");
-        return hover(HoverEvent.showText(tooltipComponent));
-    }
-    
-    public TextChain tooltip(TextChain tooltipTextChain)
-    {
-        Objects.requireNonNull(tooltipTextChain, "tooltipTextChain");
-        return tooltip(tooltipTextChain.asComponent());
-    }
-    
-    public TextChain tooltip(String tooltipString)
-    {
-        Objects.requireNonNull(tooltipString, "tooltipString");
-        return tooltip(LegacyComponentSerializer.legacyAmpersand().deserialize(tooltipString));
+        Objects.requireNonNull(componentLike, "componentLike");
+        return hover(HoverEvent.showText(componentLike));
     }
     
     public TextChain tooltip(Consumer<TextChain> tooltipConsumer)
     {
         Objects.requireNonNull(tooltipConsumer, "tooltipConsumer");
-        return tooltip(chain(TextChain.empty(), tooltipConsumer));
+        return tooltip(ConditionalChains.applyThenSupply(TextChain.empty(), tooltipConsumer));
+    }
+    
+    protected TextChain tooltip(String tooltipString, boolean parseLegacyColors)
+    {
+        Objects.requireNonNull(tooltipString, "tooltipString");
+        return tooltip(
+            (parseLegacyColors)
+                ? LegacyComponentSerializer.legacyAmpersand().deserialize(tooltipString)
+                : Component.text(tooltipString)
+        );
+    }
+    
+    public TextChain tooltip(String tooltipString)
+    {
+        Objects.requireNonNull(tooltipString, "tooltipString");
+        return tooltip(tooltipString, true);
+    }
+    
+    public TextChain tooltipUncolored(String tooltipString)
+    {
+        Objects.requireNonNull(tooltipString, "tooltipString");
+        return tooltip(tooltipString, false);
     }
     
     public TextChain send(Audience audience)
