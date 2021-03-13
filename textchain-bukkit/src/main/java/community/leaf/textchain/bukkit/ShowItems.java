@@ -8,6 +8,8 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.event.HoverEvent.ShowItem;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.craftbukkit.MinecraftReflection;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.chat.TranslationRegistry;
@@ -16,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.lang.invoke.MethodHandle;
+import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -28,6 +31,8 @@ public class ShowItems
     static final Class<?> CRAFT_ITEM_STACK = MinecraftReflection.needCraftClass("inventory.CraftItemStack");
     
     static final Class<?> CRAFT_MAGIC_NUMBERS = MinecraftReflection.needCraftClass("util.CraftMagicNumbers");
+    
+    static final Class<?> NMS_ENUM_ITEM_RARITY = MinecraftReflection.needNmsClass("EnumItemRarity");
     
     static final Class<?> NMS_ITEM = MinecraftReflection.needNmsClass("Item");
     
@@ -59,6 +64,18 @@ public class ShowItems
             "Missing method: nms.Item.getName()"
         );
     
+    static final MethodHandle GET_ITEM_RARITY =
+        Objects.requireNonNull(
+            MinecraftReflection.findMethod(NMS_ITEM, "i", NMS_ENUM_ITEM_RARITY, NMS_ITEM_STACK),
+            "Missing method: nms.Item.i(nms.ItemStack)"
+        );
+    
+    static final Field NMS_ITEM_RARITY =
+        Objects.requireNonNull(
+            MinecraftReflection.findField(NMS_ITEM, "a", NMS_ENUM_ITEM_RARITY),
+            "Missing field: nms.Item.a"
+        );
+    
     public static BinaryTagHolder nbt(ItemStack item)
     {
         try { return BinaryTagHolder.of(String.valueOf(GET_OR_CREATE_TAG.invoke(AS_NMS_COPY.invoke(item)))); }
@@ -83,7 +100,7 @@ public class ShowItems
     public static String asTranslationKey(ItemStack item)
     {
         Objects.requireNonNull(item, "item");
-        return asProperName(item.getType());
+        return asClientName(item.getType());
     }
     
     public static TranslatableComponent asTranslatable(Material material)
@@ -128,14 +145,64 @@ public class ShowItems
         return asText(item, "[", "]");
     }
     
-    public static String asProperName(Material material)
+    public static String asClientName(Material material)
     {
         return TranslationRegistry.INSTANCE.translate(asTranslationKey(material));
     }
     
-    public static String asProperName(ItemStack item)
+    public static String asClientName(ItemStack item)
     {
         Objects.requireNonNull(item, "item");
-        return asProperName(item.getType());
+        return asClientName(item.getType());
+    }
+    
+    public static Rarity rarity(Material material)
+    {
+        Objects.requireNonNull(material, "material");
+        
+        try
+        {
+            Object nmsItem = GET_ITEM_BY_MATERIAL.invoke(material);
+            Object nmsRarity = NMS_ITEM_RARITY.get(nmsItem);
+            return Rarity.resolveByNameOrCommon(String.valueOf(nmsRarity));
+        }
+        catch (Throwable throwable) { throw new RuntimeException(throwable); }
+    }
+    
+    public static Rarity rarity(ItemStack item)
+    {
+        Objects.requireNonNull(item, "item");
+        
+        try
+        {
+            Object nmsItem = GET_ITEM_BY_MATERIAL.invoke(item.getType());
+            Object nmsItemStack = AS_NMS_COPY.invoke(item);
+            Object nmsRarity = GET_ITEM_RARITY.invoke(nmsItem, nmsItemStack);
+            return Rarity.resolveByNameOrCommon(String.valueOf(nmsRarity));
+        }
+        catch (Throwable throwable) { throw new RuntimeException(throwable); }
+    }
+    
+    public enum Rarity
+    {
+        COMMON(NamedTextColor.WHITE),
+        UNCOMMON(NamedTextColor.YELLOW),
+        RARE(NamedTextColor.AQUA),
+        EPIC(NamedTextColor.LIGHT_PURPLE);
+        
+        private final NamedTextColor color;
+        
+        Rarity(NamedTextColor color) { this.color = color; }
+    
+        public NamedTextColor getColor() { return color; }
+        
+        public static Rarity resolveByNameOrCommon(String name)
+        {
+            for (Rarity rarity : values())
+            {
+                if (rarity.name().equalsIgnoreCase(name)) { return rarity; }
+            }
+            return COMMON;
+        }
     }
 }

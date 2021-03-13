@@ -74,19 +74,31 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements Listener
                 .then(ShowItems.asText(broken))
                     .color(NamedTextColor.RED)
                 .then(" ")
-                .thenExtra(extra -> extra.then("(").then(ShowItems.asProperName(broken)).then(")"))
+                .thenExtra(extra -> extra.then("(").then(ShowItems.asClientName(broken)).then(")"))
                     .italic()
                     .color(NamedTextColor.DARK_RED)
                 .then(" using ")
                 .then(ShowItems.asText(tool))
                     .color(NamedTextColor.AQUA)
                 .then(" ")
-                .thenExtra(extra -> extra.then("(").then(ShowItems.asProperName(tool)).then(")"))
+                .thenExtra(extra -> extra.then("(").then(ShowItems.asClientName(tool)).then(")"))
                     .italic()
                     .color(NamedTextColor.DARK_AQUA)
                 .send(audiences.player(player));
         
         showcase(chain);
+    
+        ShowItems.Rarity rarity = ShowItems.rarity(tool);
+        
+        TextChain.of("Rarity of ")
+            .then(ShowItems.asText(tool))
+                .color(rarity.getColor())
+            .then(" is ")
+            .then(rarity.name())
+                .color(rarity.getColor())
+                .bold()
+                .italic()
+            .send(audiences.player(player));
     }
     
     @EventHandler
