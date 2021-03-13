@@ -12,6 +12,7 @@ import net.kyori.adventure.text.event.HoverEventSource;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.util.RGBLike;
 import pl.tlinkowski.annotation.basic.NullOr;
 
 import java.util.Deque;
@@ -26,9 +27,7 @@ public class TextChain implements ComponentLike
     
     public static TextChain of(String text) { return new TextChain().then(text); }
     
-    public static TextChain of(Component component) { return new TextChain().then(component); }
-    
-    public static TextChain of(TextChain other) { return new TextChain().then(other); }
+    public static TextChain of(ComponentLike componentLike) { return new TextChain().then(componentLike); }
     
     private static <T> T chain(T thing, Consumer<T> consumer)
     {
@@ -121,18 +120,13 @@ public class TextChain implements ComponentLike
         return this;
     }
     
-    public TextChain then(Component component)
+    public TextChain then(ComponentLike componentLike)
     {
-        Objects.requireNonNull(component, "component");
+        Objects.requireNonNull(componentLike, "componentLike");
+        Component component = Objects.requireNonNull(componentLike.asComponent(), "componentLike returned null");
         if (component instanceof TextComponent) { return then(((TextComponent) component).toBuilder()); }
         createNextChild().builder.append(component);
         return this;
-    }
-    
-    public TextChain then(TextChain other)
-    {
-        Objects.requireNonNull(other, "other");
-        return then(other.asComponent().toBuilder());
     }
     
     public TextChain then(String text, boolean parseLegacyColors)
@@ -153,9 +147,7 @@ public class TextChain implements ComponentLike
     
     public TextChain next(TextComponent.Builder builder) { return nextLine().then(builder); }
     
-    public TextChain next(TextComponent component) { return nextLine().then(component); }
-    
-    public TextChain next(TextChain other) { return nextLine().then(other); }
+    public TextChain next(ComponentLike componentLike) { return nextLine().then(componentLike); }
     
     public TextChain next(String text) { return nextLine().then(text); }
     
@@ -172,6 +164,12 @@ public class TextChain implements ComponentLike
         Objects.requireNonNull(color, "color");
         peekThenApply(child -> child.color(color));
         return this;
+    }
+    
+    public TextChain color(RGBLike rgb)
+    {
+        Objects.requireNonNull(rgb, "rgb");
+        return color(TextColor.color(rgb));
     }
     
     public TextChain format(TextDecoration decoration)
@@ -215,11 +213,11 @@ public class TextChain implements ComponentLike
     
     public TextChain italic(TextDecoration.State state) { return format(TextDecoration.ITALIC, state); }
     
-    public TextChain obfuscate() { return format(TextDecoration.OBFUSCATED); }
+    public TextChain obfuscated() { return format(TextDecoration.OBFUSCATED); }
     
-    public TextChain obfuscate(boolean state) { return format(TextDecoration.OBFUSCATED, state); }
+    public TextChain obfuscated(boolean state) { return format(TextDecoration.OBFUSCATED, state); }
     
-    public TextChain obfuscate(TextDecoration.State state) { return format(TextDecoration.OBFUSCATED, state); }
+    public TextChain obfuscated(TextDecoration.State state) { return format(TextDecoration.OBFUSCATED, state); }
     
     public TextChain strikethrough() { return format(TextDecoration.STRIKETHROUGH); }
     
@@ -227,11 +225,11 @@ public class TextChain implements ComponentLike
     
     public TextChain strikethrough(TextDecoration.State state) { return format(TextDecoration.STRIKETHROUGH, state); }
     
-    public TextChain underline() { return format(TextDecoration.UNDERLINED); }
+    public TextChain underlined() { return format(TextDecoration.UNDERLINED); }
     
-    public TextChain underline(boolean state) { return format(TextDecoration.UNDERLINED, state); }
+    public TextChain underlined(boolean state) { return format(TextDecoration.UNDERLINED, state); }
     
-    public TextChain underline(TextDecoration.State state) { return format(TextDecoration.UNDERLINED, state); }
+    public TextChain underlined(TextDecoration.State state) { return format(TextDecoration.UNDERLINED, state); }
     
     public TextChain click(ClickEvent event)
     {

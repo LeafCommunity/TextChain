@@ -1,6 +1,7 @@
 package community.leaf.examples.textchain.paper;
 
 import community.leaf.textchain.adventure.TextChain;
+import community.leaf.textchain.bukkit.ShowEntities;
 import community.leaf.textchain.bukkit.ShowItems;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.audience.MessageType;
@@ -11,13 +12,14 @@ import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
 {
@@ -43,7 +45,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
                 extra
                     .then("click ")
                     .then("here")
-                        .underline()
+                        .underlined()
                         .color(TextColor.color(0x0000FF))
                         .link("https://google.com")
                         .tooltip("Click to visit: &9&ogoogle.com")
@@ -72,14 +74,14 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
         ItemStack hand = player.getInventory().getItemInMainHand();
         
         TextChain.of("You placed ")
-            .then(ShowItems.asText(placed))
+            .then(ShowItems.asComponentInBrackets(placed))
                 .color(NamedTextColor.RED)
             .then(" ")
             .thenExtra(extra -> extra.then("(").then(ShowItems.asClientName(placed)).then(")"))
                 .italic()
                 .color(NamedTextColor.DARK_RED)
             .then(" using ")
-            .then(ShowItems.asText(hand))
+            .then(ShowItems.asComponentInBrackets(hand))
                 .color(NamedTextColor.AQUA)
             .then(" ")
             .thenExtra(extra -> extra.then("(").then(ShowItems.asClientName(hand)).then(")"))
@@ -91,13 +93,29 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
         ShowItems.Rarity rarity = ShowItems.rarity(hand);
         
         TextChain.of("Rarity of ")
-            .then(ShowItems.asText(hand))
-                .color(rarity.getColor())
+            .then(ShowItems.asComponentInBrackets(hand))
+                .color(rarity)
             .then(" is ")
-            .then(rarity.name())
-                .color(rarity.getColor())
+            .then(rarity)
                 .bold()
                 .italic()
+            .send(player)
+            .send(showcase);
+    }
+    
+    @EventHandler
+    public void onPlayerDamageEntity(EntityDamageByEntityEvent event)
+    {
+        if (!(event.getDamager() instanceof Player)) { return; }
+        
+        Player player = (Player) event.getDamager();
+        Entity damaged = event.getEntity();
+        
+        TextChain.of("You damaged ")
+            .then(ShowEntities.asName(damaged))
+                .hover(ShowEntities.asHover(damaged))
+                .color(TextColor.color(0xe8c3ae))
+            .then("!")
             .send(player)
             .send(showcase);
     }
@@ -105,7 +123,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
     private class Showcase implements Audience
     {
         @Override
-        public void sendMessage(final @NonNull Identity source, final @NonNull Component message, final @NonNull MessageType type)
+        public void sendMessage(final Identity source, final Component message, final MessageType type)
         {
             TextChain.of("Sent JSON component: ")
                 .then(GsonComponentSerializer.gson().serialize(message))

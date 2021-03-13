@@ -19,10 +19,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
+@SuppressWarnings("NotNullFieldNotInitialized")
 public class TextChainExampleBukkitPlugin extends JavaPlugin implements Listener
 {
     private BukkitAudiences audiences;
@@ -58,7 +59,7 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements Listener
                 .color(TextColor.color(0xFF0000))
                 .tooltip("Click here to respond with \"pretty good\"")
                 .suggest("pretty good")
-            .send(audiences.sender(sender))
+            .send(getAudiences().sender(sender))
             .send(showcase);
             
         return true;
@@ -72,39 +73,40 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements Listener
         ItemStack tool = player.getInventory().getItemInMainHand();
         
         TextChain.of("You broke ")
-            .then(ShowItems.asText(broken))
+            .then(ShowItems.asComponentInBrackets(broken))
                 .color(NamedTextColor.RED)
             .then(" ")
             .thenExtra(extra -> extra.then("(").then(ShowItems.asClientName(broken)).then(")"))
                 .italic()
                 .color(NamedTextColor.DARK_RED)
             .then(" using ")
-            .then(ShowItems.asText(tool))
+            .then(ShowItems.asComponentInBrackets(tool))
                 .color(NamedTextColor.AQUA)
             .then(" ")
             .thenExtra(extra -> extra.then("(").then(ShowItems.asClientName(tool)).then(")"))
                 .italic()
                 .color(NamedTextColor.DARK_AQUA)
-            .send(audiences.player(player))
+            .send(getAudiences().player(player))
             .send(showcase);
     
         ShowItems.Rarity rarity = ShowItems.rarity(tool);
         
         TextChain.of("Rarity of ")
-            .then(ShowItems.asText(tool))
-                .color(rarity.getColor())
+            .then(ShowItems.asComponentInBrackets(tool))
+                .color(rarity)
             .then(" is ")
-            .then(rarity.name())
-                .color(rarity.getColor())
+            .then(rarity)
                 .bold()
                 .italic()
-            .send(audiences.player(player))
+            .send(getAudiences().player(player))
             .send(showcase);
     }
     
     @EventHandler
     public void onClickOnEntity(PlayerInteractEntityEvent event)
     {
+        if (event.getHand() != EquipmentSlot.HAND) { return; }
+        
         Player player = event.getPlayer();
         Entity clicked = event.getRightClicked();
         
@@ -112,14 +114,14 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements Listener
             .then(ShowEntities.asName(clicked))
                 .hover(ShowEntities.asHover(clicked))
                 .color(TextColor.color(0xd5d8e5))
-            .send(audiences.player(player))
+            .send(getAudiences().player(player))
             .send(showcase);
     }
     
     private class Showcase implements Audience
     {
         @Override
-        public void sendMessage(final @NonNull Identity source, final @NonNull Component message, final @NonNull MessageType type)
+        public void sendMessage(final Identity source, final Component message, final MessageType type)
         {
             TextChain.of("Sent JSON component: ")
                 .then(GsonComponentSerializer.gson().serialize(message))
