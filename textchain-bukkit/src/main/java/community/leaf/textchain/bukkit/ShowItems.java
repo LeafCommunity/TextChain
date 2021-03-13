@@ -9,13 +9,13 @@ import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.event.HoverEvent.ShowItem;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.craftbukkit.MinecraftReflection;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.chat.TranslationRegistry;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import pl.tlinkowski.annotation.basic.NullOr;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Field;
@@ -90,10 +90,19 @@ public class ShowItems
         return HoverEvent.showItem(showItem);
     }
     
+    private static String fallbackTranslationKey(Material material)
+    {
+        return ((material.isBlock()) ? "block" : "item") + ".minecraft." + material.name().toLowerCase();
+    }
+    
     public static String asTranslationKey(Material material)
     {
         Objects.requireNonNull(material, "material");
-        try { return String.valueOf(GET_ITEM_NAME.invoke(GET_ITEM_BY_MATERIAL.invoke(material))); }
+        try
+        {
+            @NullOr Object nmsItem = GET_ITEM_BY_MATERIAL.invoke(material); // can return null apparently?
+            return (nmsItem != null) ? String.valueOf(GET_ITEM_NAME.invoke(nmsItem)) : fallbackTranslationKey(material);
+        }
         catch (Throwable throwable) { throw new RuntimeException(throwable); }
     }
     
