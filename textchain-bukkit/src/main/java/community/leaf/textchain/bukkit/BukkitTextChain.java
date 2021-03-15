@@ -1,6 +1,6 @@
 package community.leaf.textchain.bukkit;
 
-import community.leaf.textchain.adventure.TextChainConstructor;
+import community.leaf.textchain.adventure.ChainConstructor;
 import community.leaf.textchain.adventure.WrappedTextComponentBuilder;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 
@@ -12,7 +12,7 @@ public final class BukkitTextChain extends BukkitChain<BukkitTextChain>
     }
     
     @Override
-    public TextChainConstructor<BukkitTextChain> getConstructor()
+    public ChainConstructor<BukkitTextChain> getConstructor()
     {
         return builder -> new BukkitTextChain(builder, getAudiences());
     }

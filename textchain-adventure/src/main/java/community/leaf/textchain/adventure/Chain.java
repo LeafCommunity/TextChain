@@ -26,7 +26,7 @@ public abstract class Chain<C extends Chain<C>> implements ComponentLike
         this.builder = Objects.requireNonNull(builder, "builder");
     }
     
-    protected abstract TextChainConstructor<C> getConstructor();
+    protected abstract ChainConstructor<C> getConstructor();
     
     public final WrappedTextComponentBuilder getBuilder() { return builder; }
     

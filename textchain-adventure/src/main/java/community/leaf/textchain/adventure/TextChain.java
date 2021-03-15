@@ -5,14 +5,14 @@ import net.kyori.adventure.text.ComponentLike;
 
 public final class TextChain extends Chain<TextChain>
 {
-    public static <C extends Chain<C>> C using(TextChainConstructor<C> constructor)
+    public static <C extends Chain<C>> C using(ChainConstructor<C> constructor)
     {
         return constructor.apply(new WrappedTextComponentBuilder(Component.text()));
     }
     
-    public static <C extends Chain<C>> C using(TextChainSource<C> source)
+    public static <C extends Chain<C>> C using(ChainSource<C> source)
     {
-        return TextChain.using(source.getTextChainConstructor());
+        return TextChain.using(source.getChainConstructor());
     }
     
     public static TextChain empty() { return TextChain.using(TextChain::new); }
@@ -21,8 +21,12 @@ public final class TextChain extends Chain<TextChain>
     
     public static TextChain of(ComponentLike componentLike) { return TextChain.empty().then(componentLike); }
     
+    //
+    //
+    //
+    
     public TextChain(WrappedTextComponentBuilder builder) { super(builder); }
     
     @Override
-    protected TextChainConstructor<TextChain> getConstructor() { return TextChain::new; }
+    protected ChainConstructor<TextChain> getConstructor() { return TextChain::new; }
 }
