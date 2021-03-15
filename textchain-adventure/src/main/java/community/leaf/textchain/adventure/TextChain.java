@@ -11,314 +11,267 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.event.HoverEventSource;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.util.RGBLike;
-import pl.tlinkowski.annotation.basic.NullOr;
 
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-@SuppressWarnings({"UnusedReturnValue", "unused"})
-public class TextChain implements ComponentLike
+@SuppressWarnings({"unused", "UnusedReturnValue"})
+public interface TextChain<C extends TextChain<C>> extends ComponentLike
 {
-    public static TextChain empty() { return new TextChain(); }
+    static <C extends TextChain<C>> C using(TextChainConstructor<C> constructor)
+    {
+        return constructor.apply(new WrappedTextComponentBuilder(Component.text()));
+    }
     
-    public static TextChain of(String text) { return new TextChain().then(text); }
+    static <C extends TextChain<C>> C using(TextChainSource<C> source)
+    {
+        return using(source.getTextChainConstructor());
+    }
     
-    public static TextChain of(ComponentLike componentLike) { return new TextChain().then(componentLike); }
+    static TextComponentChain empty() { return TextChain.using(TextComponentChain::new); }
     
-    protected final Deque<TextChain> children = new LinkedList<>();
-    protected final TextComponent.Builder builder;
-    protected @NullOr TextComponent result = null;
+    static TextComponentChain of(String text) { return TextChain.empty().then(text); }
     
-    public TextChain(TextComponent.Builder builder) { this.builder = Objects.requireNonNull(builder, "builder"); }
+    static TextComponentChain of(ComponentLike componentLike) { return TextChain.empty().then(componentLike); }
     
-    public TextChain() { this(Component.text()); }
+    WrappedTextComponentBuilder getBuilder();
     
-    public TextChain(TextComponent component) { this(component.toBuilder()); }
+    TextChainConstructor<C> getConstructor();
     
     @Override
-    public TextComponent asComponent()
-    {
-        // Store the result to avoid constantly rebuilding the component.
-        return (result != null) ? result : (result = aggregateThenBuildComponent());
-    }
+    default TextComponent asComponent() { return getBuilder().asComponent(); }
     
-    // This method will *always* rebuild the component (and child components).
-    protected TextComponent aggregateThenBuildComponent()
-    {
-        result = null; // Invalidate existing result since it is being rebuilt (guarantees fresh results of children).
-        if (children.isEmpty()) { return builder.build(); } // No children - simply build the builder.
-        
-        // Create a copy of the builder in order to avoid editing the mutable builder instance within this TextChain.
-        TextComponent.Builder aggregate = builder.build().toBuilder();
-        for (TextChain child : children) { aggregate.append(child.aggregateThenBuildComponent()); }
-        return aggregate.build();
-    }
+    @SuppressWarnings("unchecked")
+    default C self() { return (C) this; }
     
-    protected TextChain createNextChild()
-    {
-        result = null;
-        TextChain child = new TextChain();
-        children.add(child);
-        return child;
-    }
-    
-    protected TextChain createNextChildWithBuilder(TextComponent.Builder builder)
-    {
-        result = null;
-        TextChain child = new TextChain(builder);
-        children.add(child);
-        return child;
-    }
-    
-    protected TextChain peekOrCreateChild()
-    {
-        result = null;
-        return (children.isEmpty()) ? createNextChild() : children.getLast();
-    }
-    
-    protected void peekThenApply(Consumer<TextComponent.Builder> action)
-    {
-        result = null;
-        action.accept(peekOrCreateChild().builder);
-    }
-    
-    public TextChain apply(Consumer<TextChain> consumer)
+    default C apply(Consumer<? super C> consumer)
     {
         Objects.requireNonNull(consumer, "consumer");
-        consumer.accept(this);
-        return this;
+        consumer.accept(self());
+        return self();
     }
     
-    public TextChain extra(Consumer<TextChain> consumer)
+    default C extra(Consumer<? super C> consumer)
     {
         Objects.requireNonNull(consumer, "consumer");
-        consumer.accept(peekOrCreateChild());
-        return this;
+        consumer.accept(getBuilder().peekOrCreateChild().wrap(getConstructor()));
+        return self();
     }
     
-    public TextChain thenExtra(Consumer<TextChain> consumer)
+    default C thenExtra(Consumer<? super C> consumer)
     {
         Objects.requireNonNull(consumer, "consumer");
-        consumer.accept(createNextChild());
-        return this;
+        consumer.accept(getBuilder().createNextChild().wrap(getConstructor()));
+        return self();
     }
     
-    public TextChain then(TextComponent.Builder builder)
+    default C then(TextComponent.Builder builder)
     {
         Objects.requireNonNull(builder, "builder");
-        createNextChildWithBuilder(builder);
-        return this;
+        getBuilder().createNextChildWithBuilder(builder);
+        return self();
     }
     
-    public TextChain then(ComponentLike componentLike)
+    default C then(ComponentLike componentLike)
     {
         Objects.requireNonNull(componentLike, "componentLike");
         Component component = Objects.requireNonNull(componentLike.asComponent(), "componentLike returned null");
         if (component instanceof TextComponent) { return then(((TextComponent) component).toBuilder()); }
-        createNextChild().builder.append(component);
-        return this;
+        getBuilder().createNextChild().getComponentBuilder().append(component);
+        return self();
     }
     
-    public TextChain then(String text, boolean parseLegacyColors)
+    default C then(String text, ColorParsers colors)
     {
         Objects.requireNonNull(text, "text");
-        return then(
-            (parseLegacyColors)
-                ? LegacyComponentSerializer.legacyAmpersand().deserialize(text).toBuilder()
-                : Component.text().content(text)
-        );
+        return then(colors.parse(text).toBuilder());
     }
     
-    public TextChain then(String text) { return then(text, true); }
+    default C then(String text) { return then(text, ColorParsers.AMPERSAND); }
     
-    public TextChain thenUncolored(String text) { return then(text, false); }
+    default C thenUncolored(String text) { return then(text, ColorParsers.NONE); }
     
-    public TextChain nextLine() { return thenUncolored("\n"); }
+    default C nextLine() { return thenUncolored("\n"); }
     
-    public TextChain next(TextComponent.Builder builder) { return nextLine().then(builder); }
+    default C next(TextComponent.Builder builder) { return nextLine().then(builder); }
     
-    public TextChain next(ComponentLike componentLike) { return nextLine().then(componentLike); }
+    default C next(ComponentLike componentLike) { return nextLine().then(componentLike); }
     
-    public TextChain next(String text) { return nextLine().then(text); }
+    default C next(String text) { return nextLine().then(text); }
     
-    public TextChain nextUncolored(String text) { return nextLine().thenUncolored(text); }
+    default C nextUncolored(String text) { return nextLine().thenUncolored(text); }
     
-    public TextChain text(String text)
+    default C text(String text)
     {
-        peekThenApply(child -> child.content(text));
-        return this;
+        getBuilder().peekThenApply(child -> child.content(text));
+        return self();
     }
     
-    public TextChain color(TextColor color)
+    default C color(TextColor color)
     {
         Objects.requireNonNull(color, "color");
-        peekThenApply(child -> child.color(color));
-        return this;
+        getBuilder().peekThenApply(child -> child.color(color));
+        return self();
     }
     
-    public TextChain color(RGBLike rgb)
+    default C color(RGBLike rgb)
     {
         Objects.requireNonNull(rgb, "rgb");
         return color(TextColor.color(rgb));
     }
     
-    public TextChain format(TextDecoration decoration)
+    default C format(TextDecoration decoration)
     {
         Objects.requireNonNull(decoration, "decoration");
-        peekThenApply(child -> child.decorate(decoration));
-        return this;
+        getBuilder().peekThenApply(child -> child.decorate(decoration));
+        return self();
     }
     
-    public TextChain format(TextDecoration ... decorations)
+    default C format(TextDecoration ... decorations)
     {
         Objects.requireNonNull(decorations, "decorations");
-        peekThenApply(child -> child.decorate(decorations));
-        return this;
+        getBuilder().peekThenApply(child -> child.decorate(decorations));
+        return self();
     }
     
-    public TextChain format(TextDecoration decoration, boolean state)
+    default C format(TextDecoration decoration, boolean state)
     {
         Objects.requireNonNull(decoration, "decoration");
-        peekThenApply(child -> child.decoration(decoration, state));
-        return this;
+        getBuilder().peekThenApply(child -> child.decoration(decoration, state));
+        return self();
     }
     
-    public TextChain format(TextDecoration decoration, TextDecoration.State state)
+    default C format(TextDecoration decoration, TextDecoration.State state)
     {
         Objects.requireNonNull(decoration, "decoration");
         Objects.requireNonNull(state, "state");
-        peekThenApply(child -> child.decoration(decoration, state));
-        return this;
+        getBuilder().peekThenApply(child -> child.decoration(decoration, state));
+        return self();
     }
     
-    public TextChain bold() { return format(TextDecoration.BOLD); }
+    default C bold() { return format(TextDecoration.BOLD); }
     
-    public TextChain bold(boolean state) { return format(TextDecoration.BOLD, state); }
+    default C bold(boolean state) { return format(TextDecoration.BOLD, state); }
     
-    public TextChain bold(TextDecoration.State state) { return format(TextDecoration.BOLD, state); }
+    default C bold(TextDecoration.State state) { return format(TextDecoration.BOLD, state); }
     
-    public TextChain italic() { return format(TextDecoration.ITALIC); }
+    default C italic() { return format(TextDecoration.ITALIC); }
     
-    public TextChain italic(boolean state) { return format(TextDecoration.ITALIC, state); }
+    default C italic(boolean state) { return format(TextDecoration.ITALIC, state); }
     
-    public TextChain italic(TextDecoration.State state) { return format(TextDecoration.ITALIC, state); }
+    default C italic(TextDecoration.State state) { return format(TextDecoration.ITALIC, state); }
     
-    public TextChain obfuscated() { return format(TextDecoration.OBFUSCATED); }
+    default C obfuscated() { return format(TextDecoration.OBFUSCATED); }
     
-    public TextChain obfuscated(boolean state) { return format(TextDecoration.OBFUSCATED, state); }
+    default C obfuscated(boolean state) { return format(TextDecoration.OBFUSCATED, state); }
     
-    public TextChain obfuscated(TextDecoration.State state) { return format(TextDecoration.OBFUSCATED, state); }
+    default C obfuscated(TextDecoration.State state) { return format(TextDecoration.OBFUSCATED, state); }
     
-    public TextChain strikethrough() { return format(TextDecoration.STRIKETHROUGH); }
+    default C strikethrough() { return format(TextDecoration.STRIKETHROUGH); }
     
-    public TextChain strikethrough(boolean state) { return format(TextDecoration.STRIKETHROUGH, state); }
+    default C strikethrough(boolean state) { return format(TextDecoration.STRIKETHROUGH, state); }
     
-    public TextChain strikethrough(TextDecoration.State state) { return format(TextDecoration.STRIKETHROUGH, state); }
+    default C strikethrough(TextDecoration.State state) { return format(TextDecoration.STRIKETHROUGH, state); }
     
-    public TextChain underlined() { return format(TextDecoration.UNDERLINED); }
+    default C underlined() { return format(TextDecoration.UNDERLINED); }
     
-    public TextChain underlined(boolean state) { return format(TextDecoration.UNDERLINED, state); }
+    default C underlined(boolean state) { return format(TextDecoration.UNDERLINED, state); }
     
-    public TextChain underlined(TextDecoration.State state) { return format(TextDecoration.UNDERLINED, state); }
+    default C underlined(TextDecoration.State state) { return format(TextDecoration.UNDERLINED, state); }
     
-    public TextChain click(ClickEvent event)
+    default C click(ClickEvent event)
     {
         Objects.requireNonNull(event, "event");
-        peekThenApply(child -> child.clickEvent(event));
-        return this;
+        getBuilder().peekThenApply(child -> child.clickEvent(event));
+        return self();
     }
     
-    public TextChain command(String command)
+    default C command(String command)
     {
         Objects.requireNonNull(command, "command");
         return click(ClickEvent.runCommand(command));
     }
     
-    public TextChain suggest(String suggestion)
+    default C suggest(String suggestion)
     {
         Objects.requireNonNull(suggestion, "suggestion");
         return click(ClickEvent.suggestCommand(suggestion));
     }
     
-    public TextChain link(String link)
+    default C link(String link)
     {
         Objects.requireNonNull(link, "link");
         return click(ClickEvent.openUrl(link));
     }
     
-    public TextChain insertion(String insert)
+    default C insertion(String insert)
     {
         Objects.requireNonNull(insert, "insert");
-        peekThenApply(child -> child.insertion(insert));
-        return this;
+        getBuilder().peekThenApply(child -> child.insertion(insert));
+        return self();
     }
     
-    public TextChain hover(HoverEventSource<?> eventSource)
+    default C hover(HoverEventSource<?> eventSource)
     {
         Objects.requireNonNull(eventSource, "eventSource");
-        peekThenApply(child -> child.hoverEvent(eventSource));
-        return this;
+        getBuilder().peekThenApply(child -> child.hoverEvent(eventSource));
+        return self();
     }
     
-    public TextChain tooltip(ComponentLike componentLike)
+    default C tooltip(ComponentLike componentLike)
     {
         Objects.requireNonNull(componentLike, "componentLike");
         return hover(HoverEvent.showText(componentLike));
     }
     
-    public TextChain tooltip(Consumer<TextChain> tooltipConsumer)
+    default C tooltip(Consumer<? super C> tooltipConsumer)
     {
         Objects.requireNonNull(tooltipConsumer, "tooltipConsumer");
-        return tooltip(ConditionalChains.applyThenSupply(TextChain.empty(), tooltipConsumer));
+        C tooltipChain = getConstructor().apply(new WrappedTextComponentBuilder(Component.text()));
+        tooltipConsumer.accept(tooltipChain);
+        return tooltip(tooltipChain);
     }
     
-    protected TextChain tooltip(String tooltipString, boolean parseLegacyColors)
+    default C tooltip(String tooltipString, ColorParsers colors)
     {
         Objects.requireNonNull(tooltipString, "tooltipString");
-        return tooltip(
-            (parseLegacyColors)
-                ? LegacyComponentSerializer.legacyAmpersand().deserialize(tooltipString)
-                : Component.text(tooltipString)
-        );
+        return tooltip(colors.parse(tooltipString));
     }
     
-    public TextChain tooltip(String tooltipString)
+    default C tooltip(String tooltipString)
     {
         Objects.requireNonNull(tooltipString, "tooltipString");
-        return tooltip(tooltipString, true);
+        return tooltip(tooltipString, ColorParsers.AMPERSAND);
     }
     
-    public TextChain tooltipUncolored(String tooltipString)
+    default C tooltipUncolored(String tooltipString)
     {
         Objects.requireNonNull(tooltipString, "tooltipString");
-        return tooltip(tooltipString, false);
+        return tooltip(tooltipString, ColorParsers.NONE);
     }
     
-    public TextChain send(Audience audience)
+    default C send(Audience audience)
     {
         audience.sendMessage(this); // calls asComponent() -> stores result in case this is called multiple times.
-        return this;
+        return self();
     }
     
-    public TextChain send(Audience audience, Identity source)
+    default C send(Audience audience, Identity source)
     {
         audience.sendMessage(source, this);
-        return this;
+        return self();
     }
     
-    public TextChain send(Audience audience, Identified source)
+    default C send(Audience audience, Identified source)
     {
         audience.sendMessage(source, this);
-        return this;
+        return self();
     }
     
-    public TextChain actionBar(Audience audience)
+    default C actionBar(Audience audience)
     {
         audience.sendActionBar(this);
-        return this;
+        return self();
     }
 }
