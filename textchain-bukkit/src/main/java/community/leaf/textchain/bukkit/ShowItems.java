@@ -2,6 +2,8 @@ package community.leaf.textchain.bukkit;
 
 import community.leaf.textchain.adventure.ItemRarity;
 import community.leaf.textchain.adventure.TextChain;
+import community.leaf.textchain.bukkit.util.MaybeExceptional;
+import community.leaf.textchain.bukkit.util.ServerReflection;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.nbt.api.BinaryTagHolder;
 import net.kyori.adventure.text.Component;
@@ -25,9 +27,13 @@ public class ShowItems
 {
     private ShowItems() { throw new UnsupportedOperationException(); }
     
-    static final Class<?> CRAFT_ITEM_STACK = ServerReflection.requireCraftClass("inventory", "CraftItemStack");
+    //
+    //  These classes should exist as if importing them directly.
+    //
     
-    static final Class<?> CRAFT_MAGIC_NUMBERS = ServerReflection.requireCraftClass("util", "CraftMagicNumbers");
+    static final Class<?> CRAFT_ITEM_STACK = ServerReflection.requireCraftClass("inventory.CraftItemStack");
+    
+    static final Class<?> CRAFT_MAGIC_NUMBERS = ServerReflection.requireCraftClass("util.CraftMagicNumbers");
     
     static final Class<?> NMS_ENUM_ITEM_RARITY = ServerReflection.requireNmsClass("EnumItemRarity");
     
@@ -37,27 +43,41 @@ public class ShowItems
     
     static final Class<?> NMS_NBT_TAG_COMPOUND = ServerReflection.requireNmsClass("NBTTagCompound");
     
-    static final MethodHandle AS_NMS_COPY =
+    //
+    //  Methods and fields that may or not exist - most likely they do in fact exist.
+    //  But let's not throw anything until called (like standard java behavior).
+    //
+    
+    static final MaybeExceptional<MethodHandle> AS_NMS_COPY =
         ServerReflection.requireStaticMethod(CRAFT_ITEM_STACK, "asNMSCopy", NMS_ITEM_STACK, ItemStack.class);
     
-    static final MethodHandle GET_OR_CREATE_TAG =
+    static final MaybeExceptional<MethodHandle> GET_OR_CREATE_TAG =
         ServerReflection.requireMethod(NMS_ITEM_STACK, "getOrCreateTag", NMS_NBT_TAG_COMPOUND);
     
-    static final MethodHandle GET_ITEM_BY_MATERIAL =
+    static final MaybeExceptional<MethodHandle> GET_ITEM_BY_MATERIAL =
         ServerReflection.requireStaticMethod(CRAFT_MAGIC_NUMBERS, "getItem", NMS_ITEM, Material.class);
         
-    static final MethodHandle GET_ITEM_NAME =
+    static final MaybeExceptional<MethodHandle> GET_ITEM_NAME =
         ServerReflection.requireMethod(NMS_ITEM, "getName", String.class);
     
-    static final MethodHandle GET_ITEM_RARITY =
+    static final MaybeExceptional<MethodHandle> GET_ITEM_RARITY =
         ServerReflection.requireMethod(NMS_ITEM, "i", NMS_ENUM_ITEM_RARITY, NMS_ITEM_STACK);
     
-    static final Field NMS_ITEM_RARITY =
+    static final MaybeExceptional<Field> NMS_ITEM_RARITY =
         ServerReflection.requireField(NMS_ITEM, "a", NMS_ENUM_ITEM_RARITY);
+    
+    //
+    //
+    //
     
     public static BinaryTagHolder nbt(ItemStack item)
     {
-        try { return BinaryTagHolder.of(String.valueOf(GET_OR_CREATE_TAG.invoke(AS_NMS_COPY.invoke(item)))); }
+        try
+        {
+            return BinaryTagHolder.of(String.valueOf(
+                GET_OR_CREATE_TAG.getOrRethrow().invoke(AS_NMS_COPY.getOrRethrow().invoke(item))
+            ));
+        }
         catch (Throwable throwable) { throw new RuntimeException(throwable); }
     }
     
@@ -77,10 +97,14 @@ public class ShowItems
     public static String asTranslationKey(Material material)
     {
         Objects.requireNonNull(material, "material");
+        
         try
         {
-            @NullOr Object nmsItem = GET_ITEM_BY_MATERIAL.invoke(material); // can return null apparently?
-            return (nmsItem != null) ? String.valueOf(GET_ITEM_NAME.invoke(nmsItem)) : fallbackTranslationKey(material);
+            @NullOr Object nmsItem = GET_ITEM_BY_MATERIAL.getOrRethrow().invoke(material); // can return null apparently?
+            
+            return (nmsItem != null)
+                ? String.valueOf(GET_ITEM_NAME.getOrRethrow().invoke(nmsItem))
+                : fallbackTranslationKey(material);
         }
         catch (Throwable throwable) { throw new RuntimeException(throwable); }
     }
@@ -149,8 +173,8 @@ public class ShowItems
         
         try
         {
-            Object nmsItem = GET_ITEM_BY_MATERIAL.invoke(material);
-            Object nmsRarity = NMS_ITEM_RARITY.get(nmsItem);
+            Object nmsItem = GET_ITEM_BY_MATERIAL.getOrRethrow().invoke(material);
+            Object nmsRarity = NMS_ITEM_RARITY.getOrRethrow().get(nmsItem);
             return ItemRarity.resolveByName(String.valueOf(nmsRarity)).orElse(ItemRarity.COMMON);
         }
         catch (Throwable throwable) { throw new RuntimeException(throwable); }
@@ -165,9 +189,9 @@ public class ShowItems
         
         try
         {
-            Object nmsItem = GET_ITEM_BY_MATERIAL.invoke(material);
-            Object nmsItemStack = AS_NMS_COPY.invoke(item);
-            Object nmsRarity = GET_ITEM_RARITY.invoke(nmsItem, nmsItemStack);
+            Object nmsItem = GET_ITEM_BY_MATERIAL.getOrRethrow().invoke(material);
+            Object nmsItemStack = AS_NMS_COPY.getOrRethrow().invoke(item);
+            Object nmsRarity = GET_ITEM_RARITY.getOrRethrow().invoke(nmsItem, nmsItemStack);
             return ItemRarity.resolveByName(String.valueOf(nmsRarity)).orElse(ItemRarity.COMMON);
         }
         catch (Throwable throwable) { throw new RuntimeException(throwable); }
