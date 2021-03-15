@@ -45,21 +45,6 @@
             <artifactId>textchain-bukkit</artifactId>
             <version>${revision}</version>
         </dependency>
-        <!--
-        Kyori Adventure Craftbukkit serializer (via sonatype-oss)
-        TODO: avoid this hard dependency
-        -->
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-text-serializer-craftbukkit</artifactId>
-            <version>${versions.kyori.adventure-platform}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
     </dependencies>
 
     <build>
@@ -87,11 +72,6 @@
                         <relocation>
                             <pattern>community.leaf.textchain</pattern>
                             <shadedPattern>${shade.relocation}.textchain</shadedPattern>
-                        </relocation>
-                        <!-- Adventure -->
-                        <relocation>
-                            <pattern>net.kyori.adventure.text.serializer.craftbukkit</pattern>
-                            <shadedPattern>${shade.relocation}.serializer.craftbukkit</shadedPattern>
                         </relocation>
                     </relocations>
                     <artifactSet>

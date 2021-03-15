@@ -9,7 +9,6 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.event.HoverEvent.ShowItem;
-import net.kyori.adventure.text.serializer.craftbukkit.MinecraftReflection;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.chat.TranslationRegistry;
 import org.bukkit.Material;
@@ -22,58 +21,39 @@ import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.Optional;
 
-@SuppressWarnings("UnstableApiUsage")
 public class ShowItems
 {
     private ShowItems() { throw new UnsupportedOperationException(); }
     
-    static final Class<?> CRAFT_ITEM_STACK = MinecraftReflection.needCraftClass("inventory.CraftItemStack");
+    static final Class<?> CRAFT_ITEM_STACK = ServerReflection.requireCraftClass("inventory", "CraftItemStack");
     
-    static final Class<?> CRAFT_MAGIC_NUMBERS = MinecraftReflection.needCraftClass("util.CraftMagicNumbers");
+    static final Class<?> CRAFT_MAGIC_NUMBERS = ServerReflection.requireCraftClass("util", "CraftMagicNumbers");
     
-    static final Class<?> NMS_ENUM_ITEM_RARITY = MinecraftReflection.needNmsClass("EnumItemRarity");
+    static final Class<?> NMS_ENUM_ITEM_RARITY = ServerReflection.requireNmsClass("EnumItemRarity");
     
-    static final Class<?> NMS_ITEM = MinecraftReflection.needNmsClass("Item");
+    static final Class<?> NMS_ITEM = ServerReflection.requireNmsClass("Item");
     
-    static final Class<?> NMS_ITEM_STACK = MinecraftReflection.needNmsClass("ItemStack");
+    static final Class<?> NMS_ITEM_STACK = ServerReflection.requireNmsClass("ItemStack");
     
-    static final Class<?> NMS_NBT_TAG_COMPOUND = MinecraftReflection.needNmsClass("NBTTagCompound");
+    static final Class<?> NMS_NBT_TAG_COMPOUND = ServerReflection.requireNmsClass("NBTTagCompound");
     
     static final MethodHandle AS_NMS_COPY =
-        Objects.requireNonNull(
-            MinecraftReflection.findStaticMethod(CRAFT_ITEM_STACK, "asNMSCopy", NMS_ITEM_STACK, ItemStack.class),
-            "Missing method: obc.inventory.CraftItemStack.asNMSCopy(ItemStack)"
-        );
+        ServerReflection.requireStaticMethod(CRAFT_ITEM_STACK, "asNMSCopy", NMS_ITEM_STACK, ItemStack.class);
     
     static final MethodHandle GET_OR_CREATE_TAG =
-        Objects.requireNonNull(
-            MinecraftReflection.findMethod(NMS_ITEM_STACK, "getOrCreateTag", NMS_NBT_TAG_COMPOUND),
-            "Missing method: nms.ItemStack.getOrCreateTag()"
-        );
+        ServerReflection.requireMethod(NMS_ITEM_STACK, "getOrCreateTag", NMS_NBT_TAG_COMPOUND);
     
     static final MethodHandle GET_ITEM_BY_MATERIAL =
-        Objects.requireNonNull(
-            MinecraftReflection.findStaticMethod(CRAFT_MAGIC_NUMBERS, "getItem", NMS_ITEM, Material.class),
-            "Missing method: obc.util.CraftMagicNumbers.getItem(Material)"
-        );
-    
+        ServerReflection.requireStaticMethod(CRAFT_MAGIC_NUMBERS, "getItem", NMS_ITEM, Material.class);
+        
     static final MethodHandle GET_ITEM_NAME =
-        Objects.requireNonNull(
-            MinecraftReflection.findMethod(NMS_ITEM, "getName", String.class),
-            "Missing method: nms.Item.getName()"
-        );
+        ServerReflection.requireMethod(NMS_ITEM, "getName", String.class);
     
     static final MethodHandle GET_ITEM_RARITY =
-        Objects.requireNonNull(
-            MinecraftReflection.findMethod(NMS_ITEM, "i", NMS_ENUM_ITEM_RARITY, NMS_ITEM_STACK),
-            "Missing method: nms.Item.i(nms.ItemStack)"
-        );
+        ServerReflection.requireMethod(NMS_ITEM, "i", NMS_ENUM_ITEM_RARITY, NMS_ITEM_STACK);
     
     static final Field NMS_ITEM_RARITY =
-        Objects.requireNonNull(
-            MinecraftReflection.findField(NMS_ITEM, "a", NMS_ENUM_ITEM_RARITY),
-            "Missing field: nms.Item.a"
-        );
+        ServerReflection.requireField(NMS_ITEM, "a", NMS_ENUM_ITEM_RARITY);
     
     public static BinaryTagHolder nbt(ItemStack item)
     {
