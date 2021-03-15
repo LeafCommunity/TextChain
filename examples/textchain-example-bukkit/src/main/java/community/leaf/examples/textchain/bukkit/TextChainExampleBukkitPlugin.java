@@ -2,6 +2,7 @@ package community.leaf.examples.textchain.bukkit;
 
 import community.leaf.textchain.adventure.ItemRarity;
 import community.leaf.textchain.adventure.TextChain;
+import community.leaf.textchain.bukkit.BukkitTextChainSource;
 import community.leaf.textchain.bukkit.ShowEntities;
 import community.leaf.textchain.bukkit.ShowItems;
 import net.kyori.adventure.audience.Audience;
@@ -25,7 +26,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @SuppressWarnings("NotNullFieldNotInitialized")
-public class TextChainExampleBukkitPlugin extends JavaPlugin implements Listener
+public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTextChainSource, Listener
 {
     private BukkitAudiences audiences;
     private Showcase showcase;
@@ -45,12 +46,13 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements Listener
             .send(showcase);
     }
     
+    @Override
     public BukkitAudiences getAudiences() { return audiences; }
     
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
-        TextChain.empty()
+        TextChain.using(this)
             .then("Hello ")
                 .color(NamedTextColor.GOLD)
                 .bold()
@@ -60,7 +62,7 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements Listener
                 .color(TextColor.color(0xFF0000))
                 .tooltip("Click here to respond with \"pretty good\"")
                 .suggest("pretty good")
-            .send(getAudiences().sender(sender))
+            .send(sender)
             .send(showcase);
             
         return true;
@@ -73,7 +75,8 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements Listener
         ItemStack broken = new ItemStack(event.getBlock().getType());
         ItemStack tool = player.getInventory().getItemInMainHand();
         
-        TextChain.of("You broke ")
+        TextChain.using(this)
+            .then("You broke ")
             .then(ShowItems.asComponentInBrackets(broken))
                 .color(NamedTextColor.RED)
             .then(" ")
@@ -87,9 +90,9 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements Listener
             .thenExtra(extra -> extra.then("(").then(ShowItems.asClientName(tool)).then(")"))
                 .italic()
                 .color(NamedTextColor.DARK_AQUA)
-            .send(getAudiences().player(player))
+            .send(player)
             .send(showcase);
-    
+        
         ItemRarity rarity = ShowItems.rarity(tool);
         
         TextChain.of("Rarity of ")
