@@ -1,17 +1,17 @@
 package community.leaf.textchain.bukkit;
 
-import community.leaf.textchain.adventure.AbstractTextChain;
+import community.leaf.textchain.adventure.Chain;
 import community.leaf.textchain.adventure.WrappedTextComponentBuilder;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.command.CommandSender;
 
 import java.util.Objects;
 
-public abstract class AbstractBukkitTextChain<C extends AbstractBukkitTextChain<C>> extends AbstractTextChain<C>
+public abstract class BukkitChain<C extends BukkitChain<C>> extends Chain<C>
 {
     private final BukkitAudiences audiences;
     
-    public AbstractBukkitTextChain(WrappedTextComponentBuilder builder, BukkitAudiences audiences)
+    public BukkitChain(WrappedTextComponentBuilder builder, BukkitAudiences audiences)
     {
         super(builder);
         this.audiences = Objects.requireNonNull(audiences, "audiences");

@@ -25,7 +25,7 @@ public class TextChainSerializer
     
     private static <K, V> Optional<V> query(Map<K, V> map, K key) { return Optional.ofNullable(map.get(key)); }
     
-    private static void resolveStyleOptionThenApply(TextComponentChain chain, String option)
+    private static void resolveStyleOptionThenApply(TextChain chain, String option)
     {
         Objects.requireNonNull(chain, "chain");
         Objects.requireNonNull(option, "option");
@@ -54,7 +54,7 @@ public class TextChainSerializer
         }
     }
     
-    public static TextComponentChain deserializeFromStringMapList(
+    public static TextChain deserializeFromStringMapList(
         List<Map<String, String>> maps,
         Function<String, String> placeholderProcessor
     )
@@ -62,7 +62,7 @@ public class TextChainSerializer
         Objects.requireNonNull(maps, "maps");
         Objects.requireNonNull(placeholderProcessor, "placeholderProcessor");
         
-        TextComponentChain chain = TextChain.empty();
+        TextChain chain = TextChain.empty();
         
         for (Map<String, String> values : maps)
         {
@@ -89,7 +89,7 @@ public class TextChainSerializer
         return chain;
     }
     
-    public static TextComponentChain deserializeFromStringMapList(List<Map<String, String>> maps)
+    public static TextChain deserializeFromStringMapList(List<Map<String, String>> maps)
     {
         return deserializeFromStringMapList(maps, Function.identity());
     }
