@@ -15,7 +15,9 @@ import java.util.function.Function;
 public class WrappedTextComponentBuilder implements ComponentLike
 {
     private final Deque<WrappedTextComponentBuilder> children = new LinkedList<>();
+    
     private final TextComponent.Builder builder;
+    
     private @NullOr TextComponent result = null;
     
     public WrappedTextComponentBuilder(TextComponent.Builder builder)
@@ -34,18 +36,18 @@ public class WrappedTextComponentBuilder implements ComponentLike
     public TextComponent asComponent()
     {
         // Store the result to avoid constantly rebuilding the component.
-        return (result != null) ? result : (result = aggregateThenBuildComponent());
+        return (result != null) ? result : (result = aggregateThenRebuildComponent());
     }
     
     // This method will *always* rebuild the component (and child components).
-    public TextComponent aggregateThenBuildComponent()
+    public TextComponent aggregateThenRebuildComponent()
     {
         result = null; // Invalidate existing result since it is being rebuilt (guarantees fresh results of children).
         if (children.isEmpty()) { return builder.build(); } // No children - simply build the builder.
         
-        // Create a copy of the builder in order to avoid editing the mutable builder instance within this WrappedTextComponentBuilder.
+        // Create a copy of the builder in order to avoid editing the mutable builder instance within this builder.
         TextComponent.Builder aggregate = builder.build().toBuilder();
-        for (WrappedTextComponentBuilder child : children) { aggregate.append(child.aggregateThenBuildComponent()); }
+        for (WrappedTextComponentBuilder child : children) { aggregate.append(child.aggregateThenRebuildComponent()); }
         return aggregate.build();
     }
     

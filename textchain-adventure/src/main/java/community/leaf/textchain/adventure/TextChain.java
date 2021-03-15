@@ -26,7 +26,7 @@ public interface TextChain<C extends TextChain<C>> extends ComponentLike
     
     static <C extends TextChain<C>> C using(TextChainSource<C> source)
     {
-        return using(source.getTextChainConstructor());
+        return TextChain.using(source.getTextChainConstructor());
     }
     
     static TextComponentChain empty() { return TextChain.using(TextComponentChain::new); }

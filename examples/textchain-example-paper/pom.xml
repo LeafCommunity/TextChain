@@ -13,7 +13,7 @@
     <artifactId>textchain-example-paper</artifactId>
 
     <properties>
-        <shade.relocation>community.leaf.textchain.examples.paper.shaded</shade.relocation>
+        <shade.relocation>community.leaf.examples.textchain.paper.shaded</shade.relocation>
     </properties>
 
     <repositories>
@@ -85,8 +85,8 @@
                     <relocations>
                         <!-- TextChain -->
                         <relocation>
-                            <pattern>community.leaf.textchain.adventure</pattern>
-                            <shadedPattern>${shade.relocation}.textchain.adventure</shadedPattern>
+                            <pattern>community.leaf.textchain</pattern>
+                            <shadedPattern>${shade.relocation}.textchain</shadedPattern>
                         </relocation>
                         <!-- Adventure -->
                         <relocation>

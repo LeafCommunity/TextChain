@@ -43,8 +43,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
     {
         TextChain.of("TextChain Example: ")
             .thenExtra(extra ->
-                extra
-                    .then("click ")
+                extra.then("click ")
                     .then("here")
                         .underlined()
                         .color(TextColor.color(0x0000FF))

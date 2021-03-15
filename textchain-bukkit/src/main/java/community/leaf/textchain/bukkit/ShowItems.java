@@ -22,8 +22,6 @@ import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.Optional;
 
-import static community.leaf.textchain.adventure.ConditionalChains.ifNotEmpty;
-
 @SuppressWarnings("UnstableApiUsage")
 public class ShowItems
 {
@@ -132,7 +130,7 @@ public class ShowItems
             .map(LegacyComponentSerializer.legacySection()::deserialize);
     }
     
-    public static Component asName(ItemStack item)
+    public static Component asDisplayOrTranslatableName(ItemStack item)
     {
         return asDisplayName(item).orElseGet(() -> asTranslatable(item));
     }
@@ -140,7 +138,11 @@ public class ShowItems
     public static TextComponent asComponent(ItemStack item, String prefix, String suffix)
     {
         return TextChain.empty()
-            .extra(chain -> chain.apply(ifNotEmpty(prefix)).then(asName(item)).apply(ifNotEmpty(suffix)))
+            .extra(chain -> {
+                if (!prefix.isEmpty()) { chain.then(prefix); }
+                chain.then(asDisplayOrTranslatableName(item));
+                if (!suffix.isEmpty()) { chain.then(suffix); }
+            })
             .hover(asHover(item))
             .asComponent();
     }

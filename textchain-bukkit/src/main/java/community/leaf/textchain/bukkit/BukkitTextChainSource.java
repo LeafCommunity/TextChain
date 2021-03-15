@@ -11,6 +11,6 @@ public interface BukkitTextChainSource extends TextChainSource<BukkitTextChain>
     @Override
     default TextChainConstructor<BukkitTextChain> getTextChainConstructor()
     {
-        return builder -> new BukkitTextChain(getAudiences(), builder);
+        return builder -> new BukkitTextChain(builder, getAudiences());
     }
 }
