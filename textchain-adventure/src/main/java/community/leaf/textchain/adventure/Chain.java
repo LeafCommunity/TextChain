@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 @SuppressWarnings({"unused", "UnusedReturnValue"})
-public abstract class Chain<C extends Chain<C>> implements ComponentLike
+public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, ComponentLike
 {
     private final WrappedTextComponentBuilder builder;
     
@@ -57,19 +57,20 @@ public abstract class Chain<C extends Chain<C>> implements ComponentLike
         return self();
     }
     
-    public C then(TextComponent.Builder builder)
-    {
-        Objects.requireNonNull(builder, "builder");
-        getBuilder().createNextChildWithBuilder(builder);
-        return self();
-    }
-    
     public C then(ComponentLike componentLike)
     {
         Objects.requireNonNull(componentLike, "componentLike");
         Component component = Objects.requireNonNull(componentLike.asComponent(), "componentLike returned null");
-        if (component instanceof TextComponent) { return then(((TextComponent) component).toBuilder()); }
-        getBuilder().createNextChild().getComponentBuilder().append(component);
+        
+        if (component instanceof TextComponent)
+        {
+            getBuilder().createNextChildWithBuilder(((TextComponent) component).toBuilder());
+        }
+        else
+        {
+            getBuilder().createNextChild().getComponentBuilder().append(component);
+        }
+        
         return self();
     }
     
@@ -84,8 +85,6 @@ public abstract class Chain<C extends Chain<C>> implements ComponentLike
     public C thenUncolored(String text) { return then(text, ColorParsers.NONE); }
     
     public C nextLine() { return thenUncolored("\n"); }
-    
-    public C next(TextComponent.Builder builder) { return nextLine().then(builder); }
     
     public C next(ComponentLike componentLike) { return nextLine().then(componentLike); }
     
@@ -196,10 +195,10 @@ public abstract class Chain<C extends Chain<C>> implements ComponentLike
         return click(ClickEvent.openUrl(link));
     }
     
-    public C insertion(String insert)
+    public C insertion(String insertion)
     {
-        Objects.requireNonNull(insert, "insert");
-        getBuilder().peekThenApply(child -> child.insertion(insert));
+        Objects.requireNonNull(insertion, "insertion");
+        getBuilder().peekThenApply(child -> child.insertion(insertion));
         return self();
     }
     
@@ -242,24 +241,28 @@ public abstract class Chain<C extends Chain<C>> implements ComponentLike
         return tooltip(tooltipString, ColorParsers.NONE);
     }
     
+    @Override
     public C send(Audience audience)
     {
-        audience.sendMessage(this); // calls asComponent() -> stores result in case this is called multiple times.
+        audience.sendMessage(this);
         return self();
     }
     
+    @Override
     public C send(Audience audience, Identity source)
     {
         audience.sendMessage(source, this);
         return self();
     }
     
+    @Override
     public C send(Audience audience, Identified source)
     {
         audience.sendMessage(source, this);
         return self();
     }
     
+    @Override
     public C actionBar(Audience audience)
     {
         audience.sendActionBar(this);

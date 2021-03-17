@@ -3,8 +3,6 @@ package community.leaf.textchain.adventure;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 
-import java.util.Objects;
-
 public final class TextChain extends Chain<TextChain>
 {
     public static <C extends Chain<C>> C using(ChainConstructor<C> constructor)
@@ -42,7 +40,7 @@ public final class TextChain extends Chain<TextChain>
         return wrap(chain.getBuilder());
     }
     
-    private TextChain(WrappedTextComponentBuilder builder) { super(Objects.requireNonNull(builder, "builder")); }
+    private TextChain(WrappedTextComponentBuilder builder) { super(builder); }
     
     @Override
     protected ChainConstructor<TextChain> getConstructor() { return TextChain::new; }
