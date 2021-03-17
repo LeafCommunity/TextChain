@@ -69,31 +69,33 @@ public class ServerReflection
     
     private static String prettyMethod(Class<?> containingClass, String methodName, Class<?> returnType, Class<?>[] parameterTypes)
     {
-        return containingClass.getCanonicalName() + "." + methodName + "(" +
-            Arrays.stream(parameterTypes).map(Class::getSimpleName).collect(Collectors.joining(", ")) +
-            ") => " + returnType.getSimpleName();
+        String className = containingClass.getCanonicalName();
+        String arguments = Arrays.stream(parameterTypes).map(Class::getSimpleName).collect(Collectors.joining(", "));
+        String returns = returnType.getSimpleName();
+        
+        return className + "." + methodName + "(" + arguments + ") => " + returns;
     }
     
-    public static MaybeExceptional<MethodHandle> requireMethod(Class<?> containingClass, String methodName, Class<?> returnType, Class<?> ... parameterTypes)
+    public static ThrowsOr<MethodHandle> requireMethod(Class<?> containingClass, String methodName, Class<?> returnType, Class<?> ... parameterTypes)
     {
-        return MaybeExceptional.of(() ->
-            resolveMethod(containingClass, methodName, returnType, parameterTypes).orElseThrow(() ->
-                new IllegalStateException(
+        return resolveMethod(containingClass, methodName, returnType, parameterTypes)
+            .map(ThrowsOr::value)
+            .orElseGet(() ->
+                ThrowsOr.raise(new IllegalStateException(
                     "Missing method: " + prettyMethod(containingClass, methodName, returnType, parameterTypes)
-                )
-            )
-        );
+                ))
+            );
     }
     
-    public static MaybeExceptional<MethodHandle> requireStaticMethod(Class<?> containingClass, String methodName, Class<?> returnType, Class<?> ... parameterTypes)
+    public static ThrowsOr<MethodHandle> requireStaticMethod(Class<?> containingClass, String methodName, Class<?> returnType, Class<?> ... parameterTypes)
     {
-        return MaybeExceptional.of(() ->
-            resolveStaticMethod(containingClass, methodName, returnType, parameterTypes).orElseThrow(() ->
-                new IllegalStateException(
+        return resolveStaticMethod(containingClass, methodName, returnType, parameterTypes)
+            .map(ThrowsOr::value)
+            .orElseGet(() ->
+                ThrowsOr.raise(new IllegalStateException(
                     "Missing static method: " + prettyMethod(containingClass, methodName, returnType, parameterTypes)
-                )
-            )
-        );
+                ))
+            );
     }
     
     public static Optional<Field> resolveField(Class<?> containingClass, String fieldName, Class<?> expectedType)
@@ -112,16 +114,17 @@ public class ServerReflection
     
     private static String prettyField(Class<?> containingClass, String fieldName, Class<?> expectedType)
     {
-        return containingClass.getCanonicalName() + "." + fieldName + " (" + expectedType.getSimpleName() + ")";
+        return containingClass.getCanonicalName() + "." + fieldName + " => " + expectedType.getSimpleName();
     }
     
-    public static MaybeExceptional<Field> requireField(Class<?> containingClass, String fieldName, Class<?> expectedType)
+    public static ThrowsOr<Field> requireField(Class<?> containingClass, String fieldName, Class<?> expectedType)
     {
-        return MaybeExceptional.of(() ->
-            resolveField(containingClass, fieldName, expectedType).orElseThrow(() ->
-                new IllegalStateException("Missing field: " + prettyField(containingClass, fieldName, expectedType))
-            )
-        );
+        return resolveField(containingClass, fieldName, expectedType)
+            .map(ThrowsOr::value)
+            .orElseGet(() ->
+                ThrowsOr.raise(new IllegalStateException(
+                    "Missing field: " + prettyField(containingClass, fieldName, expectedType)
+                ))
+            );
     }
-    
 }

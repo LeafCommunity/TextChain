@@ -12,10 +12,10 @@ public class BukkitVersion
             "org\\.bukkit\\.craftbukkit\\.(?<version>v(?<release>\\d+)_(?<major>\\d+)_R(?<revision>\\d+))\\."
         );
     
-    private static final MaybeExceptional<BukkitVersion> INSTANCE =
-        MaybeExceptional.of(() -> new BukkitVersion(Bukkit.getServer().getClass().getCanonicalName()));
+    private static final ThrowsOr<BukkitVersion> INSTANCE =
+        ThrowsOr.result(() -> new BukkitVersion(Bukkit.getServer().getClass().getCanonicalName()));
     
-    public static BukkitVersion getServerVersion() { return INSTANCE.getOrRethrow(); }
+    public static BukkitVersion getServerVersion() { return INSTANCE.getOrThrow(); }
     
     public final String packageVersion;
     public final int release;

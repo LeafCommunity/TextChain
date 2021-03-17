@@ -2,7 +2,7 @@ package community.leaf.textchain.bukkit;
 
 import community.leaf.textchain.adventure.ItemRarity;
 import community.leaf.textchain.adventure.TextChain;
-import community.leaf.textchain.bukkit.util.MaybeExceptional;
+import community.leaf.textchain.bukkit.util.ThrowsOr;
 import community.leaf.textchain.bukkit.util.ServerReflection;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.nbt.api.BinaryTagHolder;
@@ -48,22 +48,22 @@ public class ShowItems
     //  But let's not throw anything until called (like standard java behavior).
     //
     
-    static final MaybeExceptional<MethodHandle> AS_NMS_COPY =
+    static final ThrowsOr<MethodHandle> AS_NMS_COPY =
         ServerReflection.requireStaticMethod(CRAFT_ITEM_STACK, "asNMSCopy", NMS_ITEM_STACK, ItemStack.class);
     
-    static final MaybeExceptional<MethodHandle> GET_OR_CREATE_TAG =
+    static final ThrowsOr<MethodHandle> GET_OR_CREATE_TAG =
         ServerReflection.requireMethod(NMS_ITEM_STACK, "getOrCreateTag", NMS_NBT_TAG_COMPOUND);
     
-    static final MaybeExceptional<MethodHandle> GET_ITEM_BY_MATERIAL =
+    static final ThrowsOr<MethodHandle> GET_ITEM_BY_MATERIAL =
         ServerReflection.requireStaticMethod(CRAFT_MAGIC_NUMBERS, "getItem", NMS_ITEM, Material.class);
         
-    static final MaybeExceptional<MethodHandle> GET_ITEM_NAME =
+    static final ThrowsOr<MethodHandle> GET_ITEM_NAME =
         ServerReflection.requireMethod(NMS_ITEM, "getName", String.class);
     
-    static final MaybeExceptional<MethodHandle> GET_ITEM_RARITY =
+    static final ThrowsOr<MethodHandle> GET_ITEM_RARITY =
         ServerReflection.requireMethod(NMS_ITEM, "i", NMS_ENUM_ITEM_RARITY, NMS_ITEM_STACK);
     
-    static final MaybeExceptional<Field> NMS_ITEM_RARITY =
+    static final ThrowsOr<Field> NMS_ITEM_RARITY =
         ServerReflection.requireField(NMS_ITEM, "a", NMS_ENUM_ITEM_RARITY);
     
     //
@@ -75,7 +75,7 @@ public class ShowItems
         try
         {
             return BinaryTagHolder.of(String.valueOf(
-                GET_OR_CREATE_TAG.getOrRethrow().invoke(AS_NMS_COPY.getOrRethrow().invoke(item))
+                GET_OR_CREATE_TAG.getOrThrow().invoke(AS_NMS_COPY.getOrThrow().invoke(item))
             ));
         }
         catch (Throwable throwable) { throw new RuntimeException(throwable); }
@@ -100,10 +100,10 @@ public class ShowItems
         
         try
         {
-            @NullOr Object nmsItem = GET_ITEM_BY_MATERIAL.getOrRethrow().invoke(material); // can return null apparently?
+            @NullOr Object nmsItem = GET_ITEM_BY_MATERIAL.getOrThrow().invoke(material); // can return null apparently?
             
             return (nmsItem != null)
-                ? String.valueOf(GET_ITEM_NAME.getOrRethrow().invoke(nmsItem))
+                ? String.valueOf(GET_ITEM_NAME.getOrThrow().invoke(nmsItem))
                 : fallbackTranslationKey(material);
         }
         catch (Throwable throwable) { throw new RuntimeException(throwable); }
@@ -173,8 +173,8 @@ public class ShowItems
         
         try
         {
-            Object nmsItem = GET_ITEM_BY_MATERIAL.getOrRethrow().invoke(material);
-            Object nmsRarity = NMS_ITEM_RARITY.getOrRethrow().get(nmsItem);
+            Object nmsItem = GET_ITEM_BY_MATERIAL.getOrThrow().invoke(material);
+            Object nmsRarity = NMS_ITEM_RARITY.getOrThrow().get(nmsItem);
             return ItemRarity.resolveByName(String.valueOf(nmsRarity)).orElse(ItemRarity.COMMON);
         }
         catch (Throwable throwable) { throw new RuntimeException(throwable); }
@@ -189,9 +189,9 @@ public class ShowItems
         
         try
         {
-            Object nmsItem = GET_ITEM_BY_MATERIAL.getOrRethrow().invoke(material);
-            Object nmsItemStack = AS_NMS_COPY.getOrRethrow().invoke(item);
-            Object nmsRarity = GET_ITEM_RARITY.getOrRethrow().invoke(nmsItem, nmsItemStack);
+            Object nmsItem = GET_ITEM_BY_MATERIAL.getOrThrow().invoke(material);
+            Object nmsItemStack = AS_NMS_COPY.getOrThrow().invoke(item);
+            Object nmsRarity = GET_ITEM_RARITY.getOrThrow().invoke(nmsItem, nmsItemStack);
             return ItemRarity.resolveByName(String.valueOf(nmsRarity)).orElse(ItemRarity.COMMON);
         }
         catch (Throwable throwable) { throw new RuntimeException(throwable); }
