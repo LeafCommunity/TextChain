@@ -28,6 +28,7 @@ public class ThrowsOr<V>
     
     public static <V> ThrowsOr<V> result(Supplier<V> supplier)
     {
+        Objects.requireNonNull(supplier, "supplier");
         try { return value(supplier.get()); }
         catch (RuntimeException e) { return raise(e); }
     }
@@ -48,9 +49,9 @@ public class ThrowsOr<V>
     }
     
     @SuppressWarnings("ConstantConditions")
-    public V getOrThrow() throws RuntimeException
+    public V getOrThrow() throws Thrown
     {
-        if (exception != null) { throw new RuntimeException(exception); }
+        if (exception != null) { throw new Thrown(exception); }
         return Objects.requireNonNull(value, "value");
     }
     
@@ -68,4 +69,9 @@ public class ThrowsOr<V>
     public boolean isPresent() { return value != null; }
     
     public Optional<V> toOptional() { return Optional.ofNullable(value); }
+    
+    public static class Thrown extends RuntimeException
+    {
+        protected Thrown(Throwable cause) { super(cause); }
+    }
 }

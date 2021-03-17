@@ -45,7 +45,7 @@ public class WrappedTextComponentBuilder implements ComponentLike
         result = null; // Invalidate existing result since it is being rebuilt (guarantees fresh results of children).
         if (children.isEmpty()) { return builder.build(); } // No children - simply build the builder.
         
-        // Create a copy of the builder in order to avoid editing the mutable builder instance within this builder.
+        // Create a copy of the builder in order to avoid editing the mutable builder instance within this wrapper.
         TextComponent.Builder aggregate = builder.build().toBuilder();
         for (WrappedTextComponentBuilder child : children) { aggregate.append(child.aggregateThenRebuildComponent()); }
         return aggregate.build();
