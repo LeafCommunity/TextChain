@@ -115,9 +115,9 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
         Entity clicked = event.getRightClicked();
         
         TextChain.of("You clicked on ")
-            .then(ShowEntities.asName(clicked))
-                .hover(ShowEntities.asHover(clicked))
-                .color(TextColor.color(0xd5d8e5))
+            .then(ShowEntities.asComponent(clicked))
+                .color(TextColor.color(0xe0c0e8))
+            .then(".")
             .send(getAudiences().player(player))
             .send(showcase);
     }

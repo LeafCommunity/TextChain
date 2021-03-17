@@ -112,8 +112,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
         Entity damaged = event.getEntity();
         
         TextChain.of("You damaged ")
-            .then(ShowEntities.asName(damaged))
-                .hover(ShowEntities.asHover(damaged))
+            .then(ShowEntities.asComponent(damaged))
                 .color(TextColor.color(0xe8c3ae))
             .then("!")
             .send(player)
