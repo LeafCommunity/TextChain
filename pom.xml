@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>community.leaf</groupId>
+    <groupId>community.leaf.textchain</groupId>
     <artifactId>textchain-parent</artifactId>
     <packaging>pom</packaging>
     <version>${revision}</version> <!-- Change the version number in .mvn/maven.config -->
@@ -54,7 +54,7 @@
     </profiles>
 
     <build>
-        <defaultGoal>package</defaultGoal>
+        <defaultGoal>install</defaultGoal>
         <plugins>
             <!-- Compile project -->
             <plugin>
