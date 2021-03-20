@@ -25,13 +25,18 @@ TextChain is a streamlined way to build linear [Kyori Adventure](https://github.
 
 ### Versions
 
-Since we use JitPack to distribute this library, the versions available are the same as the tags on the [releases page](https://github.com/LeafCommunity/TextChain/releases) of this repository. The same applies for `artifactId`'s: simply use the name of the desired module (like `textchain-adventure` or `textchain-bukkit`).
+Since we use JitPack to distribute this library, the versions available are the same as the tags on the [releases page](https://github.com/LeafCommunity/TextChain/releases) of this repository. The same applies for `artifactId`'s: simply use the name of the desired module.
+
+### Modules
+
+| Module Artifact ID    | Description            |
+|-----------------------|------------------------|
+| `textchain-adventure` | The standalone, platform-independent version of TextChain. It **only** requires Kyori Adventure, so this modules runs wherever Adventure runs. |
+| `textchain-bukkit`    | TextChain with additional Bukkit-specific features like sending to players directly. |
 
 ### Shading
 
-You will have to provide this library with a [Kyori Adventure Platform](https://github.com/KyoriPowered/adventure-platform) implementation since none are included as a transitive dependency, effectively decoupling TextChain from any specific version of Adventure.
-
-Note: if you are using `textchain-bukkit`, it will include `textchain-adventure` automatically.
+You will have to provide TextChain with a [Kyori Adventure Platform](https://github.com/KyoriPowered/adventure-platform) implementation since none are included by default, effectively decoupling this library from any *specific* version of Adventure.
 
 <details>
 <summary><b>Example:</b> bukkit plugin maven dependencies</summary>
