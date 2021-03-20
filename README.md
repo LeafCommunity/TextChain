@@ -2,7 +2,20 @@
 
 [![](https://jitpack.io/v/community.leaf/textchain.svg)](https://jitpack.io/#community.leaf/textchain) [![](https://img.shields.io/badge/License-MIT-blue)](./LICENSE)
 
-TextChain is a streamlined way to build linear [Kyori Adventure](https://github.com/KyoriPowered/adventure) components. This library was originally made for BungeeCord chat components, so it should feel very comfortable for those who are approaching Adventure from that perspective. 
+TextChain is a streamlined way to build linear [Kyori Adventure](https://github.com/KyoriPowered/adventure) components. This library was originally made for BungeeCord chat components, so it should feel very comfortable for those who are approaching Adventure from that perspective.
+
+> ![](https://i.imgur.com/ubjbb9S.png)
+>
+> ```java
+> TextChain.empty()
+>    .then("Hello")
+>        .underlined()
+>    .then(" ")
+>    .then("world!")
+>        .bold()
+>        .italic()
+>    .send(audience);
+> ```
 
 ## Maven
 
@@ -25,11 +38,11 @@ TextChain is a streamlined way to build linear [Kyori Adventure](https://github.
 
 ### Versions
 
-Since we use JitPack to distribute this library, the versions available are the same as the tags on the [releases page](https://github.com/LeafCommunity/TextChain/releases) of this repository. The same applies for `artifactId`'s: simply use the name of the desired module.
+Since we use JitPack to distribute this library, the versions available are the same as the tags on the [releases page](https://github.com/LeafCommunity/TextChain/releases) of this repository. The same applies for `artifactId`: simply use the name of the desired module.
 
 ### Modules
 
-| Module Artifact ID    | Description            |
+| Module Name           | Description            |
 |-----------------------|------------------------|
 | `textchain-adventure` | The standalone, platform-independent version of TextChain. It **only** requires Kyori Adventure, so this modules runs wherever Adventure runs. |
 | `textchain-bukkit`    | TextChain with additional Bukkit-specific features like sending to players directly. |
@@ -76,7 +89,7 @@ Since you're writing a plugin, you should already have a Bukkit/Spigot/Paper dep
 ```
 </details>
 
-When shading this library, please remember to **relocate** the packages so other projects may use it without conflict. This library also utilizes nullness annotations, which may be undesirable in a shaded uber-jar. To exclude them, check the spoiler below.
+When shading this library, please remember to **relocate** the packages so other projects may use it without conflict. This library also utilizes nullness annotations, which may be undesirable in a shaded uber-jar. To exclude them, check the example below.
 
 <details>
 <summary><b>Example:</b> maven shade configuration</summary>
