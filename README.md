@@ -1,6 +1,6 @@
 # TextChain
 
-[![](https://jitpack.io/v/community.leaf/textchain.svg)](https://jitpack.io/#community.leaf/textchain) [![](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
+[![](https://jitpack.io/v/community.leaf/textchain.svg)](https://jitpack.io/#community.leaf/textchain) [![](https://img.shields.io/badge/License-MIT-blue)](./LICENSE)
 
 TextChain is a streamlined way to build linear [Kyori Adventure](https://github.com/KyoriPowered/adventure) components. This library was originally made for BungeeCord chat components, so it should feel very comfortable for those who are approaching Adventure from that perspective. 
 
@@ -18,7 +18,7 @@ TextChain is a streamlined way to build linear [Kyori Adventure](https://github.
 ```xml
 <dependency>
     <groupId>community.leaf.textchain</groupId>
-    <artifactId>textchain-bukkit</artifactId>
+    <artifactId>textchain-adventure</artifactId>
     <version><!--release--></version>
 </dependency>
 ```
@@ -26,6 +26,42 @@ TextChain is a streamlined way to build linear [Kyori Adventure](https://github.
 ### Shading
 
 You will have to provide this library with a [Kyori Adventure Platform](https://github.com/KyoriPowered/adventure-platform) implementation since none are included as a transitive dependency, effectively decoupling TextChain from any specific version of Adventure. 
+
+<details>
+<summary><b>Example:</b> bukkit plugin maven dependencies</summary>
+
+```xml
+<repositories>
+    <repository>
+        <id>sonatype-oss</id>
+        <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </repository>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+
+<dependencies>
+    <!--
+    Kyori Adventure Bukkit Platform (via sonatype-oss)
+    -->
+    <dependency>
+        <groupId>net.kyori</groupId>
+        <artifactId>adventure-platform-bukkit</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </dependency>
+    <!--
+    TextChain Bukkit (via jitpack.io)
+    -->
+    <dependency>
+        <groupId>community.leaf.textchain</groupId>
+        <artifactId>textchain-bukkit</artifactId>
+        <version>0.1.0</version>
+    </dependency>
+</dependencies>
+```
+</details>
 
 When shading this library, please remember to **relocate** the packages so other projects may use it without conflict. This library also utilizes nullness annotations, which may be undesirable in a shaded uber-jar. To exclude them, check the spoiler below.
 
@@ -60,5 +96,4 @@ Set the `shade.relocation` property to your project's package and add the follow
     </artifactSet>
 </configuration>
 ```
-
 </details>
