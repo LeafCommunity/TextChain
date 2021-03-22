@@ -1,4 +1,4 @@
-<h1 id="textchain">TextChain ⛓️</h1>
+<h1 id="readme">TextChain ⛓️</h1>
 
 [![](https://jitpack.io/v/community.leaf/textchain.svg)](https://jitpack.io/#community.leaf/textchain)
 [![](https://img.shields.io/badge/License-MIT-blue)](./LICENSE)
@@ -13,6 +13,7 @@ feel very comfortable for those approaching Adventure from that perspective.
 <details id="example-hello-world">
 <summary><b>Example:</b> <i>Hello World</i></summary>
 
+> [ℹ️](#example-hello-world) 
 > ```java
 > TextChain.empty()
 >    .then("Hello")
@@ -25,6 +26,22 @@ feel very comfortable for those approaching Adventure from that perspective.
 > ```
 
 </details>
+
+
+## Contents
+
+- **[Maven](#maven)** _(how to **get** TextChain)_
+    - [Modules](#modules)
+    - [Versions](#versions)
+    - [Shading](#shading)
+- **[Rationale](#rationale)** _(why TextChain?)_
+- **[Usage](#usage)** _(how to **use** TextChain)_
+
+See also:
+
+- ***[Example Plugins](./examples)***
+- [Kyori Adventure Documentation](https://docs.adventure.kyori.net/)
+
 
 ## Maven
 
@@ -58,7 +75,7 @@ feel very comfortable for those approaching Adventure from that perspective.
 ### Versions
 
 Since we use JitPack to distribute this library, the versions available 
-are the same as the tags on the [releases page](https://github.com/LeafCommunity/TextChain/releases)
+are the same as the "tags" found on the [releases page](https://github.com/LeafCommunity/TextChain/releases)
 of this repository.
 
 ### Shading
@@ -71,7 +88,7 @@ this library from any *specific* version of Adventure).
 <details id="example-bukkit-plugin-maven-dependencies">
 <summary><b>Example:</b> <i>Bukkit Plugin Maven Dependencies</i></summary>
 
-> ℹ️ 
+> [ℹ️](#example-bukkit-plugin-maven-dependencies) 
 > Since you're writing a plugin, you should already have a Bukkit/Spigot/Paper
 > dependency defined. The following example will allow you to depend on both
 > Kyori Adventure (required) and TextChain:
@@ -114,7 +131,7 @@ To exclude them, check the example below.
 <details id="example-maven-shade-configuration">
 <summary><b>Example:</b> <i>Maven Shade Configuration</i></summary>
 
-> ℹ️ 
+> [ℹ️](#example-maven-shade-configuration) 
 > Set the `shade.relocation` property to your project's package
 > and add the following to the **maven shade plugin**'s configuration:
 > 
@@ -146,3 +163,38 @@ To exclude them, check the example below.
 > ```
 
 </details>
+
+
+## Rationale
+
+TextChain aims to be a simple, easy-to-understand tool to manipulate and send 
+Minecraft text components. It achieves that goal by editing components one
+at a time as-needed in a flat, linear fashion. TextChain is designed such that
+users are only ever concerned with the most-recently created component
+in the chain, as opposed to managing a tree-like structure directly
+(as you do in standard Adventure).
+
+Now, TextChain doesn't *replace* Adventure - it's an addition to it: 
+a complimentary, alternative way to create Adventure components.
+In fact, by leveraging Adventure's platform-agnostic library, 
+TextChain runs wherever Adventure runs.
+
+It wasn't always like that, however. When this library was originally created
+(closed-source, then called "Tellable" in reference to the [`/tellraw`](https://minecraft.gamepedia.com/Commands/tellraw) 
+command), it used BungeeCord's chat API. That wasn't *ideal* because it was
+directly tied to a specific platform (i.e. Spigot and its derivatives),
+but it got the job done as writing for other platforms wasn't necessarily
+on the horizon. 
+
+Much of the core functionality from that old library is intact as TextChain. 
+However, in the process of migrating that legacy code, most of names for
+things (such as method names, and of course, the library name itself)
+have been updated to stay consistent with Adventure. It is a goal of this
+project to always stay compatible with the latest-released version of
+Adventure and match its overall naming conventions for component
+actions and styles. 
+
+
+## Usage
+
+Coming soon... 😄
