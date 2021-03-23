@@ -1,11 +1,11 @@
-<h1 id="readme">TextChain ⛓️</h1>
+ # TextChain ⛓️
 
 [![](https://jitpack.io/v/community.leaf/textchain.svg)](https://jitpack.io/#community.leaf/textchain)
 [![](https://img.shields.io/badge/License-MIT-blue)](./LICENSE)
 
 TextChain is a streamlined way to build linear 
 [Kyori Adventure](https://github.com/KyoriPowered/adventure) components. 
-This library was originally made for BungeeCord chat components, so it should
+This library was *originally* made for BungeeCord chat components, so it should
 feel very comfortable for those approaching Adventure from that perspective.
 
 ![](https://i.imgur.com/ubjbb9S.png)
@@ -66,7 +66,7 @@ See also:
 
 - **`textchain-adventure`** → 📑
     - The standalone, platform-independent version of TextChain.
-      It **only** requires Kyori Adventure, so this modules runs
+      It **only** requires Kyori Adventure, so this module runs
       wherever Adventure runs.
 - **`textchain-bukkit`** → 🚰
     - TextChain with additional Bukkit-specific features like
@@ -190,7 +190,7 @@ Much of the core functionality from that old library is intact as TextChain.
 However, in the process of migrating that legacy code, most of names for
 things (such as method names, and of course, the library name itself)
 have been updated to stay consistent with Adventure. It is a goal of this
-project to always stay compatible with the latest-released version of
+project to always stay compatible with the latest-release version of
 Adventure and match its overall naming conventions for component
 actions and styles. 
 
