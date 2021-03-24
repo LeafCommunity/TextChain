@@ -29,6 +29,8 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
     
     protected abstract ChainConstructor<C> getConstructor();
     
+    protected abstract TextComponent processText(String text);
+    
     public final WrappedTextComponentBuilder getBuilder() { return builder; }
     
     @Override
@@ -75,25 +77,31 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
         return self();
     }
     
-    public C then() { return then(Component.text()); }
+    public C then() { return then(Component.empty()); }
     
-    public C then(String text, ColorParsers colors)
+    public C then(String text, TextProcessor processor)
     {
         Objects.requireNonNull(text, "text");
-        return then(colors.parse(text).toBuilder());
+        Objects.requireNonNull(processor, "processor");
+        return then(processor.apply(text));
     }
     
-    public C then(String text) { return then(text, ColorParsers.AMPERSAND); }
+    public C then(String text) { return then(text, this::processText); }
     
-    public C thenUncolored(String text) { return then(text, ColorParsers.NONE); }
+    public C thenUnprocessed(String text) { return then(text, TextProcessor::none); }
     
-    public C nextLine() { return thenUncolored("\n"); }
+    public C nextLine() { return then("\n"); }
     
     public C next(ComponentLike componentLike) { return nextLine().then(componentLike); }
     
+    public C next(String text, TextProcessor processor)
+    {
+        return nextLine().then(text, processor);
+    }
+    
     public C next(String text) { return nextLine().then(text); }
     
-    public C nextUncolored(String text) { return nextLine().thenUncolored(text); }
+    public C nextUnprocessed(String text) { return nextLine().thenUnprocessed(text); }
     
     public C text(String text)
     {
@@ -237,23 +245,16 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
         return tooltip(tooltipChain);
     }
     
-    public C tooltip(String tooltipString, ColorParsers colors)
+    public C tooltip(String tooltipText, TextProcessor processor)
     {
-        Objects.requireNonNull(tooltipString, "tooltipString");
-        return tooltip(colors.parse(tooltipString));
+        Objects.requireNonNull(tooltipText, "tooltipText");
+        Objects.requireNonNull(processor, "processor");
+        return tooltip(processor.apply(tooltipText));
     }
     
-    public C tooltip(String tooltipString)
-    {
-        Objects.requireNonNull(tooltipString, "tooltipString");
-        return tooltip(tooltipString, ColorParsers.AMPERSAND);
-    }
+    public C tooltip(String tooltipText) { return tooltip(tooltipText, this::processText); }
     
-    public C tooltipUncolored(String tooltipString)
-    {
-        Objects.requireNonNull(tooltipString, "tooltipString");
-        return tooltip(tooltipString, ColorParsers.NONE);
-    }
+    public C tooltipUnprocessed(String tooltipText) { return tooltip(tooltipText, TextProcessor::none); }
     
     @Override
     public C send(Audience audience)

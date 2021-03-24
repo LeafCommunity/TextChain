@@ -6,22 +6,22 @@ import community.leaf.textchain.adventure.WrappedTextComponentBuilder;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.TextComponent;
 
-public final class BukkitTextChain extends BukkitChain<BukkitTextChain>
+public final class LegacyBukkitTextChain extends BukkitChain<LegacyBukkitTextChain>
 {
-    public BukkitTextChain(WrappedTextComponentBuilder builder, BukkitAudiences audiences)
+    public LegacyBukkitTextChain(WrappedTextComponentBuilder builder, BukkitAudiences audiences)
     {
         super(builder, audiences);
     }
     
     @Override
-    protected ChainConstructor<BukkitTextChain> getConstructor()
+    protected ChainConstructor<LegacyBukkitTextChain> getConstructor()
     {
-        return builder -> new BukkitTextChain(builder, getAudiences());
+        return builder -> new LegacyBukkitTextChain(builder, getAudiences());
     }
     
     @Override
     protected TextComponent processText(String text)
     {
-        return TextProcessor.none(text);
+        return TextProcessor.legacyAmpersand(text);
     }
 }

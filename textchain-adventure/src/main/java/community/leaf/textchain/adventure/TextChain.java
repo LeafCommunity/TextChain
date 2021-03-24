@@ -2,6 +2,7 @@ package community.leaf.textchain.adventure;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
+import net.kyori.adventure.text.TextComponent;
 
 public final class TextChain extends Chain<TextChain>
 {
@@ -60,4 +61,7 @@ public final class TextChain extends Chain<TextChain>
     
     @Override
     protected ChainConstructor<TextChain> getConstructor() { return TextChain::new; }
+    
+    @Override
+    protected TextComponent processText(String text) { return TextProcessor.none(text); }
 }
