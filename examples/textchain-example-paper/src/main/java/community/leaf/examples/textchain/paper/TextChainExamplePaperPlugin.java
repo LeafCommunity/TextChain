@@ -1,5 +1,6 @@
 package community.leaf.examples.textchain.paper;
 
+import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import community.leaf.textchain.adventure.ItemRarity;
 import community.leaf.textchain.adventure.TextChain;
 import community.leaf.textchain.bukkit.ShowEntities;
@@ -11,16 +12,22 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
 {
@@ -31,19 +38,22 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
     {
         getServer().getPluginManager().registerEvents(this, this);
         
-        TextChain.of("Enabled: ")
+        TextChain.empty()
+            .then("Enabled: ")
                 .color(NamedTextColor.GOLD)
             .then("TextChain Example (Paper version)")
-            .send(getServer().getConsoleSender())
+            .send((Audience) getServer().getConsoleSender())
             .send(showcase);
     }
     
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
-        TextChain.of("TextChain Example: ")
-            .thenExtra(extra ->
-                extra.then("click ")
+        TextChain.empty()
+            .then("TextChain Example: ")
+            .then()
+                .extra(group -> group
+                    .then("click ")
                     .then("here")
                         .underlined()
                         .color(TextColor.color(0x0000FF))
@@ -87,7 +97,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
             .thenExtra(extra -> extra.then("(").then(ShowItems.asClientName(hand)).then(")"))
                 .italic()
                 .color(NamedTextColor.DARK_AQUA)
-            .send(player)
+            .send((Audience) player)
             .send(showcase);
     
         ItemRarity rarity = ShowItems.rarity(hand);
@@ -99,7 +109,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
             .then(rarity)
                 .bold()
                 .italic()
-            .send(player)
+            .send((Audience) player)
             .send(showcase);
     }
     
@@ -115,7 +125,70 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
             .then(ShowEntities.asComponent(damaged))
                 .color(TextColor.color(0xe8c3ae))
             .then("!")
-            .send(player)
+            .send((Audience) player)
+            .send(showcase);
+    }
+    
+    @EventHandler
+    public void onJumpNearBunnies(PlayerJumpEvent event)
+    {
+        Player player = event.getPlayer();
+        
+        boolean isBunny =
+            player.getNearbyEntities(10, 10, 10).stream()
+                .map(Entity::getType)
+                .anyMatch(type -> type == EntityType.RABBIT);
+        
+        if (!isBunny) { return; }
+        
+        ItemStack gift = new ItemStack(Material.GOLDEN_CARROT);
+        ItemMeta meta = gift.getItemMeta();
+        
+        meta.displayName(
+            TextChain.reset()
+                .extra(chain -> chain
+                    .then("A ")
+                    .then("very ")
+                        .bold()
+                    .then("lovely, sparkly ")
+                        .italic()
+                    .then("gift")
+                        .bold()
+                        .color(TextColor.color(0xfcad25))
+                    .then("!")
+                )
+                .color(TextColor.color(0xfcee25))
+                .asComponent()
+        );
+        
+        List<Component> lores = new ArrayList<>();
+        
+        lores.add(
+            TextChain.reset()
+                .then("You're a ")
+                .then("bunny")
+                    .bold()
+                .then("?!")
+                .asComponent()
+        );
+        
+        lores.add(TextChain.of("Eat up.").asComponent());
+        
+        meta.lore(lores);
+        gift.setItemMeta(meta);
+        player.getInventory().addItem(gift);
+        
+        TextChain.of("Hop!")
+                .bold()
+                .italic()
+                .color(TextColor.color(0x443344))
+            .then(" Have a ")
+            .then("treat")
+                .italic()
+                .color(TextColor.color(0xfcad25))
+                .hover(ShowItems.asHover(gift))
+            .then(", you silly rabbit.")
+            .send((Audience) player)
             .send(showcase);
     }
     
@@ -127,7 +200,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
             TextChain.of("Sent JSON component: ")
                 .then(GsonComponentSerializer.gson().serialize(message))
                 .color(NamedTextColor.YELLOW)
-                .send(getServer().getConsoleSender());
+                .send((Audience) getServer().getConsoleSender());
         }
     }
 }

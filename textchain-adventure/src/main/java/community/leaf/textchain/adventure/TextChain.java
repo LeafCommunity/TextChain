@@ -30,6 +30,22 @@ public final class TextChain extends Chain<TextChain>
         return TextChain.empty().then(componentLike);
     }
     
+    public static <C extends Chain<C>> C reset(ChainConstructor<C> constructor)
+    {
+        C chain = TextChain.using(constructor);
+        return constructor.apply(chain.unformatted().getBuilder().peekOrCreateChild());
+    }
+    
+    public static <C extends Chain<C>> C reset(ChainSource<C> source)
+    {
+        return TextChain.reset(source.getChainConstructor());
+    }
+    
+    public static TextChain reset()
+    {
+        return TextChain.reset(TextChain::new);
+    }
+    
     public static TextChain wrap(WrappedTextComponentBuilder builder)
     {
         return new TextChain(builder);

@@ -9,6 +9,7 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.event.HoverEventSource;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.util.RGBLike;
@@ -73,6 +74,8 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
         
         return self();
     }
+    
+    public C then() { return then(Component.text()); }
     
     public C then(String text, ColorParsers colors)
     {
@@ -169,6 +172,17 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
     public C underlined(boolean state) { return format(TextDecoration.UNDERLINED, state); }
     
     public C underlined(TextDecoration.State state) { return format(TextDecoration.UNDERLINED, state); }
+    
+    public C unformatted()
+    {
+        color(NamedTextColor.WHITE);
+        bold(false);
+        italic(false);
+        obfuscated(false);
+        strikethrough(false);
+        underlined(false);
+        return self();
+    }
     
     public C click(ClickEvent event)
     {
