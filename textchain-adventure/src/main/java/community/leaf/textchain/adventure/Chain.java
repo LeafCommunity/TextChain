@@ -77,7 +77,7 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
         return self();
     }
     
-    public C then() { return then(Component.empty()); }
+    public C thenEmpty() { return then(Component.empty()); }
     
     public C then(String text, TextProcessor processor)
     {

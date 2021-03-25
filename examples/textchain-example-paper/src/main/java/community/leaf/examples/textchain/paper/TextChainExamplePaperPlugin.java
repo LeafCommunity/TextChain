@@ -1,7 +1,9 @@
 package community.leaf.examples.textchain.paper;
 
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
+import community.leaf.textchain.adventure.Chain;
 import community.leaf.textchain.adventure.ItemRarity;
+import community.leaf.textchain.adventure.LegacyTextChain;
 import community.leaf.textchain.adventure.TextChain;
 import community.leaf.textchain.bukkit.ShowEntities;
 import community.leaf.textchain.bukkit.ShowItems;
@@ -49,30 +51,87 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
-        TextChain.empty()
-            .then("TextChain Example: ")
-            .then()
-                .extra(group -> group
-                    .then("click ")
-                    .then("here")
-                        .underlined()
-                        .color(TextColor.color(0x0000FF))
-                        .link("https://google.com")
-                        .tooltip("Click to visit: &9&ogoogle.com")
-                    .then(" to visit a ")
-                    .then("website")
-                        .italic()
-                        .bold()
-                )
-                .color(TextColor.color(0xD8EFFF))
-            .then(" ... ")
-                .color(TextColor.color(0x444444))
-            .then("or maybe you're looking for a &osuggestion?")
-                .tooltip("Click for a suggestion. . .")
-                .suggest("hello ")
-            .send(sender)
-            .send(showcase);
+        Chain<?> chain;
         
+        if (args.length <= 0)
+        {
+            chain = TextChain.of("Demo: ")
+                .then("[Website]")
+                    .color(TextColor.color(0x1533f2))
+                    .command("/" + label + " website")
+                    .tooltip(tip -> tip
+                        .then("Click to run: ")
+                        .then("/" + label + " website")
+                            .color(TextColor.color(0xc7cbe2))
+                    )
+                .then(" ")
+                .then("[Suggestion]")
+                    .color(TextColor.color(0xef5502))
+                    .command("/" + label + " suggestion")
+                    .tooltip(tip -> tip
+                        .then("Click to run: ")
+                        .then("/" + label + " suggestion")
+                            .color(TextColor.color(0xedd6c9))
+                    )
+                .then(" ")
+                .then("[Insertion]")
+                    .color(TextColor.color(0x33ce9a))
+                    .command("/" + label + " insertion")
+                    .tooltip(tip -> tip
+                        .then("Click to run: ")
+                        .then("/" + label + " insertion")
+                            .color(TextColor.color(0xd0e2dc))
+                    );
+        }
+        else if ("website".equalsIgnoreCase(args[0]))
+        {
+            chain = TextChain.of("Website: ")
+                .thenExtra(group -> group
+                    .then("Try me!")
+                        .italic()
+                        .color(TextColor.color(0x1533f2))
+                    .then(" (click)")
+                        .color(TextColor.color(0xc7cbe2))
+                )
+                .link("https://github.com/LeafCommunity/TextChain/")
+                .tooltip("Click to try: website");
+        }
+        else if ("suggestion".equalsIgnoreCase(args[0]))
+        {
+            chain = TextChain.of("Suggestion: ")
+                .thenExtra(group -> group
+                    .then("Try me!")
+                        .italic()
+                        .color(TextColor.color(0xef5502))
+                    .then(" (click)")
+                        .color(TextColor.color(0xedd6c9))
+                )
+                .suggest("/" + label + " insertion <- try this one, eh?")
+                .tooltip("Click to try: suggestion");
+        }
+        else if ("insertion".equalsIgnoreCase(args[0]))
+        {
+            chain = TextChain.of("Insertion: ")
+                .thenExtra(group -> group
+                    .then("Try me!")
+                        .italic()
+                        .color(TextColor.color(0x33ce9a))
+                    .then(" (shift + click)")
+                        .color(TextColor.color(0xd0e2dc))
+                )
+                .insertion("consider yourself inserted")
+                .tooltip("Shift + click to try: insertion");
+        }
+        else
+        {
+            chain = TextChain.using(LegacyTextChain::new)
+                .then("&c&o&lUhoh!&r I'm not sure what ")
+                .then("&n" + args[0])
+                    .tooltip("oops??")
+                .then(" is.");
+        }
+        
+        chain.send(sender).send(showcase);
         return true;
     }
     
