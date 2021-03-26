@@ -1,12 +1,14 @@
 package community.leaf.textchain.bukkit;
 
+import community.leaf.textchain.adventure.Components;
 import community.leaf.textchain.adventure.ItemRarity;
 import community.leaf.textchain.adventure.TextChain;
-import community.leaf.textchain.bukkit.util.ThrowsOr;
 import community.leaf.textchain.bukkit.util.ServerReflection;
+import community.leaf.textchain.bukkit.util.ThrowsOr;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.nbt.api.BinaryTagHolder;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -16,9 +18,12 @@ import net.md_5.bungee.chat.TranslationRegistry;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import pl.tlinkowski.annotation.basic.NullOr;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -42,7 +47,7 @@ public class ShowItems
     
     static final Class<?> NMS_NBT_TAG_COMPOUND = ServerReflection.requireNmsClass("NBTTagCompound");
     
-    // Methods and fields that may or not exist, but they most likely do in fact exist.
+    // Methods and fields that may or may not exist, but they most likely do in fact exist.
     // But let's not throw anything until called (like standard java behavior).
     
     static final ThrowsOr<MethodHandle> AS_NMS_COPY =
@@ -196,5 +201,41 @@ public class ShowItems
             return ItemRarity.resolveByName(String.valueOf(nmsRarity)).orElse(ItemRarity.COMMON);
         }
         catch (Throwable throwable) { throw new RuntimeException(throwable); }
+    }
+    
+    public static @NullOr ItemMeta setDisplayName(@NullOr ItemMeta meta, ComponentLike componentLike)
+    {
+        Component component = Components.safelyAsComponent(componentLike);
+        if (meta != null) { meta.setDisplayName(LegacyBukkitComponentSerializer.legacyHexSection().serialize(component)); }
+        return meta;
+    }
+    
+    public static void setDisplayName(ItemStack item, ComponentLike componentLike)
+    {
+        Objects.requireNonNull(item, "item");
+        item.setItemMeta(setDisplayName(item.getItemMeta(), componentLike));
+    }
+    
+    public static @NullOr ItemMeta setLore(@NullOr ItemMeta meta, ComponentLike componentLike)
+    {
+        Component component = Components.safelyAsComponent(componentLike);
+        
+        if (meta != null)
+        {
+            List<String> lore = new ArrayList<>();
+            for (Component extra : Components.flattenExtraSplitByNewLine(component))
+            {
+                lore.add(LegacyBukkitComponentSerializer.legacyHexSection().serialize(component));
+            }
+            meta.setLore(lore);
+        }
+        
+        return meta;
+    }
+    
+    public static void setLore(ItemStack item, ComponentLike componentLike)
+    {
+        Objects.requireNonNull(item, "item");
+        item.setItemMeta(setLore(item.getItemMeta(), componentLike));
     }
 }

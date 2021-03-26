@@ -13,14 +13,17 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -120,6 +123,48 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
             .then(".")
             .send(getAudiences().player(player))
             .send(showcase);
+    }
+    
+    @EventHandler
+    public void onSneakNearVillager(PlayerToggleSneakEvent event)
+    {
+        if (!event.isSneaking()) { return; }
+        
+        Player player = event.getPlayer();
+        
+        boolean isNearVillager =
+            player.getNearbyEntities(4, 2, 4).stream()
+                .map(Entity::getType)
+                .anyMatch(type -> type == EntityType.VILLAGER);
+        
+        if (!isNearVillager) { return; }
+        
+        ItemStack emerald = new ItemStack(Material.EMERALD);
+        
+        ShowItems.setDisplayName(emerald,
+            TextChain.of("Villager's Emerald").italic().color(TextColor.color(0xadfc85))
+        );
+        
+        ShowItems.setLore(emerald,
+            TextChain.reset()
+                .then("Wow! ")
+                    .italic()
+                .then("You ")
+                .then("pickpocketed")
+                    .underlined()
+                .then(" that emerald...")
+                .next("Thief!")
+                    .bold()
+                    .italic()
+                    .color(TextColor.color(0xfc3b1e))
+        );
+        
+        player.getInventory().addItem(emerald);
+        
+        TextChain.using(this)
+            .then("Pickpocket!")
+                .bold().italic().color(TextColor.color(0xfc3b1e))
+            .actionBar(player);
     }
     
     private class Showcase implements Audience

@@ -19,44 +19,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class TextChainSerializer
+public class ChainSerializer
 {
-    private TextChainSerializer() { throw new UnsupportedOperationException(); }
-    
-    public static List<Component> flattenComponentExtra(Component component)
-    {
-        List<Component> flattened = new ArrayList<>();
-        for (Component extra : component.children()) { flattened.add(extra.style(component.style())); }
-        return flattened;
-    }
-    
-    public static List<Component> flattenComponentExtraSplitByNewLine(Component component)
-    {
-        List<Component> flattened = new ArrayList<>();
-        TextComponent.@NullOr Builder builder = null;
-        
-        for (Component extra : component.children())
-        {
-            if (Component.newline().equals(extra))
-            {
-                if (builder != null)
-                {
-                    flattened.add(builder.build());
-                    builder = null;
-                }
-                
-                continue;
-            }
-            
-            if (builder == null) { builder = Component.text().style(component.style()); }
-            
-            builder.append(extra);
-        }
-    
-        if (builder != null) { flattened.add(builder.build()); }
-        
-        return flattened;
-    }
+    private ChainSerializer() { throw new UnsupportedOperationException(); }
     
     private static <K, V> Optional<V> query(Map<K, V> map, K key) { return Optional.ofNullable(map.get(key)); }
     

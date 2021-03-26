@@ -1,5 +1,6 @@
 package community.leaf.textchain.bukkit;
 
+import community.leaf.textchain.adventure.Components;
 import community.leaf.textchain.adventure.TextChain;
 import community.leaf.textchain.bukkit.util.ServerReflection;
 import community.leaf.textchain.bukkit.util.ThrowsOr;
@@ -93,4 +94,11 @@ public class ShowEntities
     public static TextComponent asComponent(Entity entity) { return asComponent(entity, "", ""); }
     
     public static TextComponent asComponentInBrackets(Entity entity) { return asComponent(entity, "[", "]"); }
+    
+    public static void setCustomName(Entity entity, ComponentLike componentLike)
+    {
+        Objects.requireNonNull(entity, "entity");
+        Component component = Components.safelyAsComponent(componentLike);
+        entity.setCustomName(LegacyBukkitComponentSerializer.legacyHexSection().serialize(component));
+    }
 }

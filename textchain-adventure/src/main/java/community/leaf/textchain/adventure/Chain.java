@@ -45,12 +45,12 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
     
     public final List<Component> asComponentList()
     {
-        return TextChainSerializer.flattenComponentExtra(asComponent());
+        return Components.flattenExtra(asComponent());
     }
     
     public final List<Component> asComponentListSplitByNewLine()
     {
-        return TextChainSerializer.flattenComponentExtraSplitByNewLine(asComponent());
+        return Components.flattenExtraSplitByNewLine(asComponent());
     }
     
     public C apply(Consumer<? super C> consumer)
@@ -82,8 +82,7 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
     
     public C then(ComponentLike componentLike)
     {
-        Objects.requireNonNull(componentLike, "componentLike");
-        Component component = Objects.requireNonNull(componentLike.asComponent(), "componentLike returned null");
+        Component component = Components.safelyAsComponent(componentLike);
         
         if (component instanceof TextComponent)
         {

@@ -48,4 +48,9 @@ public class BukkitVersion
     public String nms(String className) { return classPath("net.minecraft.server", className); }
     
     public String craftbukkit(String className) { return classPath("org.bukkit.craftbukkit", className); }
+    
+    public boolean isAtLeast(int release, int major)
+    {
+        return this.release >= release && this.major >= major;
+    }
 }

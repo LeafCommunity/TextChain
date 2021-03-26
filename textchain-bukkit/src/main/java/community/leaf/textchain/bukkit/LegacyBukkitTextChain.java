@@ -1,7 +1,6 @@
 package community.leaf.textchain.bukkit;
 
 import community.leaf.textchain.adventure.ChainConstructor;
-import community.leaf.textchain.adventure.TextProcessor;
 import community.leaf.textchain.adventure.WrappedTextComponentBuilder;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.TextComponent;
@@ -22,6 +21,6 @@ public final class LegacyBukkitTextChain extends BukkitChain<LegacyBukkitTextCha
     @Override
     protected TextComponent processText(String text)
     {
-        return TextProcessor.legacyAmpersand(text);
+        return LegacyBukkitComponentSerializer.legacyHexAmpersand().deserialize(text);
     }
 }
