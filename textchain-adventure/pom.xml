@@ -32,6 +32,15 @@
             <scope>provided</scope>
         </dependency>
         <!--
+        Kyori Adventure GSON Serializer (via maven-central)
+        -->
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-gson</artifactId>
+            <version>${versions.kyori.adventure}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--
         Nullness Annotations: @NullOr (via maven-central)
         -->
         <dependency>

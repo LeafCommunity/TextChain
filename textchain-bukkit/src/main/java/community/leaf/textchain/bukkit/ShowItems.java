@@ -225,7 +225,7 @@ public class ShowItems
             List<String> lore = new ArrayList<>();
             for (Component extra : Components.flattenExtraSplitByNewLine(component))
             {
-                lore.add(LegacyBukkitComponentSerializer.legacyHexSection().serialize(component));
+                lore.add(LegacyBukkitComponentSerializer.legacyHexSection().serialize(extra));
             }
             meta.setLore(lore);
         }

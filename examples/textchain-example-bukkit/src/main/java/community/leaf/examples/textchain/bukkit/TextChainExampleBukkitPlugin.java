@@ -147,9 +147,7 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
         
         ShowItems.setLore(emerald,
             TextChain.reset()
-                .then("Wow! ")
-                    .italic()
-                .then("You ")
+                .then("Wow! You ")
                 .then("pickpocketed")
                     .underlined()
                 .then(" that emerald...")
