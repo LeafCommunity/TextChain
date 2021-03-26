@@ -13,17 +13,14 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -41,8 +38,10 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
         this.showcase = new Showcase();
         
         getServer().getPluginManager().registerEvents(this, this);
-    
-        TextChain.of("Enabled: ")
+        getServer().getPluginManager().registerEvents(new VillagerPickpocketListener(this), this);
+        
+        TextChain.empty()
+            .then("Enabled: ")
                 .color(NamedTextColor.DARK_AQUA)
             .then("TextChain Example (Bukkit version)")
             .send(audiences.console())
@@ -55,7 +54,7 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
-        TextChain.using(this)
+        TextChain.empty()
             .then("Hello ")
                 .color(NamedTextColor.GOLD)
                 .bold()
@@ -65,7 +64,7 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
                 .color(TextColor.color(0xFF0000))
                 .tooltip("Click here to respond with \"pretty good\"")
                 .suggest("pretty good")
-            .send(sender)
+            .send(getAudiences().sender(sender))
             .send(showcase);
             
         return true;
@@ -98,14 +97,15 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
         
         ItemRarity rarity = ShowItems.rarity(tool);
         
-        TextChain.of("Rarity of ")
+        TextChain.using(this)
+            .then("Rarity of ")
             .then(ShowItems.asComponentInBrackets(tool))
                 .color(rarity)
             .then(" is ")
             .then(rarity)
                 .bold()
                 .italic()
-            .send(getAudiences().player(player))
+            .send(player)
             .send(showcase);
     }
     
@@ -117,52 +117,13 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
         Player player = event.getPlayer();
         Entity clicked = event.getRightClicked();
         
-        TextChain.of("You clicked on ")
+        TextChain.using(this)
+            .then("You clicked on ")
             .then(ShowEntities.asComponent(clicked))
                 .color(TextColor.color(0xe0c0e8))
             .then(".")
-            .send(getAudiences().player(player))
+            .send(player)
             .send(showcase);
-    }
-    
-    @EventHandler
-    public void onSneakNearVillager(PlayerToggleSneakEvent event)
-    {
-        if (!event.isSneaking()) { return; }
-        
-        Player player = event.getPlayer();
-        
-        boolean isNearVillager =
-            player.getNearbyEntities(4, 2, 4).stream()
-                .map(Entity::getType)
-                .anyMatch(type -> type == EntityType.VILLAGER);
-        
-        if (!isNearVillager) { return; }
-        
-        ItemStack emerald = new ItemStack(Material.EMERALD);
-        
-        ShowItems.setDisplayName(emerald,
-            TextChain.of("Villager's Emerald").italic().color(TextColor.color(0xadfc85))
-        );
-        
-        ShowItems.setLore(emerald,
-            TextChain.reset()
-                .then("Wow! You ")
-                .then("pickpocketed")
-                    .underlined()
-                .then(" that emerald...")
-                .next("Thief!")
-                    .bold()
-                    .italic()
-                    .color(TextColor.color(0xfc3b1e))
-        );
-        
-        player.getInventory().addItem(emerald);
-        
-        TextChain.using(this)
-            .then("Pickpocket!")
-                .bold().italic().color(TextColor.color(0xfc3b1e))
-            .actionBar(player);
     }
     
     private class Showcase implements Audience

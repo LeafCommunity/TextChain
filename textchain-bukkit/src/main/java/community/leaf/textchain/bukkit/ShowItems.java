@@ -22,10 +22,9 @@ import pl.tlinkowski.annotation.basic.NullOr;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ShowItems
 {
@@ -206,7 +205,11 @@ public class ShowItems
     public static @NullOr ItemMeta setDisplayName(@NullOr ItemMeta meta, ComponentLike componentLike)
     {
         Component component = Components.safelyAsComponent(componentLike);
-        if (meta != null) { meta.setDisplayName(LegacyBukkitComponentSerializer.legacyHexSection().serialize(component)); }
+        
+        if (meta != null)
+        {
+            meta.setDisplayName(LegacyBukkitComponentSerializer.legacyHexSection().serialize(component));
+        }
         return meta;
     }
     
@@ -222,14 +225,12 @@ public class ShowItems
         
         if (meta != null)
         {
-            List<String> lore = new ArrayList<>();
-            for (Component extra : Components.flattenExtraSplitByNewLine(component))
-            {
-                lore.add(LegacyBukkitComponentSerializer.legacyHexSection().serialize(extra));
-            }
-            meta.setLore(lore);
+            meta.setLore(
+                Components.flattenExtraSplitByNewLine(component).stream()
+                    .map(LegacyBukkitComponentSerializer.legacyHexSection()::serialize)
+                    .collect(Collectors.toList())
+            );
         }
-        
         return meta;
     }
     
