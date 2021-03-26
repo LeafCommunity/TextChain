@@ -130,10 +130,10 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
         }
         else
         {
-            TextChain.chain(LegacyTextChain::new)
+            TextChain.legacy()
                 .then("&c&o&lUhoh!&r I'm not sure what ")
                 .then("&n" + args[0])
-                    .tooltip("oops??")
+                    .tooltip("&4&oOops??")
                 .then(" is.")
                 .send(sender)
                 .send(showcase);
