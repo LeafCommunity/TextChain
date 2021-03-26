@@ -62,7 +62,7 @@ public class ChainSerializer
         Objects.requireNonNull(maps, "maps");
         Objects.requireNonNull(placeholderProcessor, "placeholderProcessor");
         
-        TextChain chain = TextChain.empty();
+        TextChain chain = TextChain.chain();
         
         for (Map<String, String> values : maps)
         {

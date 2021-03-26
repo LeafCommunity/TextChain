@@ -40,7 +40,7 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
         getServer().getPluginManager().registerEvents(this, this);
         getServer().getPluginManager().registerEvents(new VillagerPickpocketListener(this), this);
         
-        TextChain.empty()
+        TextChain.chain()
             .then("Enabled: ")
                 .color(NamedTextColor.DARK_AQUA)
             .then("TextChain Example (Bukkit version)")
@@ -54,7 +54,7 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
-        TextChain.empty()
+        TextChain.chain()
             .then("Hello ")
                 .color(NamedTextColor.GOLD)
                 .bold()
@@ -77,7 +77,7 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
         ItemStack broken = new ItemStack(event.getBlock().getType());
         ItemStack tool = player.getInventory().getItemInMainHand();
         
-        TextChain.using(this)
+        TextChain.chain(this)
             .then("You broke ")
             .then(ShowItems.asComponentInBrackets(broken))
                 .color(NamedTextColor.RED)
@@ -97,7 +97,7 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
         
         ItemRarity rarity = ShowItems.rarity(tool);
         
-        TextChain.using(this)
+        TextChain.chain(this)
             .then("Rarity of ")
             .then(ShowItems.asComponentInBrackets(tool))
                 .color(rarity)
@@ -117,7 +117,7 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
         Player player = event.getPlayer();
         Entity clicked = event.getRightClicked();
         
-        TextChain.using(this)
+        TextChain.chain(this)
             .then("You clicked on ")
             .then(ShowEntities.asComponent(clicked))
                 .color(TextColor.color(0xe0c0e8))
@@ -131,7 +131,8 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
         @Override
         public void sendMessage(final Identity source, final Component message, final MessageType type)
         {
-            TextChain.of("Sent JSON component: ")
+            TextChain.chain()
+                .then("Sent JSON component: ")
                 .then(GsonComponentSerializer.gson().serialize(message))
                 .color(NamedTextColor.AQUA)
                 .send(audiences.console());

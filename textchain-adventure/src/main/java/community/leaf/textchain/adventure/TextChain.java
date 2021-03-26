@@ -1,39 +1,28 @@
 package community.leaf.textchain.adventure;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TextComponent;
 
 public final class TextChain extends Chain<TextChain>
 {
-    public static <C extends Chain<C>> C using(ChainConstructor<C> constructor)
+    public static <C extends Chain<C>> C chain(ChainConstructor<C> constructor)
     {
         return constructor.apply(new WrappedTextComponentBuilder(Component.text()));
     }
     
-    public static <C extends Chain<C>> C using(ChainSource<C> source)
+    public static <C extends Chain<C>> C chain(ChainSource<C> source)
     {
-        return TextChain.using(source.getChainConstructor());
+        return TextChain.chain(source.getChainConstructor());
     }
     
-    public static TextChain empty()
+    public static TextChain chain()
     {
-        return TextChain.using(TextChain::new);
-    }
-    
-    public static TextChain of(String text)
-    {
-        return TextChain.empty().then(text);
-    }
-    
-    public static TextChain of(ComponentLike componentLike)
-    {
-        return TextChain.empty().then(componentLike);
+        return TextChain.chain(TextChain::new);
     }
     
     public static <C extends Chain<C>> C reset(ChainConstructor<C> constructor)
     {
-        C chain = TextChain.using(constructor);
+        C chain = TextChain.chain(constructor);
         return constructor.apply(chain.unformatted().getBuilder().peekOrCreateChild());
     }
     
@@ -57,7 +46,7 @@ public final class TextChain extends Chain<TextChain>
         return wrap(chain.getBuilder());
     }
     
-    private TextChain(WrappedTextComponentBuilder builder) { super(builder); }
+    public TextChain(WrappedTextComponentBuilder builder) { super(builder); }
     
     @Override
     protected ChainConstructor<TextChain> getConstructor() { return TextChain::new; }

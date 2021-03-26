@@ -15,7 +15,7 @@ feel very comfortable for those approaching Adventure from that perspective.
 
 > [ℹ️](#example-hello-world) 
 > ```java
-> TextChain.empty()
+> TextChain.chain()
 >    .then("Hello")
 >        .underlined()
 >    .then(" ")

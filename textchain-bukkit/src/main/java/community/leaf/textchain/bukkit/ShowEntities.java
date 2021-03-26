@@ -81,7 +81,7 @@ public class ShowEntities
     
     public static TextComponent asComponent(Entity entity, String prefix, String suffix)
     {
-        return TextChain.empty()
+        return TextChain.chain()
             .extra(chain -> {
                 if (!prefix.isEmpty()) { chain.then(prefix); }
                 chain.then(asCustomOrTranslatableName(entity));

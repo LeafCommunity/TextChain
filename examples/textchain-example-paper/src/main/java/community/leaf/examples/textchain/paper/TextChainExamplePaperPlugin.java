@@ -36,7 +36,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
     {
         getServer().getPluginManager().registerEvents(this, this);
         
-        TextChain.empty()
+        TextChain.chain()
             .then("Enabled: ")
                 .color(NamedTextColor.GOLD)
             .then("TextChain Example (Paper version)")
@@ -49,7 +49,8 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
     {
         if (args.length <= 0)
         {
-            TextChain.of("Demo: ")
+            TextChain.chain()
+                .then("Demo: ")
                 .then("[Website]")
                     .color(TextColor.color(0x1533f2))
                     .command("/" + label + " website")
@@ -81,7 +82,8 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
         }
         else if ("website".equalsIgnoreCase(args[0]))
         {
-            TextChain.of("Website: ")
+            TextChain.chain()
+                .then("Website: ")
                 .thenExtra(group -> group
                     .then("Try me!")
                         .italic()
@@ -96,7 +98,8 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
         }
         else if ("suggestion".equalsIgnoreCase(args[0]))
         {
-            TextChain.of("Suggestion: ")
+            TextChain.chain()
+                .then("Suggestion: ")
                 .thenExtra(group -> group
                     .then("Try me!")
                         .italic()
@@ -111,7 +114,8 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
         }
         else if ("insertion".equalsIgnoreCase(args[0]))
         {
-            TextChain.of("Insertion: ")
+            TextChain.chain()
+                .then("Insertion: ")
                 .thenExtra(group -> group
                     .then("Try me!")
                         .italic()
@@ -126,7 +130,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
         }
         else
         {
-            TextChain.using(LegacyTextChain::new)
+            TextChain.chain(LegacyTextChain::new)
                 .then("&c&o&lUhoh!&r I'm not sure what ")
                 .then("&n" + args[0])
                     .tooltip("oops??")
@@ -145,7 +149,8 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
         ItemStack placed = new ItemStack(event.getBlockPlaced().getType());
         ItemStack hand = player.getInventory().getItemInMainHand();
         
-        TextChain.of("You placed ")
+        TextChain.chain()
+            .then("You placed ")
             .then(ShowItems.asComponentInBrackets(placed))
                 .color(NamedTextColor.RED)
             .then(" ")
@@ -164,7 +169,8 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
     
         ItemRarity rarity = ShowItems.rarity(hand);
         
-        TextChain.of("Rarity of ")
+        TextChain.chain()
+            .then("Rarity of ")
             .then(ShowItems.asComponentInBrackets(hand))
                 .color(rarity)
             .then(" is ")
@@ -183,7 +189,8 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
         Player player = (Player) event.getDamager();
         Entity damaged = event.getEntity();
         
-        TextChain.of("You damaged ")
+        TextChain.chain()
+            .then("You damaged ")
             .then(ShowEntities.asComponent(damaged))
                 .color(TextColor.color(0xe8c3ae))
             .then("!")
@@ -236,7 +243,8 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
         gift.setItemMeta(meta);
         player.getInventory().addItem(gift);
         
-        TextChain.of("Hop!")
+        TextChain.chain()
+            .then("Hop!")
                 .bold()
                 .italic()
                 .color(TextColor.color(0x443344))
@@ -255,7 +263,8 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
         @Override
         public void sendMessage(final Identity source, final Component message, final MessageType type)
         {
-            TextChain.of("Sent JSON component: ")
+            TextChain.chain()
+                .then("Sent JSON component: ")
                 .then(GsonComponentSerializer.gson().serialize(message))
                 .color(NamedTextColor.YELLOW)
                 .send((Audience) getServer().getConsoleSender());

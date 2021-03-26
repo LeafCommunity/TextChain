@@ -146,7 +146,7 @@ public class ShowItems
     
     public static TextComponent asComponent(ItemStack item, String prefix, String suffix)
     {
-        return TextChain.empty()
+        return TextChain.chain()
             .extra(chain -> {
                 if (!prefix.isEmpty()) { chain.then(prefix); }
                 chain.then(asDisplayOrTranslatableName(item));
