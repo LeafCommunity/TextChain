@@ -1,7 +1,6 @@
 package community.leaf.examples.textchain.paper;
 
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
-import community.leaf.textchain.adventure.Chain;
 import community.leaf.textchain.adventure.ItemRarity;
 import community.leaf.textchain.adventure.LegacyTextChain;
 import community.leaf.textchain.adventure.TextChain;
@@ -28,9 +27,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
 {
     private final Showcase showcase = new Showcase();
@@ -51,11 +47,9 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
-        Chain<?> chain;
-        
         if (args.length <= 0)
         {
-            chain = TextChain.of("Demo: ")
+            TextChain.of("Demo: ")
                 .then("[Website]")
                     .color(TextColor.color(0x1533f2))
                     .command("/" + label + " website")
@@ -81,11 +75,13 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
                         .then("Click to run: ")
                         .then("/" + label + " insertion")
                             .color(TextColor.color(0xd0e2dc))
-                    );
+                    )
+                .send(sender)
+                .send(showcase);
         }
         else if ("website".equalsIgnoreCase(args[0]))
         {
-            chain = TextChain.of("Website: ")
+            TextChain.of("Website: ")
                 .thenExtra(group -> group
                     .then("Try me!")
                         .italic()
@@ -94,11 +90,13 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
                         .color(TextColor.color(0xc7cbe2))
                 )
                 .link("https://github.com/LeafCommunity/TextChain/")
-                .tooltip("Click to try: website");
+                .tooltip("Click to try: website")
+                .send(sender)
+                .send(showcase);
         }
         else if ("suggestion".equalsIgnoreCase(args[0]))
         {
-            chain = TextChain.of("Suggestion: ")
+            TextChain.of("Suggestion: ")
                 .thenExtra(group -> group
                     .then("Try me!")
                         .italic()
@@ -107,11 +105,13 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
                         .color(TextColor.color(0xedd6c9))
                 )
                 .suggest("/" + label + " insertion <- try this one, eh?")
-                .tooltip("Click to try: suggestion");
+                .tooltip("Click to try: suggestion")
+                .send(sender)
+                .send(showcase);
         }
         else if ("insertion".equalsIgnoreCase(args[0]))
         {
-            chain = TextChain.of("Insertion: ")
+            TextChain.of("Insertion: ")
                 .thenExtra(group -> group
                     .then("Try me!")
                         .italic()
@@ -120,18 +120,21 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
                         .color(TextColor.color(0xd0e2dc))
                 )
                 .insertion("consider yourself inserted")
-                .tooltip("Shift + click to try: insertion");
+                .tooltip("Shift + click to try: insertion")
+                .send(sender)
+                .send(showcase);
         }
         else
         {
-            chain = TextChain.using(LegacyTextChain::new)
+            TextChain.using(LegacyTextChain::new)
                 .then("&c&o&lUhoh!&r I'm not sure what ")
                 .then("&n" + args[0])
                     .tooltip("oops??")
-                .then(" is.");
+                .then(" is.")
+                .send(sender)
+                .send(showcase);
         }
         
-        chain.send(sender).send(showcase);
         return true;
     }
     
@@ -220,20 +223,16 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
                 .asComponent()
         );
         
-        List<Component> lores = new ArrayList<>();
-        
-        lores.add(
+        meta.lore(
             TextChain.reset()
                 .then("You're a ")
                 .then("bunny")
                     .bold()
                 .then("?!")
-                .asComponent()
+                .next("Eat up.")
+                .asComponentListSplitByNewLine()
         );
         
-        lores.add(TextChain.of("Eat up.").asComponent());
-        
-        meta.lore(lores);
         gift.setItemMeta(meta);
         player.getInventory().addItem(gift);
         

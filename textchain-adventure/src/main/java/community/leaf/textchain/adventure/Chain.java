@@ -10,12 +10,16 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.event.HoverEventSource;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.util.RGBLike;
+import pl.tlinkowski.annotation.basic.NullOr;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 @SuppressWarnings({"unused", "UnusedReturnValue"})
 public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, ComponentLike
@@ -31,19 +35,35 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
     
     protected abstract TextComponent processText(String text);
     
+    @SuppressWarnings("unchecked")
+    protected final C self() { return (C) this; }
+    
     public final WrappedTextComponentBuilder getBuilder() { return builder; }
     
     @Override
-    public final TextComponent asComponent() { return getBuilder().asComponent(); }
+    public final TextComponent asComponent() { return builder.asComponent(); }
     
-    @SuppressWarnings("unchecked")
-    protected final C self() { return (C) this; }
+    public final List<Component> asComponentList()
+    {
+        return TextChainSerializer.flattenComponentExtra(asComponent());
+    }
+    
+    public final List<Component> asComponentListSplitByNewLine()
+    {
+        return TextChainSerializer.flattenComponentExtraSplitByNewLine(asComponent());
+    }
     
     public C apply(Consumer<? super C> consumer)
     {
         Objects.requireNonNull(consumer, "consumer");
         consumer.accept(self());
         return self();
+    }
+    
+    public <@NullOr M> M map(Function<? super C, M> mapper)
+    {
+        Objects.requireNonNull(mapper, "mapper");
+        return mapper.apply(self());
     }
     
     public C extra(Consumer<? super C> consumer)
@@ -90,7 +110,9 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
     
     public C thenUnprocessed(String text) { return then(text, TextProcessor::none); }
     
-    public C nextLine() { return then("\n"); }
+    public C space() { return then(Component.space()); }
+    
+    public C nextLine() { return then(Component.newline()); }
     
     public C next(ComponentLike componentLike) { return nextLine().then(componentLike); }
     
@@ -105,7 +127,15 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
     
     public C text(String text)
     {
+        Objects.requireNonNull(text, "text");
         getBuilder().peekThenApply(child -> child.content(text));
+        return self();
+    }
+    
+    public C style(Style style)
+    {
+        Objects.requireNonNull(style, "style");
+        getBuilder().peekThenApply(child -> child.style(style));
         return self();
     }
     
