@@ -15,6 +15,7 @@ public final class TextChain extends Chain<TextChain>
      * same type as the constructor's generic type.
      *
      * @param constructor   a standard chain constructor
+     * @param <C>   chain type
      * @return  a new chain created by the constructor
      */
     public static <C extends Chain<C>> C chain(ChainConstructor<C> constructor)
@@ -28,6 +29,7 @@ public final class TextChain extends Chain<TextChain>
      * source's generic type.
      *
      * @param source    a chain source
+     * @param <C>   chain type
      * @return  a new chain created by the source's constructor
      */
     public static <C extends Chain<C>> C chain(ChainSource<C> source)
@@ -48,7 +50,7 @@ public final class TextChain extends Chain<TextChain>
     /**
      * Creates a new, empty {@link LegacyTextChain} instance.
      * This chain will automatically process legacy ampersand-style
-     * colors codes in text (like {@code "&3&o"}).
+     * color codes in text (like {@code "&3&o"}).
      *
      * @return  an empty legacy text chain
      * @see TextProcessor#legacyAmpersand(String)
@@ -69,6 +71,7 @@ public final class TextChain extends Chain<TextChain>
      * "reset" state unless specifically overridden by applying styles.</p>
      *
      * @param constructor   a standard chain constructor
+     * @param <C>   chain type
      * @return  a new "reset" chain created by the constructor
      * @see #chain(ChainConstructor)
      */
@@ -89,6 +92,7 @@ public final class TextChain extends Chain<TextChain>
      * "reset" state unless specifically overridden by applying styles.</p>
      *
      * @param source    a chain source
+     * @param <C>       chain type
      * @return  a new "reset" chain created by the source's constructor
      * @see #chain(ChainSource)
      */
@@ -140,6 +144,7 @@ public final class TextChain extends Chain<TextChain>
      * (it's intended to be a last resort).</p>
      *
      * @param chain an existing chain
+     * @param <C>   chain type
      * @return  a new text chain containing the existing
      *          chain's internal builder
      */
