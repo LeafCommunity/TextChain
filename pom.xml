@@ -15,8 +15,8 @@
     </modules>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Dependency versions -->
@@ -109,6 +109,8 @@
                         <link>https://jd.adventure.kyori.net/api/${versions.kyori.adventure}/</link>
                         <link>https://jd.adventure.kyori.net/text-serializer-gson/${versions.kyori.adventure}/</link>
                         <link>https://jd.adventure.kyori.net/text-serializer-legacy/${versions.kyori.adventure}/</link>
+                        <link>https://javadoc.io/doc/pl.tlinkowski.annotation/pl.tlinkowski.annotation.basic/0.2.0/</link>
+                        <link>https://hub.spigotmc.org/javadocs/spigot/</link>
                     </links>
                 </configuration>
                 <executions>

@@ -59,6 +59,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
                     <offlineLinks>
+                        <!-- Local project javadoc resolution -->
                         <offlineLink>
                             <url>https://textchain.leaf.community/javadocs/${revision}/textchain-adventure/</url>
                             <location>${project.basedir}/../textchain-adventure/target/apidocs/</location>
