@@ -1,5 +1,6 @@
-package community.leaf.textchain.adventure;
+package community.leaf.textchain.adventure.internal;
 
+import community.leaf.textchain.adventure.Components;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 

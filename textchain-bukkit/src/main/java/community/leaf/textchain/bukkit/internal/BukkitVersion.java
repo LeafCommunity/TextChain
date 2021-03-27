@@ -1,4 +1,4 @@
-package community.leaf.textchain.bukkit.util;
+package community.leaf.textchain.bukkit.internal;
 
 import org.bukkit.Bukkit;
 

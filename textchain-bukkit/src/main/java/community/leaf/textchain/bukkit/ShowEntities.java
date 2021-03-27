@@ -2,8 +2,8 @@ package community.leaf.textchain.bukkit;
 
 import community.leaf.textchain.adventure.Components;
 import community.leaf.textchain.adventure.TextChain;
-import community.leaf.textchain.bukkit.util.ServerReflection;
-import community.leaf.textchain.bukkit.util.ThrowsOr;
+import community.leaf.textchain.bukkit.internal.ServerReflection;
+import community.leaf.textchain.bukkit.internal.ThrowsOr;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;

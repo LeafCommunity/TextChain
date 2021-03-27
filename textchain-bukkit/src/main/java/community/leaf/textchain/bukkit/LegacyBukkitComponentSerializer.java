@@ -1,6 +1,6 @@
 package community.leaf.textchain.bukkit;
 
-import community.leaf.textchain.bukkit.util.BukkitVersion;
+import community.leaf.textchain.bukkit.internal.BukkitVersion;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public class LegacyBukkitComponentSerializer
