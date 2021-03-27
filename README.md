@@ -2,11 +2,13 @@
 
 [![](https://jitpack.io/v/community.leaf/textchain.svg)](https://jitpack.io/#community.leaf/textchain)
 [![](https://img.shields.io/badge/License-MIT-blue)](./LICENSE)
+[![](https://img.shields.io/badge/Java-11-orange)](#java-version "This project targets Java 11")
 
 TextChain is a streamlined way to build linear 
-[Kyori Adventure](https://github.com/KyoriPowered/adventure) components. 
-This library was *originally* made for BungeeCord chat components, so it should
-feel very comfortable for those approaching Adventure from that perspective.
+[Kyori Adventure](https://github.com/KyoriPowered/adventure) components.
+It also offers many quality of life features for targeting specific platforms
+(like Bukkit). This library was *originally* written for BungeeCord chat components,
+so it should feel comfortable for those approaching Adventure from that perspective.
 
 ![](https://i.imgur.com/ubjbb9S.png)
 
@@ -30,16 +32,16 @@ feel very comfortable for those approaching Adventure from that perspective.
 
 ## Contents
 
-- **[Maven](#maven)** _(how to **get** TextChain)_
+- **[Maven](#maven)** → _(How to **get** TextChain)_
     - [Modules](#modules)
     - [Versions](#versions)
     - [Shading](#shading)
-- **[Rationale](#rationale)** _(why TextChain?)_
-- **[Usage](#usage)** _(how to **use** TextChain)_
+- **[Rationale](#rationale)** → _(Why TextChain?)_
+- **[Usage](#usage)** → _(How to **use** TextChain)_
 
 See also:
 
-- ***[Example Plugins](./examples)***
+- ***[Example Plugins](./examples)*** → 🔰
 - [Kyori Adventure Documentation](https://docs.adventure.kyori.net/)
 
 
@@ -70,7 +72,8 @@ See also:
       wherever Adventure runs.
 - **`textchain-bukkit`** → 🚰
     - TextChain with additional Bukkit-specific features like
-      sending to players directly.
+      sending to players directly and creating components for
+      entities and items.
 
 ### Versions
 
@@ -169,7 +172,7 @@ To exclude them, check the example below.
 
 TextChain aims to be a simple, easy-to-understand tool to manipulate and send 
 Minecraft text components. It achieves that goal by editing components one
-at a time as-needed in a flat, linear fashion. TextChain is designed such that
+at a time as-needed in a linear fashion. TextChain is designed such that
 users are only ever concerned with the most-recently created component
 in the chain, as opposed to managing a tree-like structure directly
 (as you do in standard Adventure).
@@ -193,6 +196,13 @@ have been updated to stay consistent with Adventure. It is a goal of this
 project to always stay compatible with the latest-release version of
 Adventure and match its overall naming conventions for component
 actions and styles. 
+
+### Java Version
+
+This project targets JDK 11 because the Minecraft server community is
+overwhelmingly headed in that direction. It hasn't quite received
+universal adoption yet, but it has been sufficiently supported that
+there's no real reason to target legacy versions like JDK 8 anymore.
 
 
 ## Usage
