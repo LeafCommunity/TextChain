@@ -37,14 +37,15 @@ public class VillagerPickpocketListener implements Listener
         
         ItemStack emerald = new ItemStack(Material.EMERALD);
         
-        ShowItems.setDisplayName(
+        ShowItems.setItemDisplayName(
             emerald,
             TextChain.chain()
                 .then("Villager's Emerald")
-                    .italic().color(TextColor.color(0xadfc85))
+                    .italic()
+                    .color(TextColor.color(0xadfc85))
         );
         
-        ShowItems.setLore(
+        ShowItems.setItemLore(
             emerald,
             TextChain.reset()
                 .then("Wow! You ")

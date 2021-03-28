@@ -75,8 +75,19 @@ public class ShowItems
     
     // Utility methods.
     
-    public static BinaryTagHolder nbt(ItemStack item)
+    public static Key itemKey(Material material)
     {
+        return BukkitKeys.convertKey(material);
+    }
+    
+    public static Key itemKey(ItemStack item)
+    {
+        return itemKey(item.getType());
+    }
+    
+    public static BinaryTagHolder itemNbt(ItemStack item)
+    {
+        Objects.requireNonNull(item, "item");
         try
         {
             return BinaryTagHolder.of(String.valueOf(
@@ -86,15 +97,14 @@ public class ShowItems
         catch (Throwable throwable) { throw new RuntimeException(throwable); }
     }
     
-    public static HoverEvent<ShowItem> asHover(ItemStack item)
+    public static HoverEvent<ShowItem> itemHover(ItemStack item)
     {
         Objects.requireNonNull(item, "item");
-        Key key = Key.key(item.getType().getKey().toString(), ':');
-        ShowItem showItem = ShowItem.of(key, item.getAmount(), nbt(item));
+        ShowItem showItem = ShowItem.of(itemKey(item), item.getAmount(), itemNbt(item));
         return HoverEvent.showItem(showItem);
     }
     
-    public static String asTranslationKey(Material material)
+    public static String itemTranslationKey(Material material)
     {
         Objects.requireNonNull(material, "material");
         
@@ -114,23 +124,23 @@ public class ShowItems
         catch (Throwable throwable) { throw new RuntimeException(throwable); }
     }
     
-    public static String asTranslationKey(ItemStack item)
+    public static String itemTranslationKey(ItemStack item)
     {
         Objects.requireNonNull(item, "item");
-        return asTranslationKey(item.getType());
+        return itemTranslationKey(item.getType());
     }
     
-    public static TranslatableComponent asTranslatable(Material material)
+    public static TranslatableComponent itemTranslatable(Material material)
     {
-        return Component.translatable(asTranslationKey(material));
+        return Component.translatable(itemTranslationKey(material));
     }
     
-    public static TranslatableComponent asTranslatable(ItemStack item)
+    public static TranslatableComponent itemTranslatable(ItemStack item)
     {
-        return Component.translatable(asTranslationKey(item));
+        return Component.translatable(itemTranslationKey(item));
     }
     
-    public static Optional<Component> asDisplayName(ItemStack item)
+    public static Optional<Component> itemDisplayName(ItemStack item)
     {
         Objects.requireNonNull(item, "item");
         return Optional.ofNullable(item.getItemMeta())
@@ -139,36 +149,36 @@ public class ShowItems
             .map(LegacyComponentSerializer.legacySection()::deserialize);
     }
     
-    public static Component asDisplayOrTranslatableName(ItemStack item)
+    public static Component itemDisplayOrTranslatableName(ItemStack item)
     {
-        return asDisplayName(item).orElseGet(() -> asTranslatable(item));
+        return itemDisplayName(item).orElseGet(() -> itemTranslatable(item));
     }
     
-    public static TextComponent asComponent(ItemStack item, String prefix, String suffix)
+    public static TextComponent itemComponent(ItemStack item, String prefix, String suffix)
     {
         return TextChain.chain()
             .extra(chain -> {
                 if (!prefix.isEmpty()) { chain.then(prefix); }
-                chain.then(asDisplayOrTranslatableName(item));
+                chain.then(itemDisplayOrTranslatableName(item));
                 if (!suffix.isEmpty()) { chain.then(suffix); }
             })
-            .hover(asHover(item))
+            .hover(itemHover(item))
             .asComponent();
     }
     
-    public static TextComponent asComponent(ItemStack item) { return asComponent(item, "", ""); }
+    public static TextComponent itemComponent(ItemStack item) { return itemComponent(item, "", ""); }
     
-    public static TextComponent asComponentInBrackets(ItemStack item) { return asComponent(item, "[", "]"); }
+    public static TextComponent itemComponentInBrackets(ItemStack item) { return itemComponent(item, "[", "]"); }
     
-    public static String asClientName(Material material)
+    public static String itemClientName(Material material)
     {
-        return TranslationRegistry.INSTANCE.translate(asTranslationKey(material));
+        return TranslationRegistry.INSTANCE.translate(itemTranslationKey(material));
     }
     
-    public static String asClientName(ItemStack item)
+    public static String itemClientName(ItemStack item)
     {
         Objects.requireNonNull(item, "item");
-        return asClientName(item.getType());
+        return itemClientName(item.getType());
     }
     
     public static ItemRarity rarity(Material material)
@@ -202,7 +212,7 @@ public class ShowItems
         catch (Throwable throwable) { throw new RuntimeException(throwable); }
     }
     
-    public static @NullOr ItemMeta setDisplayName(@NullOr ItemMeta meta, ComponentLike componentLike)
+    public static @NullOr ItemMeta setMetaDisplayName(@NullOr ItemMeta meta, ComponentLike componentLike)
     {
         Component component = Components.safelyAsComponent(componentLike);
         
@@ -213,13 +223,13 @@ public class ShowItems
         return meta;
     }
     
-    public static void setDisplayName(ItemStack item, ComponentLike componentLike)
+    public static void setItemDisplayName(ItemStack item, ComponentLike componentLike)
     {
         Objects.requireNonNull(item, "item");
-        item.setItemMeta(setDisplayName(item.getItemMeta(), componentLike));
+        item.setItemMeta(setMetaDisplayName(item.getItemMeta(), componentLike));
     }
     
-    public static @NullOr ItemMeta setLore(@NullOr ItemMeta meta, ComponentLike componentLike)
+    public static @NullOr ItemMeta setMetaLore(@NullOr ItemMeta meta, ComponentLike componentLike)
     {
         Component component = Components.safelyAsComponent(componentLike);
         
@@ -234,9 +244,9 @@ public class ShowItems
         return meta;
     }
     
-    public static void setLore(ItemStack item, ComponentLike componentLike)
+    public static void setItemLore(ItemStack item, ComponentLike componentLike)
     {
         Objects.requireNonNull(item, "item");
-        item.setItemMeta(setLore(item.getItemMeta(), componentLike));
+        item.setItemMeta(setMetaLore(item.getItemMeta(), componentLike));
     }
 }

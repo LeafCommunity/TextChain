@@ -109,8 +109,6 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
     
     public C thenUnprocessed(String text) { return then(text, TextProcessor::none); }
     
-    public C space() { return then(Component.space()); }
-    
     public C nextLine() { return then(Component.newline()); }
     
     public C next(ComponentLike componentLike) { return nextLine().then(componentLike); }

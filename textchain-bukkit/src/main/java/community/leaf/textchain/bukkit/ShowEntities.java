@@ -13,6 +13,7 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.event.HoverEvent.ShowEntity;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import pl.tlinkowski.annotation.basic.NullOr;
 
 import java.lang.invoke.MethodHandle;
@@ -31,25 +32,32 @@ public class ShowEntities
     static final ThrowsOr<MethodHandle> GET_TRANSLATION_KEY =
         ServerReflection.requireMethod(NMS_ENTITY_TYPES, "f", String.class);
     
-    public static HoverEvent<ShowEntity> asHover(Entity entity, @NullOr ComponentLike customName)
+    public static Key entityKey(EntityType type)
     {
-        Objects.requireNonNull(entity, "entity");
-        
-        Key key = Key.key(entity.getType().getKey().toString(), ':');
-        @NullOr Component name = (customName == null) ? null : customName.asComponent();
-        
-        return HoverEvent.showEntity(ShowEntity.of(key, entity.getUniqueId(), name));
+        return BukkitKeys.convertKey(type);
     }
     
-    public static HoverEvent<ShowEntity> asHover(Entity entity)
+    public static Key entityKey(Entity entity)
     {
-        return asHover(entity, asCustomName(entity).orElse(null));
+        return entityKey(entity.getType());
     }
     
-    public static String asTranslationKey(Entity entity)
+    public static HoverEvent<ShowEntity> entityHover(Entity entity, @NullOr ComponentLike customName)
     {
         Objects.requireNonNull(entity, "entity");
-        @NullOr String entityType = entity.getType().getName();
+        @NullOr Component name = (customName == null) ? null : Components.safelyAsComponent(customName);
+        return HoverEvent.showEntity(ShowEntity.of(entityKey(entity), entity.getUniqueId(), name));
+    }
+    
+    public static HoverEvent<ShowEntity> entityHover(Entity entity)
+    {
+        return entityHover(entity, entityCustomName(entity).orElse(null));
+    }
+    
+    public static String entityTranslationKey(EntityType type)
+    {
+        Objects.requireNonNull(type, "type");
+        @NullOr String entityType = type.getName();
         
         try
         {
@@ -62,40 +70,50 @@ public class ShowEntities
         catch (Throwable throwable) { throw new RuntimeException(throwable); }
     }
     
-    public static TranslatableComponent asTranslatable(Entity entity)
+    public static String entityTranslationKey(Entity entity)
     {
-        return Component.translatable(asTranslationKey(entity));
+        return entityTranslationKey(entity.getType());
     }
     
-    public static Optional<Component> asCustomName(Entity entity)
+    public static TranslatableComponent entityTranslatable(EntityType type)
+    {
+        return Component.translatable(entityTranslationKey(type));
+    }
+    
+    public static TranslatableComponent entityTranslatable(Entity entity)
+    {
+        return entityTranslatable(entity.getType());
+    }
+    
+    public static Optional<Component> entityCustomName(Entity entity)
     {
         Objects.requireNonNull(entity, "entity");
         return Optional.ofNullable(entity.getCustomName())
             .map(LegacyComponentSerializer.legacySection()::deserialize);
     }
     
-    public static Component asCustomOrTranslatableName(Entity entity)
+    public static Component entityCustomOrTranslatableName(Entity entity)
     {
-        return asCustomName(entity).orElseGet(() -> asTranslatable(entity));
+        return entityCustomName(entity).orElseGet(() -> entityTranslatable(entity));
     }
     
-    public static TextComponent asComponent(Entity entity, String prefix, String suffix)
+    public static TextComponent entityComponent(Entity entity, String prefix, String suffix)
     {
         return TextChain.chain()
             .extra(chain -> {
                 if (!prefix.isEmpty()) { chain.then(prefix); }
-                chain.then(asCustomOrTranslatableName(entity));
+                chain.then(entityCustomOrTranslatableName(entity));
                 if (!suffix.isEmpty()) { chain.then(suffix); }
             })
-            .hover(asHover(entity))
+            .hover(entityHover(entity))
             .asComponent();
     }
     
-    public static TextComponent asComponent(Entity entity) { return asComponent(entity, "", ""); }
+    public static TextComponent entityComponent(Entity entity) { return entityComponent(entity, "", ""); }
     
-    public static TextComponent asComponentInBrackets(Entity entity) { return asComponent(entity, "[", "]"); }
+    public static TextComponent entityComponentInBrackets(Entity entity) { return entityComponent(entity, "[", "]"); }
     
-    public static void setCustomName(Entity entity, ComponentLike componentLike)
+    public static void setEntityCustomName(Entity entity, ComponentLike componentLike)
     {
         Objects.requireNonNull(entity, "entity");
         Component component = Components.safelyAsComponent(componentLike);

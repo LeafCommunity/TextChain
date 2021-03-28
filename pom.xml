@@ -104,6 +104,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.2.0</version>
                 <configuration>
+                    <source>8</source> <!-- Calm errors due to not using jdk 9+ modules -->
                     <excludePackageNames>*.internal;</excludePackageNames>
                     <links>
                         <link>https://jd.adventure.kyori.net/api/${versions.kyori.adventure}/</link>
