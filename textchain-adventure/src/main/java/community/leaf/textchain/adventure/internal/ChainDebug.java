@@ -6,6 +6,9 @@ import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 
 import java.util.logging.Logger;
 
+//  This class exists for testing purposes only.
+//  Calls to it should *not* be left in committed code.
+
 @Deprecated
 public class ChainDebug
 {

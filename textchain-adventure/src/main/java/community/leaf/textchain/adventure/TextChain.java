@@ -7,7 +7,16 @@ import net.kyori.adventure.text.format.Style;
 
 /**
  * The de facto standard chain type, and also a factory.
- * All chains ultimately start here.
+ *
+ * <p><b>All</b> chains ultimately start here.</p>
+ *
+ * <p>As a chain type, it doesn't do anything special
+ * or unexpected. Text appended to this chain will remain
+ * intact and unprocessed (by using
+ * {@link TextProcessor#none(String)}).</p>
+ *
+ * <p>Think of it as the chain closest to Adventure's
+ * own component builders.</p>
  */
 public final class TextChain extends Chain<TextChain>
 {
@@ -391,8 +400,8 @@ public final class TextChain extends Chain<TextChain>
     }
     
     /**
-     * Wraps an existing {@link WrappedTextComponentBuilder} instance
-     * with a new {@link TextChain}.
+     * Wraps an existing {@link WrappedTextComponentBuilder}
+     * instance with a new {@link TextChain}.
      *
      * @param builder   an existing builder
      * @return  a new text chain containing the builder
@@ -404,15 +413,17 @@ public final class TextChain extends Chain<TextChain>
     
     /**
      * Wraps an existing chain with a new {@link TextChain}.
-     * This is primarily useful for easily converting to the "standard"
-     * chain type, as other chain subtypes may not necessarily be
-     * adequately supported. This is mainly a defensive measure
-     * to make your life easier, just in case.
+     * This is primarily useful for easily converting to the
+     * "standard" chain type, as other chain subtypes may
+     * not necessarily be adequately supported. This is
+     * mainly a defensive measure to make your life easier,
+     * just in case.
      *
-     * <p>Rather than using this method to gain a common chain type
-     * everywhere, it's best to first try using <b>proper generics</b>.
-     * If all else fails, then by all means, use this
-     * (it's intended to be a last resort).</p>
+     * <p>Rather than using this method to gain a common
+     * chain type everywhere, it's best to first try using
+     * <b>proper generics</b>. If all else fails, then by
+     * all means, use this (it's intended to be
+     * a last resort).</p>
      *
      * @param chain an existing chain
      * @param <C>   chain type
