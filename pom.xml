@@ -105,6 +105,7 @@
                 <version>3.2.0</version>
                 <configuration>
                     <source>8</source> <!-- Calm errors due to not using jdk 9+ modules -->
+                    <doclint>none</doclint> <!-- Calm warnings due to not having *everything* documented -->
                     <excludePackageNames>*.internal;</excludePackageNames>
                     <links>
                         <link>https://jd.adventure.kyori.net/api/${versions.kyori.adventure}/</link>

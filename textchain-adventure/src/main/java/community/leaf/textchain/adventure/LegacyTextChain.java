@@ -4,13 +4,18 @@ import net.kyori.adventure.text.TextComponent;
 
 /**
  * A text chain that will automatically process legacy
- * ampersand-style color codes in text (like {@code "&3&o"})
- * by using {@link TextProcessor#legacyAmpersand(String)}.
- * To append text without parsing color codes, simply use
- * {@link #thenUnprocessed(String)}.
+ * ampersand-style color codes in text (like {@code "&3&o"}).
+ * Appended text is processed using:
+ * {@link TextProcessor#legacyAmpersand(String)}.
+ * To append text without processing color codes,
+ * simply use {@link #thenUnprocessed(String)}.
  */
 public final class LegacyTextChain extends Chain<LegacyTextChain>
 {
+    /**
+     * Make a new LegacyTextChain, but
+     * {@link TextChain#legacy()} is better.
+     */
     public LegacyTextChain(WrappedTextComponentBuilder builder) { super(builder); }
     
     @Override

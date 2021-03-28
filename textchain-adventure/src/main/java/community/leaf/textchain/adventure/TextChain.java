@@ -6,27 +6,26 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.Style;
 
 /**
- * The de facto standard chain type, and also a factory.
- *
- * <p><b>All</b> chains ultimately start here.</p>
+ * The de facto standard chain, and also a factory:
+ * <b>all</b> chains ultimately start here.
  *
  * <p>As a chain type, it doesn't do anything special
  * or unexpected. Text appended to this chain will remain
  * intact and unprocessed (by using
  * {@link TextProcessor#none(String)}).</p>
  *
- * <p>Think of it as the chain closest to Adventure's
- * own component builders.</p>
+ * <p>Think of it as the chain type closest to
+ * Adventure's own component builders. It's the
+ * vanilla variety, if you will.</p>
  */
 public final class TextChain extends Chain<TextChain>
 {
     /**
      * Constructs a new chain by wrapping the provided
      * text component builder and supplying it to the
-     * constructor. Operations performed on the
-     * newly-created chain will also modify the builder's
-     * state, since the same builder instance
-     * will be used internally.
+     * constructor. Operations performed on the builder
+     * will be reflected in the chain, since the same
+     * builder instance will be used internally.
      *
      * @param constructor   a standard chain constructor
      * @param builder       an existing text component builder
@@ -43,9 +42,8 @@ public final class TextChain extends Chain<TextChain>
      * Constructs a new chain by wrapping the provided
      * text component builder and supplying it to the
      * source's constructor. Operations performed on the
-     * newly-created chain will also modify the builder's
-     * state, since the same builder instance
-     * will be used internally.
+     * builder will be reflected in the chain, since the
+     * same builder instance will be used internally.
      *
      * @param source    a chain source
      * @param builder   an existing text component builder
@@ -61,9 +59,9 @@ public final class TextChain extends Chain<TextChain>
     /**
      * Constructs a new {@link TextChain} instance
      * by wrapping the provided text component builder.
-     * Operations performed on the newly-created chain will
-     * also modify the builder's state, since the same
-     * builder instance will be used internally.
+     * Operations performed on the builder will be
+     * reflected in the chain, since the same builder
+     * instance will be used internally.
      *
      * @param builder   an existing text component builder
      * @return  a new text chain
@@ -77,9 +75,9 @@ public final class TextChain extends Chain<TextChain>
     /**
      * Constructs a new {@link LegacyTextChain} instance
      * by wrapping the provided text component builder.
-     * Operations performed on the newly-created chain will
-     * also modify the builder's state, since the same
-     * builder instance will be used internally.
+     * Operations performed on the builder will be
+     * reflected in the chain, since the same builder
+     * instance will be used internally.
      *
      * @param builder   an existing text component builder
      * @return  a new legacy text chain
@@ -436,7 +434,8 @@ public final class TextChain extends Chain<TextChain>
     }
     
     /**
-     * Make a new TextChain, but {@link #chain()} is better.
+     * Make a new TextChain, but
+     * {@link #chain()} is better.
      */
     public TextChain(WrappedTextComponentBuilder builder) { super(builder); }
     

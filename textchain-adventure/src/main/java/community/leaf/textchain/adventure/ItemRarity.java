@@ -8,6 +8,13 @@ import net.kyori.adventure.util.RGBLike;
 
 import java.util.Optional;
 
+/**
+ * Represents an item's rarity.
+ * This enum is a one-to-one reimplementation of Minecraft's
+ * internal {@code net.minecraft.server.EnumItemRarity},
+ * but it uses Adventure colors, components, and isn't
+ * restricted to a specific platform.
+ */
 public enum ItemRarity implements ComponentLike, RGBLike
 {
     COMMON(NamedTextColor.WHITE),
@@ -24,6 +31,12 @@ public enum ItemRarity implements ComponentLike, RGBLike
         this.component = Component.text(name()).color(color);
     }
     
+    /**
+     * Gets the color associated with this
+     * level of rarity.
+     *
+     * @return  rarity level's color
+     */
     public NamedTextColor getColor() { return color; }
     
     @Override
@@ -38,6 +51,13 @@ public enum ItemRarity implements ComponentLike, RGBLike
     @Override
     public int blue() { return color.blue(); }
     
+    /**
+     * Resolves the enum value that matches the
+     * case-insensitive input, or else empty.
+     *
+     * @param name  possible name of an enum value
+     * @return  the resolved enum value or empty
+     */
     public static Optional<ItemRarity> resolveByName(String name)
     {
         for (ItemRarity rarity : values())
