@@ -9,7 +9,6 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.event.HoverEventSource;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -60,7 +59,7 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
         return self();
     }
     
-    public <@NullOr M> M map(Function<? super C, M> mapper)
+    public <@NullOr V> V map(Function<? super C, V> mapper)
     {
         Objects.requireNonNull(mapper, "mapper");
         return mapper.apply(self());
@@ -122,7 +121,7 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
     
     public C nextUnprocessed(String text) { return nextLine().thenUnprocessed(text); }
     
-    public C text(String text)
+    public C content(String text)
     {
         Objects.requireNonNull(text, "text");
         getBuilder().peekThenApply(child -> child.content(text));
@@ -135,6 +134,8 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
         getBuilder().peekThenApply(child -> child.style(style));
         return self();
     }
+    
+    public C unformatted() { return style(Components.UNFORMATTED); }
     
     public C color(TextColor color)
     {
@@ -208,17 +209,6 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
     
     public C underlined(TextDecoration.State state) { return format(TextDecoration.UNDERLINED, state); }
     
-    public C unformatted()
-    {
-        color(NamedTextColor.WHITE);
-        bold(false);
-        italic(false);
-        obfuscated(false);
-        strikethrough(false);
-        underlined(false);
-        return self();
-    }
-    
     public C click(ClickEvent event)
     {
         Objects.requireNonNull(event, "event");
@@ -260,8 +250,7 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
     
     public C tooltip(ComponentLike componentLike)
     {
-        Objects.requireNonNull(componentLike, "componentLike");
-        return hover(HoverEvent.showText(componentLike));
+        return hover(HoverEvent.showText(Components.safelyAsComponent(componentLike)));
     }
     
     public C tooltip(Consumer<? super C> tooltipConsumer)

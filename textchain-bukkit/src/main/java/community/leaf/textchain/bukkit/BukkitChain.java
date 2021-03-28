@@ -19,7 +19,7 @@ public abstract class BukkitChain<C extends BukkitChain<C>> extends Chain<C> imp
         this.audiences = Objects.requireNonNull(audiences, "audiences");
     }
     
-    public BukkitAudiences getAudiences() { return audiences; }
+    public final BukkitAudiences getAudiences() { return audiences; }
     
     @Override
     public final Audience getRecipientAudience(CommandSender recipient)

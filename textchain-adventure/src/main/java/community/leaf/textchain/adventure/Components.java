@@ -3,6 +3,8 @@ package community.leaf.textchain.adventure;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextDecoration;
 import pl.tlinkowski.annotation.basic.NullOr;
 
 import java.util.ArrayList;
@@ -12,6 +14,15 @@ import java.util.Objects;
 public class Components
 {
     private Components() { throw new UnsupportedOperationException(); }
+    
+    public static final Style UNFORMATTED =
+        Style.style()
+            .decoration(TextDecoration.BOLD, false)
+            .decoration(TextDecoration.ITALIC, false)
+            .decoration(TextDecoration.OBFUSCATED, false)
+            .decoration(TextDecoration.STRIKETHROUGH, false)
+            .decoration(TextDecoration.UNDERLINED, false)
+            .build();
     
     public static Component safelyAsComponent(ComponentLike componentLike)
     {
