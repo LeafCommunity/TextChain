@@ -5,8 +5,8 @@ import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TextComponent;
 import pl.tlinkowski.annotation.basic.NullOr;
 
+import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.LinkedList;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -18,7 +18,7 @@ import java.util.function.Function;
 @SuppressWarnings("UnusedReturnValue")
 public class WrappedTextComponentBuilder implements ComponentLike
 {
-    private final Deque<WrappedTextComponentBuilder> children = new LinkedList<>();
+    private final Deque<WrappedTextComponentBuilder> children = new ArrayDeque<>();
     
     private final TextComponent.Builder builder;
     

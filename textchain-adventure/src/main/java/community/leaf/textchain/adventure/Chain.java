@@ -265,11 +265,12 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
     
     /**
      * Creates a <b>new</b> chain element by first
-     * {@link #processText(String) processing} the
-     * input text. Different chain types will
-     * process the text differently. To skip
-     * processing altogether, use {@link
-     * #thenUnprocessed(String)}.
+     * {@link #processText(String) processing}
+     * the input text using the chain's default
+     * processor. It's important to remember that
+     * different chain types will process the text
+     * differently. To skip processing altogether,
+     * use {@link #thenUnprocessed(String)}.
      *
      * @param text  the text to append
      * @return  self (for method chaining)
@@ -286,30 +287,155 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
      */
     public C thenUnprocessed(String text) { return then(text, TextProcessor::none); }
     
+    /**
+     * Inserts a new line by creating a <b>new</b>
+     * chain element that <i>only</i> contains the
+     * new line character ({@code "\n"}).
+     *
+     * @return  self (for method chaining)
+     *
+     * @see Component#newline()
+     */
     public C nextLine() { return then(Component.newline()); }
     
+    /**
+     * Creates <b>new</b> chain elements by
+     * inserting a {@link #nextLine() new line}
+     * then appending the provided
+     * {@link #then(ComponentLike) component-like}.
+     *
+     * <p><b>Note:</b> The inserted new line
+     * is its own distinct chain element. This
+     * method is equivalent to calling:
+     * {@code .nextLine().then(componentLike)}</p>
+     *
+     * @param componentLike the component-like
+     *                      to append
+     * @return  self (for method chaining)
+     *
+     * @see #nextLine()
+     * @see #then(ComponentLike)
+     */
     public C next(ComponentLike componentLike) { return nextLine().then(componentLike); }
     
+    /**
+     * Creates <b>new</b> chain elements by
+     * inserting a {@link #nextLine() new line}
+     * then appending {@link #then(String, TextProcessor)
+     * the text} using the provided processor.
+     *
+     * <p><b>Note:</b> The inserted new line
+     * is its own distinct chain element. This
+     * method is equivalent to calling:
+     * {@code .nextLine().then(text, processor)}</p>
+     *
+     * @param text          the text to append
+     * @param processor     text processor
+     * @return  self (for method chaining)
+     * 
+     * @see #nextLine() 
+     * @see #then(String, TextProcessor) 
+     */
     public C next(String text, TextProcessor processor)
     {
         return nextLine().then(text, processor);
     }
     
+    /**
+     * Creates <b>new</b> chain elements by
+     * inserting a {@link #nextLine() new line}
+     * then appending the {@link #then(String)
+     * input text} using the chain's default
+     * processor. It's important to remember that
+     * different chain types will process the text
+     * differently. To skip processing altogether,
+     * use {@link #nextUnprocessed(String)}.
+     *
+     * <p><b>Note:</b> The inserted new line
+     * is its own distinct chain element. This
+     * method is equivalent to calling:
+     * {@code .nextLine().then(text)}</p>
+     *
+     * @param text  the text to append
+     * @return  self (for method chaining)
+     *
+     * @see #nextLine()
+     * @see #then(String)
+     */
     public C next(String text) { return nextLine().then(text); }
     
+    /**
+     * Creates <b>new</b> chain elements by
+     * inserting a {@link #nextLine() new line}
+     * then directly appending the
+     * {@link #thenUnprocessed(String) input
+     * text}, skipping processing entirely.
+     *
+     * <p><b>Note:</b> The inserted new line
+     * is its own distinct chain element. This
+     * method is equivalent to calling:
+     * {@code .nextLine().thenUnprocessed(text)}</p>
+     *
+     * @param text  the text to append
+     * @return  self (for method chaining)
+     *
+     * @see #nextLine()
+     * @see #thenUnprocessed(String)
+     */
     public C nextUnprocessed(String text) { return nextLine().thenUnprocessed(text); }
     
-    public C content(String text)
+    /**
+     * Sets the text content of the
+     * <b>latest</b> chain element,
+     * overwriting whatever it was
+     * previously set to.
+     *
+     * @param text  the text to set
+     * @return  self (for method chaining)
+     *
+     * @see TextComponent.Builder#content(String)
+     */
+    public C overwriteText(String text)
     {
         Objects.requireNonNull(text, "text");
         getBuilder().peekThenApply(child -> child.content(text));
         return self();
     }
     
-    public C style(Style style)
+    /**
+     * Sets the style of the
+     * <b>latest</b> chain element,
+     * overwriting any previously-set
+     * styling options (including click
+     * and hover events).
+     *
+     * @param style     the style
+     * @return  self (for method chaining)
+     *
+     * @see TextComponent.Builder#style(Style)
+     */
+    public C overwriteStyle(Style style)
     {
         Objects.requireNonNull(style, "style");
         getBuilder().peekThenApply(child -> child.style(style));
+        return self();
+    }
+    
+    /**
+     * Merges the provided style into the
+     * <b>latest</b> chain element's
+     * existing styling options.
+     *
+     * @param style     the style
+     * @return  self (for method chaining)
+     *
+     * @see TextComponent.Builder#style(Consumer)
+     * @see Style.Builder#merge(Style)
+     */
+    public C style(Style style)
+    {
+        Objects.requireNonNull(style, "style");
+        getBuilder().peekThenApply(child -> child.style(styleBuilder -> styleBuilder.merge(style)));
         return self();
     }
     
