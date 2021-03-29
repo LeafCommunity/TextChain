@@ -48,7 +48,7 @@ public class VillagerPickpocketListener implements Listener
         ShowItems.setItemLore(
             emerald,
             TextChain.reset()
-                .then("Wow! You ")
+                .then("Wow, you ")
                 .then("pickpocketed")
                     .underlined()
                 .then(" that emerald...")

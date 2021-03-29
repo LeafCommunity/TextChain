@@ -4,6 +4,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextColor;
+import pl.tlinkowski.annotation.basic.NullOr;
 
 /**
  * The de facto standard chain, and also a factory:
@@ -325,11 +327,11 @@ public final class TextChain extends Chain<TextChain>
      * @return  a new "reset" chain created by the constructor
      *
      * @see #chain(ChainConstructor, Style)
-     * @see Components#UNFORMATTED
+     * @see Components#RESET
      */
     public static <C extends Chain<C>> C reset(ChainConstructor<C> constructor)
     {
-        return chain(constructor, Components.UNFORMATTED);
+        return chain(constructor, Components.RESET);
     }
     
     /**
@@ -348,7 +350,7 @@ public final class TextChain extends Chain<TextChain>
      * @return  a new "reset" chain created by the source's constructor
      *
      * @see #chain(ChainSource, Style)
-     * @see Components#UNFORMATTED
+     * @see Components#RESET
      */
     public static <C extends Chain<C>> C reset(ChainSource<C> source)
     {
@@ -369,7 +371,7 @@ public final class TextChain extends Chain<TextChain>
      * @return  a new "reset" text chain
      *
      * @see #chain(Style)
-     * @see Components#UNFORMATTED
+     * @see Components#RESET
      */
     public static TextChain reset()
     {
@@ -390,11 +392,132 @@ public final class TextChain extends Chain<TextChain>
      * @return  a new "reset" legacy text chain
      *
      * @see #legacy(Style)
-     * @see Components#UNFORMATTED
+     * @see Components#RESET
      */
     public static LegacyTextChain legacyReset()
     {
         return reset(LegacyTextChain::new);
+    }
+    
+    /**
+     * Constructs a new chain by supplying the
+     * constructor with a new, explicitly-unformatted
+     * text component builder (thus "resetting" its style)
+     * with the specified color applied.
+     * Use this to avoid inheriting styles from a parent
+     * chain/component (especially useful for item lore).
+     * However, if the provided color is {@code null},
+     * then the color from a parent chain/component will
+     * be inherited.
+     *
+     * <p><b>Note:</b> every element in the chain inherits
+     * this "reset" state unless specifically overridden
+     * by applying styles.</p>
+     *
+     * @param constructor   a standard chain constructor
+     * @param color         the color to apply or null
+     *                      to allow color inheritance
+     * @param <C>   chain type
+     * @return  a new "reset" chain created by the
+     *          constructor with the color applied
+     *
+     * @see #chain(ChainConstructor, Style)
+     * @see Components#UNFORMATTED
+     */
+    public static <C extends Chain<C>> C reset(ChainConstructor<C> constructor, @NullOr TextColor color)
+    {
+        return chain(
+            constructor,
+            (color == null)
+                ? Components.UNFORMATTED
+                : Components.UNFORMATTED.color(color)
+        );
+    }
+    
+    /**
+     * Constructs a new chain by supplying the source's
+     * constructor with a new, explicitly-unformatted
+     * text component builder (thus "resetting" its style)
+     * with the specified color applied.
+     * Use this to avoid inheriting styles from a parent
+     * chain/component (especially useful for item lore).
+     * However, if the provided color is {@code null},
+     * then the color from a parent chain/component will
+     * be inherited.
+     *
+     * <p><b>Note:</b> every element in the chain inherits
+     * this "reset" state unless specifically overridden
+     * by applying styles.</p>
+     *
+     * @param source    a chain source
+     * @param color     the color to apply or null
+     *                  to allow color inheritance
+     * @param <C>   chain type
+     * @return  a new "reset" chain created by the source's
+     *          constructor with the color applied
+     *
+     * @see #chain(ChainSource, Style)
+     * @see Components#UNFORMATTED
+     */
+    public static <C extends Chain<C>> C reset(ChainSource<C> source, @NullOr TextColor color)
+    {
+        return reset(source.getChainConstructor(), color);
+    }
+    
+    /**
+     * Creates a new {@link TextChain} instance
+     * with a new, explicitly-unformatted text component
+     * builder (thus "resetting" its style)
+     * with the specified color applied.
+     * Use this to avoid inheriting styles from a parent
+     * chain/component (especially useful for item lore).
+     * However, if the provided color is {@code null},
+     * then the color from a parent chain/component will
+     * be inherited.
+     *
+     * <p><b>Note:</b> every element in the chain inherits
+     * this "reset" state unless specifically overridden
+     * by applying styles.</p>
+     *
+     * @param color     the color to apply or null
+     *                  to allow color inheritance
+     * @return  a new "reset" text chain
+     *          with the color applied
+     *
+     * @see #chain(Style)
+     * @see Components#UNFORMATTED
+     */
+    public static TextChain reset(@NullOr TextColor color)
+    {
+        return reset(TextChain::new, color);
+    }
+    
+    /**
+     * Creates a new {@link LegacyTextChain} instance
+     * with a new, explicitly-unformatted text component
+     * builder (thus "resetting" its style)
+     * with the specified color applied.
+     * Use this to avoid inheriting styles from a parent
+     * chain/component (especially useful for item lore).
+     * However, if the provided color is {@code null},
+     * then the color from a parent chain/component will
+     * be inherited.
+     *
+     * <p><b>Note:</b> every element in the chain inherits
+     * this "reset" state unless specifically overridden
+     * by applying styles.</p>
+     *
+     * @param color     the color to apply or null
+     *                  to allow color inheritance
+     * @return  a new "reset" legacy text chain
+     *          with the color applied
+     *
+     * @see #legacy(Style)
+     * @see Components#UNFORMATTED
+     */
+    public static LegacyTextChain legacyReset(@NullOr TextColor color)
+    {
+        return reset(LegacyTextChain::new, color);
     }
     
     /**

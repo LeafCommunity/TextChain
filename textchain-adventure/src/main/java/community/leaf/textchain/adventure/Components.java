@@ -3,6 +3,7 @@ package community.leaf.textchain.adventure;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
 import pl.tlinkowski.annotation.basic.NullOr;
@@ -35,6 +36,15 @@ public class Components
             .decoration(TextDecoration.STRIKETHROUGH, false)
             .decoration(TextDecoration.UNDERLINED, false)
             .build();
+    
+    /**
+     * Style constant that explicitly
+     * <b>disables</b> most formatting options
+     * (all {@link TextDecoration decoration types}
+     * are set to false), and it's set to <b>white</b>
+     * (emulating the {@code "&r"} legacy color code).
+     */
+    public static final Style RESET = UNFORMATTED.color(NamedTextColor.WHITE);
     
     /**
      * Safely retrieves the component from the provided
