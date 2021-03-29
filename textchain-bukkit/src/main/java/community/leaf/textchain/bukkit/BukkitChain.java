@@ -1,7 +1,7 @@
 package community.leaf.textchain.bukkit;
 
 import community.leaf.textchain.adventure.Chain;
-import community.leaf.textchain.adventure.RecipientSender;
+import community.leaf.textchain.adventure.ChainedRecipientSender;
 import community.leaf.textchain.adventure.WrappedTextComponentBuilder;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 
 import java.util.Objects;
 
-public abstract class BukkitChain<C extends BukkitChain<C>> extends Chain<C> implements RecipientSender<CommandSender, C>
+public abstract class BukkitChain<C extends BukkitChain<C>> extends Chain<C> implements ChainedRecipientSender<CommandSender, C>
 {
     private final BukkitAudiences audiences;
     

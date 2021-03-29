@@ -13,7 +13,7 @@ import net.kyori.adventure.identity.Identity;
  *              (for method chaining)
  */
 @SuppressWarnings({"unused", "UnusedReturnValue"})
-public interface RecipientSender<R, S extends RecipientSender<R, S>> extends AudienceSender<S>
+public interface ChainedRecipientSender<R, S extends ChainedRecipientSender<R, S>> extends ChainedAudienceSender<S>
 {
     /**
      * Converts the recipient into an audience.
@@ -24,49 +24,52 @@ public interface RecipientSender<R, S extends RecipientSender<R, S>> extends Aud
     Audience getRecipientAudience(R recipient);
     
     /**
-     * Sends component messages to the provided recipient.
+     * Converts into a component message and sends
+     * it to the provided recipient.
      *
      * @param recipient     the recipient to receive components
      * @return  self (for method chaining)
      *
-     * @see AudienceSender#send(Audience)
+     * @see ChainedAudienceSender#send(Audience)
      */
     default S send(R recipient) { return send(getRecipientAudience(recipient)); }
     
     /**
-     * Sends component messages to the provided recipient,
-     * identified by the source's identity.
+     * Converts into a component message and sends
+     * it to the provided recipient, identified by
+     * the provided identity.
      *
      * @param recipient     the recipient to receive components
      * @param source        the identity from whom the
      *                      components originate
      * @return  self (for method chaining)
      *
-     * @see AudienceSender#send(Audience, Identity)
+     * @see ChainedAudienceSender#send(Audience, Identity)
      */
     default S send(R recipient, Identity source) { return send(getRecipientAudience(recipient), source); }
     
     /**
-     * Sends component messages to the provided recipient,
-     * identified by the source's identity.
+     * Converts into a component message and sends
+     * it to the provided recipient, identified by
+     * the source's identity.
      *
      * @param recipient     the recipient to receive components
      * @param source        the identifiable source from whom
      *                      the components originate
      * @return  self (for method chaining)
      *
-     * @see AudienceSender#send(Audience, Identified)
+     * @see ChainedAudienceSender#send(Audience, Identified)
      */
     default S send(R recipient, Identified source) { return send(getRecipientAudience(recipient), source); }
     
     /**
-     * Sends component action bars to the provided
-     * recipient.
+     * Converts into a component action bar and
+     * sends it to the provided recipient.
      *
      * @param recipient     the recipient to receive components
      * @return  self (for method chaining)
      *
-     * @see AudienceSender#actionBar(Audience)
+     * @see ChainedAudienceSender#actionBar(Audience)
      */
     default S actionBar(R recipient) { return actionBar(getRecipientAudience(recipient)); }
 }

@@ -1,8 +1,5 @@
 package community.leaf.textchain.adventure;
 
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.identity.Identified;
-import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TextComponent;
@@ -27,7 +24,7 @@ import java.util.function.Function;
  *              (for method chaining)
  */
 @SuppressWarnings({"unused", "UnusedReturnValue"})
-public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, ComponentLike
+public abstract class Chain<C extends Chain<C>> implements ChainedAudienceSender<C>
 {
     private final WrappedTextComponentBuilder builder;
     
@@ -336,10 +333,7 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
      * @see #nextLine() 
      * @see #then(String, TextProcessor) 
      */
-    public C next(String text, TextProcessor processor)
-    {
-        return nextLine().then(text, processor);
-    }
+    public C next(String text, TextProcessor processor) { return nextLine().then(text, processor); }
     
     /**
      * Creates <b>new</b> chain elements by
@@ -439,8 +433,26 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
         return self();
     }
     
+    /**
+     * Disables most formatting options on the
+     * <b>latest</b> chain element by setting
+     * all {@link TextDecoration decoration types}
+     * to {@code false}.
+     *
+     * @return  self (for method chaining)
+     *
+     * @see Components#UNFORMATTED
+     * @see #format(TextDecoration, boolean)
+     */
     public C unformatted() { return style(Components.UNFORMATTED); }
     
+    /**
+     * Sets the color of the
+     * <b>latest</b> chain element.
+     *
+     * @param color     the color
+     * @return  self (for method chaining)
+     */
     public C color(TextColor color)
     {
         Objects.requireNonNull(color, "color");
@@ -448,12 +460,32 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
         return self();
     }
     
+    /**
+     * Sets the color of the
+     * <b>latest</b> chain element
+     * by converting the provided
+     * RGB-like into a color.
+     *
+     * @param rgb   something containing RGB color values
+     * @return  self (for method chaining)
+     */
     public C color(RGBLike rgb)
     {
         Objects.requireNonNull(rgb, "rgb");
         return color(TextColor.color(rgb));
     }
     
+    /**
+     * Formats the <b>latest</b> chain element
+     * with the provided decoration. The
+     * decoration state will be set to:
+     * {@link TextDecoration.State#TRUE}.
+     *
+     * @param decoration    the format to apply
+     * @return  self (for method chaining)
+     *
+     * @see TextComponent.Builder#decorate(TextDecoration)
+     */
     public C format(TextDecoration decoration)
     {
         Objects.requireNonNull(decoration, "decoration");
@@ -461,6 +493,17 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
         return self();
     }
     
+    /**
+     * Formats the <b>latest</b> chain element
+     * with all provided decorations. Each
+     * decoration state will be set to:
+     * {@link TextDecoration.State#TRUE}.
+     *
+     * @param decorations   the formats to apply
+     * @return  self (for method chaining)
+     *
+     * @see TextComponent.Builder#decorate(TextDecoration...)
+     */
     public C format(TextDecoration ... decorations)
     {
         Objects.requireNonNull(decorations, "decorations");
@@ -468,6 +511,21 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
         return self();
     }
     
+    /**
+     * Formats the <b>latest</b> chain element
+     * with the provided decoration by explicitly
+     * enabling or disabling it. If the state is
+     * {@code true}, the decoration will be
+     * enabled. Otherwise, {@code false} will
+     * disable the decoration even if a parent
+     * chain/component has the decoration enabled.
+     *
+     * @param decoration    the format type
+     * @param state         the state to set
+     * @return  self (for method chaining)
+     *
+     * @see TextComponent.Builder#decoration(TextDecoration, boolean)
+     */
     public C format(TextDecoration decoration, boolean state)
     {
         Objects.requireNonNull(decoration, "decoration");
@@ -475,6 +533,17 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
         return self();
     }
     
+    /**
+     * Formats the <b>latest</b> chain element
+     * with the provided decoration by setting
+     * it to the specified state.
+     *
+     * @param decoration    the format type
+     * @param state         the state to set
+     * @return  self (for method chaining)
+     *
+     * @see TextComponent.Builder#decoration(TextDecoration, TextDecoration.State)
+     */
     public C format(TextDecoration decoration, TextDecoration.State state)
     {
         Objects.requireNonNull(decoration, "decoration");
@@ -483,36 +552,202 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
         return self();
     }
     
+    /**
+     * Formats the <b>latest</b> chain element
+     * by making it bold.
+     *
+     * @return  self (for method chaining)
+     *
+     * @see #format(TextDecoration)
+     * @see TextDecoration#BOLD
+     */
     public C bold() { return format(TextDecoration.BOLD); }
     
+    /**
+     * Formats the <b>latest</b> chain element
+     * by explicitly enabling or disabling its
+     * bold decoration.
+     *
+     * @param state     the state to set
+     * @return  self (for method chaining)
+     *
+     * @see #format(TextDecoration, boolean)
+     * @see TextDecoration#BOLD
+     */
     public C bold(boolean state) { return format(TextDecoration.BOLD, state); }
     
+    /**
+     * Formats the <b>latest</b> chain element
+     * by setting its bold decoration to the
+     * specified state.
+     *
+     * @param state     the state to set
+     * @return  self (for method chaining)
+     *
+     * @see #format(TextDecoration, TextDecoration.State)
+     * @see TextDecoration#BOLD
+     */
     public C bold(TextDecoration.State state) { return format(TextDecoration.BOLD, state); }
     
+    /**
+     * Formats the <b>latest</b> chain element
+     * by making it italic.
+     *
+     * @return  self (for method chaining)
+     *
+     * @see #format(TextDecoration)
+     * @see TextDecoration#ITALIC
+     */
     public C italic() { return format(TextDecoration.ITALIC); }
     
+    /**
+     * Formats the <b>latest</b> chain element
+     * by explicitly enabling or disabling its
+     * italic decoration.
+     *
+     * @param state     the state to set
+     * @return  self (for method chaining)
+     *
+     * @see #format(TextDecoration, boolean)
+     * @see TextDecoration#ITALIC
+     */
     public C italic(boolean state) { return format(TextDecoration.ITALIC, state); }
     
+    /**
+     * Formats the <b>latest</b> chain element
+     * by setting its italic decoration to the
+     * specified state.
+     *
+     * @param state     the state to set
+     * @return  self (for method chaining)
+     *
+     * @see #format(TextDecoration, TextDecoration.State)
+     * @see TextDecoration#ITALIC
+     */
     public C italic(TextDecoration.State state) { return format(TextDecoration.ITALIC, state); }
     
+    /**
+     * Formats the <b>latest</b> chain element
+     * by making it obfuscated.
+     *
+     * @return  self (for method chaining)
+     *
+     * @see #format(TextDecoration)
+     * @see TextDecoration#OBFUSCATED
+     */
     public C obfuscated() { return format(TextDecoration.OBFUSCATED); }
     
+    /**
+     * Formats the <b>latest</b> chain element
+     * by explicitly enabling or disabling its
+     * obfuscated decoration.
+     *
+     * @param state     the state to set
+     * @return  self (for method chaining)
+     *
+     * @see #format(TextDecoration, boolean)
+     * @see TextDecoration#OBFUSCATED
+     */
     public C obfuscated(boolean state) { return format(TextDecoration.OBFUSCATED, state); }
     
+    /**
+     * Formats the <b>latest</b> chain element
+     * by setting its obfuscated decoration to the
+     * specified state.
+     *
+     * @param state     the state to set
+     * @return  self (for method chaining)
+     *
+     * @see #format(TextDecoration, TextDecoration.State)
+     * @see TextDecoration#OBFUSCATED
+     */
     public C obfuscated(TextDecoration.State state) { return format(TextDecoration.OBFUSCATED, state); }
     
+    /**
+     * Formats the <b>latest</b> chain element
+     * by making it strikethrough.
+     *
+     * @return  self (for method chaining)
+     *
+     * @see #format(TextDecoration)
+     * @see TextDecoration#STRIKETHROUGH
+     */
     public C strikethrough() { return format(TextDecoration.STRIKETHROUGH); }
     
+    /**
+     * Formats the <b>latest</b> chain element
+     * by explicitly enabling or disabling its
+     * strikethrough decoration.
+     *
+     * @param state     the state to set
+     * @return  self (for method chaining)
+     *
+     * @see #format(TextDecoration, boolean)
+     * @see TextDecoration#STRIKETHROUGH
+     */
     public C strikethrough(boolean state) { return format(TextDecoration.STRIKETHROUGH, state); }
     
+    /**
+     * Formats the <b>latest</b> chain element
+     * by setting its strikethrough decoration
+     * to the specified state.
+     *
+     * @param state     the state to set
+     * @return  self (for method chaining)
+     *
+     * @see #format(TextDecoration, TextDecoration.State)
+     * @see TextDecoration#STRIKETHROUGH
+     */
     public C strikethrough(TextDecoration.State state) { return format(TextDecoration.STRIKETHROUGH, state); }
     
+    /**
+     * Formats the <b>latest</b> chain element
+     * by making it underlined.
+     *
+     * @return  self (for method chaining)
+     *
+     * @see #format(TextDecoration)
+     * @see TextDecoration#UNDERLINED
+     */
     public C underlined() { return format(TextDecoration.UNDERLINED); }
     
+    /**
+     * Formats the <b>latest</b> chain element
+     * by explicitly enabling or disabling its
+     * underlined decoration.
+     *
+     * @param state     the state to set
+     * @return  self (for method chaining)
+     *
+     * @see #format(TextDecoration, boolean)
+     * @see TextDecoration#UNDERLINED
+     */
     public C underlined(boolean state) { return format(TextDecoration.UNDERLINED, state); }
     
+    /**
+     * Formats the <b>latest</b> chain element
+     * by setting its underlined decoration to
+     * the specified state.
+     *
+     * @param state     the state to set
+     * @return  self (for method chaining)
+     *
+     * @see #format(TextDecoration, TextDecoration.State)
+     * @see TextDecoration#UNDERLINED
+     */
     public C underlined(TextDecoration.State state) { return format(TextDecoration.UNDERLINED, state); }
     
+    /**
+     * Sets the click event of the
+     * <b>latest</b> chain element.
+     * Any previous click event on the
+     * element will be overwritten.
+     *
+     * @param event     a click event
+     * @return  self (for method chaining)
+     *
+     * @see TextComponent.Builder#clickEvent(ClickEvent)
+     */
     public C click(ClickEvent event)
     {
         Objects.requireNonNull(event, "event");
@@ -520,24 +755,67 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
         return self();
     }
     
+    /**
+     * Sets the click event of the
+     * <b>latest</b> chain element to
+     * run the provided command.
+     *
+     * @param command   the command to run
+     *                  when clicked
+     * @return  self (for method chaining)
+     *
+     * @see #click(ClickEvent)
+     */
     public C command(String command)
     {
         Objects.requireNonNull(command, "command");
         return click(ClickEvent.runCommand(command));
     }
     
+    /**
+     * Sets the click event of the
+     * <b>latest</b> chain element to
+     * suggest the provided text.
+     *
+     * @param suggestion    the suggestion to
+     *                      display when clicked
+     * @return  self (for method chaining)
+     *
+     * @see #click(ClickEvent)
+     */
     public C suggest(String suggestion)
     {
         Objects.requireNonNull(suggestion, "suggestion");
         return click(ClickEvent.suggestCommand(suggestion));
     }
     
+    /**
+     * Sets the click event of the
+     * <b>latest</b> chain element to
+     * open the provided link (URL).
+     *
+     * @param link  the link to open
+     *              when clicked
+     * @return  self (for method chaining)
+     *
+     * @see #click(ClickEvent)
+     */
     public C link(String link)
     {
         Objects.requireNonNull(link, "link");
         return click(ClickEvent.openUrl(link));
     }
     
+    /**
+     * Sets the insertion of the
+     * <b>latest</b> chain element.
+     *
+     * @param insertion     the text to insert
+     *                      when shift + clicked
+     * @return  self (for method chaining)
+     *
+     * @see TextComponent.Builder#insertion(String)
+     */
     public C insertion(String insertion)
     {
         Objects.requireNonNull(insertion, "insertion");
@@ -545,6 +823,17 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
         return self();
     }
     
+    /**
+     * Sets the hover event of the
+     * <b>latest</b> chain element.
+     * Any previous hover event on the
+     * element will be overwritten.
+     *
+     * @param eventSource   a hover event source
+     * @return  self (for method chaining)
+     *
+     * @see TextComponent.Builder#hoverEvent(HoverEventSource)
+     */
     public C hover(HoverEventSource<?> eventSource)
     {
         Objects.requireNonNull(eventSource, "eventSource");
@@ -552,11 +841,44 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
         return self();
     }
     
+    /**
+     * Sets the hover event of the
+     * <b>latest</b> chain element
+     * to a text tooltip containing
+     * the provided component-like.
+     *
+     * @param componentLike     the tooltip component
+     * @return  self (for method chaining)
+     *
+     * @see #hover(HoverEventSource)
+     */
     public C tooltip(ComponentLike componentLike)
     {
         return hover(HoverEvent.showText(Components.safelyAsComponent(componentLike)));
     }
     
+    /**
+     * Sets the hover event of the
+     * <b>latest</b> chain element
+     * to a text tooltip as a result of
+     * supplying the provided consumer
+     * with a new, empty chain for it
+     * to manipulate. Once the consumer is
+     * finished modifying the fresh chain,
+     * it is then converted into a
+     * component and set as the tooltip.
+     * The received chain is the same generic
+     * type as the original chain since it
+     * uses the same {@link #getConstructor()
+     * constructor}.
+     *
+     * @param tooltipConsumer   consumer that modifies
+     *                          an empty chain that will
+     *                          then become the tooltip
+     * @return  self (for method chaining)
+     * 
+     * @see #hover(HoverEventSource) 
+     */
     public C tooltip(Consumer<? super C> tooltipConsumer)
     {
         Objects.requireNonNull(tooltipConsumer, "tooltipConsumer");
@@ -565,6 +887,21 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
         return tooltip(tooltipChain);
     }
     
+    /**
+     * Sets the hover event of the
+     * <b>latest</b> chain element
+     * to a tooltip containing the
+     * input text processed by the
+     * provided processor.
+     *
+     * @param tooltipText   text to display
+     *                      when hovered over
+     * @param processor     text processor
+     * @return  self (for method chaining)
+     *
+     * @see #hover(HoverEventSource)
+     * @see #then(String, TextProcessor)
+     */
     public C tooltip(String tooltipText, TextProcessor processor)
     {
         Objects.requireNonNull(tooltipText, "tooltipText");
@@ -572,35 +909,37 @@ public abstract class Chain<C extends Chain<C>> implements AudienceSender<C>, Co
         return tooltip(processor.apply(tooltipText));
     }
     
+    /**
+     * Sets the hover event of the
+     * <b>latest</b> chain element
+     * to a tooltip containing the input
+     * text processed by the chain's default
+     * processor. It's important to remember that
+     * different chain types will process the text
+     * differently. To skip processing altogether,
+     * use {@link #tooltipUnprocessed(String)}.
+     *
+     * @param tooltipText   text to display
+     *                      when hovered over
+     * @return  self (for method chaining)
+     *
+     * @see #hover(HoverEventSource)
+     * @see #then(String)
+     */
     public C tooltip(String tooltipText) { return tooltip(tooltipText, this::processText); }
     
+    /**
+     * Sets the hover event of the
+     * <b>latest</b> chain element
+     * to a tooltip containing the input
+     * text, skipping processing entirely.
+     *
+     * @param tooltipText   text to display
+     *                      when hovered over
+     * @return  self (for method chaining)
+     *
+     * @see #hover(HoverEventSource)
+     * @see #thenUnprocessed(String)
+     */
     public C tooltipUnprocessed(String tooltipText) { return tooltip(tooltipText, TextProcessor::none); }
-    
-    @Override
-    public C send(Audience audience)
-    {
-        audience.sendMessage(this);
-        return self();
-    }
-    
-    @Override
-    public C send(Audience audience, Identity source)
-    {
-        audience.sendMessage(source, this);
-        return self();
-    }
-    
-    @Override
-    public C send(Audience audience, Identified source)
-    {
-        audience.sendMessage(source, this);
-        return self();
-    }
-    
-    @Override
-    public C actionBar(Audience audience)
-    {
-        audience.sendActionBar(this);
-        return self();
-    }
 }
