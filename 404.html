@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8">
+        <script>
+            const hostnames = 
+            [
+                {
+                    hostname: "github.io",
+                    relative: () => /^\/([^/]+)/.exec(window.location.pathname)[1]
+                }
+            ];
+
+            if (!window.location.search.includes("redirected"))
+            {
+                let redirect = `/?redirected&error=404#${window.location.pathname}`;
+
+                for (let site of hostnames)
+                {
+                    if (window.location.hostname.includes(site.hostname))
+                    {
+                        redirect = `/${site.relative()}${redirect}`;
+                        break;
+                    }
+                }
+
+                console.log(`404. Redirecting to: ${redirect}`);
+                window.location.href = redirect;
+            }
+        </script>
+    </head>
+    <body>
+        <p>404: Not Found.</p>
+    </body>
+</html>
