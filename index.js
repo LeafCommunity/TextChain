@@ -48,88 +48,80 @@ function showErrorByQuery()
     }
 }
 
-function getContentsApiUrl(path)
+function getTreeApiUrl(sha)
 {
-    return `https://api.github.com/repos/${project.github.user}/${project.github.repo}/contents/${path}/?ref=${project.github.branch}`
+    return `https://api.github.com/repos/${project.github.user}/${project.github.repo}/git/trees/${sha}`;
 }
 
-async function gatherAvailableVersions(dir)
+async function fetchTreeOrFail(sha)
 {
-    let versionsRequest = await fetch(getContentsApiUrl(`javadocs/${dir}`));
-    let versionDirContents = await versionsRequest.json();
+    console.log(`Fetching tree: ${sha}`);
 
-    let versionsList = [];
+    let treeRequest = await fetch(getTreeApiUrl(sha));
+    console.log(treeRequest);
 
-    for (let version of versionDirContents)
+    if (treeRequest.status === 200) { return await treeRequest.json(); }
+
+    const statusResponses =
     {
-        versionsList.unshift(`<li><a href="${version.path}" target="_blank"><span class="monospace">${version.name}</span></a></li>`)
-    }
-
-    return versionsList.join("");
-}
-
-async function requestThenCacheJavadocs()
-{
-    let javadocsRequest = await fetch(getContentsApiUrl("javadocs"));
-
-    if (javadocsRequest.status !== 200)
-    {
-        console.error(javadocsRequest);
-        let statusText = (javadocsRequest.status === 403) ? "Forbidden (likely ratelimited - check back later)" : javadocsRequest.statusText;
-        showError(javadocsRequest.status, `<p>${statusText}</p>`);
-    }
-
-    let javadocsDirContents = await javadocsRequest.json();
-
-    let docsList = [];
-    let pendingRequests = [];
-
-    for (let dir of javadocsDirContents)
-    {
-        if (dir.type !== "dir") { continue; }
-
-        let pending = gatherAvailableVersions(dir.name)
-            .then(availableVersions => 
-            {
-                let html =
-                    `<div class="project-card">
-                        <div class="project-title">
-                            <h2>${dir.name}</h2>
-                        </div>
-                        <div class="versions-list">
-                            <ul>${availableVersions}</ul>
-                        </div>
-                    </div>`;
-                
-                docsList.push({name: dir.name, html: html});
-            });
-
-        pendingRequests.push(pending);
-    }
-
-    await Promise.all(pendingRequests);
-
-    let cached =
-    {
-        timestamp: Date.now(),
-        docs: docsList.sort((a, b) => a.name.localeCompare(b.name))
+        403: "Forbidden (likely ratelimited - check back later)",
+        404: `Not Found (<span class="monospace">${sha}</span>)`
     };
     
-    window.localStorage.setItem("javadocsListCache", JSON.stringify(cached));
-    loadStatus.message = "Loaded fresh from the API in ";
-    return cached;
+    showError(treeRequest.status, `<p>${statusResponses[treeRequest.status] || treeRequest.statusText}</p>`);
+    throw treeRequest;
 }
 
-function displayJavadocsList(docsList)
+async function fetchRootTree()
 {
-    document.getElementById("docs-list").innerHTML = docsList.map(docs => docs.html).join("");
-    document.getElementById("loading-display").classList.add("hidden");
-    document.getElementById("load-status").innerText = `${loadStatus.message} ${Date.now() - loadStatus.start} ms.`;
+    return await fetchTreeOrFail(project.github.branch);
 }
 
-async function loadJavadocsList()
+async function fetchProjectsTree()
 {
-    let existing = window.localStorage.getItem("javadocsListCache");
+    for (let rootNode of (await fetchRootTree()).tree)
+    {
+        if (rootNode.path === "javadocs")
+        {
+            return await fetchTreeOrFail(rootNode.sha);
+        }
+    }
+    throw new Error("Missing javadocs directory.");
+}
+
+async function fetchVersionsByProjectTree(projectNode)
+{
+    let versions = [];
+
+    for (let versionNode of (await fetchTreeOrFail(projectNode.sha)).tree)
+    {
+        versions.unshift({
+            name: versionNode.path,
+            path: `javadocs/${projectNode.path}/${versionNode.path}/index.html`
+        });
+    }
+
+    return {
+        name: projectNode.path,
+        versions: versions
+    };
+}
+
+async function fetchProjectVersions()
+{
+    let projects = [];
+
+    for (let projectNode of (await fetchProjectsTree()).tree)
+    {
+        projects.push(await fetchVersionsByProjectTree(projectNode));
+    }
+
+    return projects.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+async function getOrFetchProjectVersions()
+{
+    let existing = window.localStorage.getItem("javadocsProjectListCache");
 
     if (existing)
     {
@@ -139,17 +131,55 @@ async function loadJavadocsList()
         if (millis < 7200000) // valid for 2 hours
         {
             console.log("Using cached javadocs list.")
-            displayJavadocsList(cached.docs);
-            return;
+            return cached.projects;
         }
 
         console.log("Cached javadocs list has expired.")
     }
 
-    console.log("Fetching javadocs list...")
+    console.log("Fetching and caching javadocs list...")
 
-    let fetched = await requestThenCacheJavadocs();
-    displayJavadocsList(fetched.docs);
+    let uncached = 
+    {
+        timestamp: Date.now(),
+        projects: await fetchProjectVersions()
+    };
+
+    window.localStorage.setItem("javadocsProjectListCache", JSON.stringify(uncached));
+    loadStatus.message = "Loaded fresh from the API in ";
+    return uncached.projects;
+}
+
+function renderVersionsList(versions)
+{
+    return versions.map(ver => `<li><a href="${ver.path}" target="_blank"><span class="monospace">${ver.name}</span></a></li>`).join("");
+}
+
+async function renderProjects()
+{
+    let html = "";
+
+    for (let proj of await getOrFetchProjectVersions())
+    {
+        html += 
+            `<div class="project-card">
+                <div class="project-title">
+                    <h2>${proj.name}</h2>
+                </div>
+                <div class="versions-list">
+                    <ul>${renderVersionsList(proj.versions)}</ul>
+                </div>
+            </div>`;
+    }
+
+    return html;
+}
+
+async function displayJavadocsList()
+{
+    document.getElementById("docs-list").innerHTML = await renderProjects();
+    document.getElementById("loading-display").classList.add("hidden");
+    document.getElementById("load-status").innerText = `${loadStatus.message} ${Date.now() - loadStatus.start} ms.`;
 }
 
 function index()
@@ -162,7 +192,7 @@ function index()
         document.querySelector("#github-link").href = `https://github.com/${project.github.user}/${project.github.repo}`;
 
         showErrorByQuery();
-        loadJavadocsList();
+        displayJavadocsList();
 
         document.getElementById("copyright").innerText = `Copyright © RezzedUp ${new Date().getFullYear()}.`;
     }
