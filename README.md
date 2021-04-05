@@ -1,8 +1,9 @@
  # TextChain ⛓️
 
-[![](https://jitpack.io/v/community.leaf/textchain.svg)](https://jitpack.io/#community.leaf/textchain)
-[![](https://img.shields.io/badge/License-MIT-blue)](./LICENSE)
-[![](https://img.shields.io/badge/Java-11-orange)](#java-version "This project targets Java 11")
+[![](https://jitpack.io/v/community.leaf/textchain.svg)](https://jitpack.io/#community.leaf/textchain "Get maven artifacts on Jitpack")
+[![](https://img.shields.io/badge/License-MIT-blue)](./LICENSE "Project license: MIT")
+[![](https://img.shields.io/badge/Java-11-orange?logo=java)](#java-version "This project targets Java 11")
+[![](https://img.shields.io/badge/View-Javadocs-%234D7A97)](https://leafcommunity.github.io/TextChain/ "View the javadocs")
 
 TextChain is a streamlined way to build linear 
 [Kyori Adventure](https://github.com/KyoriPowered/adventure) components.
@@ -42,6 +43,7 @@ so it should feel comfortable for those approaching Adventure from that perspect
 See also:
 
 - ***[Example Plugins](./examples)*** → 🔰
+- [TextChain Javadocs](https://leafcommunity.github.io/TextChain/)
 - [Kyori Adventure Documentation](https://docs.adventure.kyori.net/)
 
 
