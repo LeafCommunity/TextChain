@@ -61,7 +61,7 @@
                     <offlineLinks>
                         <!-- Local project javadoc resolution -->
                         <offlineLink>
-                            <url>https://textchain.leaf.community/javadocs/${revision}/textchain-adventure/</url>
+                            <url>https://leafcommunity.github.io/TextChain/javadocs/textchain-adventure/${revision}/</url>
                             <location>${project.basedir}/../textchain-adventure/target/apidocs/</location>
                         </offlineLink>
                     </offlineLinks>
