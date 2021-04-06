@@ -114,13 +114,14 @@ async function fetchVersionsByProjectTree(projectNode)
 
 async function fetchProjectVersions()
 {
-    let projects = [];
+    let pending = []
 
     for (let projectNode of (await fetchProjectsTree()).tree)
     {
-        projects.push(await fetchVersionsByProjectTree(projectNode));
+        pending.push(fetchVersionsByProjectTree(projectNode));
     }
-
+    
+    let projects = await Promise.all(pending);
     return projects.sort((a, b) => a.name.localeCompare(b.name));
 }
 
@@ -199,7 +200,7 @@ function index()
     if (getQueryByName("refresh") === "clear-cache")
     {
         window.localStorage.removeItem(JAVADOCS_CACHE_KEY);
-        window.location.href = `${window.location.href.replace(/\?.*$/, "")}/?refreshed=true`;
+        window.location.href = `${window.location.href.replace(/\?.*$/, "")}?refreshed=true`;
         return;
     }
 
