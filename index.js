@@ -9,10 +9,15 @@ const project =
     }
 };
 
-let loadStatus =
+const loaded =
 {
     start: Date.now(),
-    message: "Loaded from cache in "
+    from: "cache",
+    messages:
+    {
+        "cache": "Loaded from cache",
+        "api": "Loaded fresh from the API"
+    }
 };
 
 function getQueryByName(name, url = window.location.search)
@@ -119,9 +124,11 @@ async function fetchProjectVersions()
     return projects.sort((a, b) => a.name.localeCompare(b.name));
 }
 
+const JAVADOCS_CACHE_KEY = "javadocsProjectListCache";
+
 async function getOrFetchProjectVersions()
 {
-    let existing = window.localStorage.getItem("javadocsProjectListCache");
+    let existing = window.localStorage.getItem(JAVADOCS_CACHE_KEY);
 
     if (existing)
     {
@@ -145,8 +152,8 @@ async function getOrFetchProjectVersions()
         projects: await fetchProjectVersions()
     };
 
-    window.localStorage.setItem("javadocsProjectListCache", JSON.stringify(uncached));
-    loadStatus.message = "Loaded fresh from the API in ";
+    window.localStorage.setItem(JAVADOCS_CACHE_KEY, JSON.stringify(uncached));
+    loaded.from = "api";
     return uncached.projects;
 }
 
@@ -179,13 +186,27 @@ async function displayJavadocsList()
 {
     document.getElementById("docs-list").innerHTML = await renderProjects();
     document.getElementById("loading-display").classList.add("hidden");
-    document.getElementById("load-status").innerText = `${loadStatus.message} ${Date.now() - loadStatus.start} ms.`;
+
+    let reload = (loaded.from === "cache" && !getQueryByName("refreshed"))
+        ? `<a href="?refresh=clear-cache">Clear cache and refresh.</a>`
+        : "";
+
+    document.getElementById("load-status").innerHTML = `${loaded.messages[loaded.from]} in ${Date.now() - loaded.start} ms. ${reload}`;
 }
 
 function index()
 {
-    const init = () =>
+    if (getQueryByName("refresh") === "clear-cache")
     {
+        window.localStorage.removeItem(JAVADOCS_CACHE_KEY);
+        window.location.href = `${window.location.href.replace(/\?.*$/, "")}/?refreshed=true`;
+        return;
+    }
+
+    document.onreadystatechange = event =>
+    {
+        if (event.target.readyState !== "interactive") { return; }
+
         document.title = project.name + " / Javadocs";
 
         document.querySelector("#header-text h1 .bold").innerText = project.name;
@@ -195,10 +216,5 @@ function index()
         displayJavadocsList();
 
         document.getElementById("copyright").innerText = `Copyright © RezzedUp ${new Date().getFullYear()}.`;
-    }
-
-    document.onreadystatechange = event =>
-    {
-        if (event.target.readyState === "interactive") { init(); }
     }
 }

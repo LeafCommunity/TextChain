@@ -3,7 +3,8 @@
     font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
 
     /* Vars */
-    --maxWidth: 1400px;
+    --max-width: 1400px;
+    --grid-columns: repeat(auto-fit, minmax(30%, 1fr));
     --gap-small: 1rem;
     --gap-large: 3rem;
     --color-javadoc-blue: #4D7A97;
@@ -13,9 +14,22 @@
     --color-javadoc-content-grey: #EEEEEF;
 }
 
+@media screen and (max-width: 1500px) {
+    * {
+        --max-width: 1000px;
+    }
+}
+
+@media screen and (max-width: 1100px) {
+    * {
+        --max-width: 800px;
+        --grid-columns: repeat(auto-fit, minmax(46%, 1fr));
+    }
+}
+
 .page-alignment {
     margin: 0 auto;
-    max-width: var(--maxWidth);
+    max-width: var(--max-width);
     padding: 0 var(--gap-large);
 }
 
@@ -29,6 +43,10 @@
 
 .bold {
     font-weight: bolder;
+}
+
+a {
+    color: var(--color-javadoc-blue);
 }
 
 a:hover {
@@ -87,7 +105,7 @@ header nav a {
 #docs-list {
     display: grid;
     gap: var(--gap-large);
-    grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+    grid-template-columns: var(--grid-columns);
     grid-auto-rows: 300px;
 }
 
@@ -111,7 +129,7 @@ header nav a {
 }
 
 .versions-list a {
-    color: var(--color-javadoc-text);
+    text-decoration: none;
 }
 
 .versions-list ul {
@@ -127,13 +145,16 @@ header nav a {
     font-weight: bolder;
 }
 
-.versions-list li:first-child::after {
-    content: "< Latest";
+.versions-list li a::after {
     font-size: 8pt;
-    background-color: var(--color-javadoc-orange);
-    color: #fff;
     margin-left: 10px;
     padding: 3px;
+}
+
+.versions-list li:first-child a::after {
+    content: "Latest";
+    background-color: var(--color-javadoc-orange);
+    color: #fff;
 }
 
 #footer-bar {
