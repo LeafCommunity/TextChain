@@ -1,8 +1,8 @@
  # TextChain ⛓️
 
-[![](https://jitpack.io/v/community.leaf/textchain.svg)](https://jitpack.io/#community.leaf/textchain "Get maven artifacts on Jitpack")
+[![](https://jitpack.io/v/community.leaf/textchain.svg)](https://jitpack.io/#community.leaf/textchain "Get maven artifacts on JitPack")
 [![](https://img.shields.io/badge/License-MIT-blue)](./LICENSE "Project license: MIT")
-[![](https://img.shields.io/badge/Java-11-orange?logo=java)](#java-version "This project targets Java 11")
+[![](https://img.shields.io/badge/Java-11-orange)](#java-version "This project targets Java 11")
 [![](https://img.shields.io/badge/View-Javadocs-%234D7A97)](https://leafcommunity.github.io/TextChain/ "View the javadocs")
 
 TextChain is a streamlined way to build linear 
@@ -11,7 +11,7 @@ It also offers many quality of life features for targeting specific platforms
 (like Bukkit). This library was *originally* written for BungeeCord chat components,
 so it should feel comfortable for those approaching Adventure from that perspective.
 
-![](https://i.imgur.com/ubjbb9S.png)
+![](https://i.imgur.com/ubjbb9S.png "Hello world!")
 
 <details id="example-hello-world">
 <summary><b>Example:</b> <i>Hello World</i></summary>
@@ -74,8 +74,8 @@ See also:
       wherever Adventure runs.
 - **`textchain-bukkit`** → 🚰
     - TextChain with additional Bukkit-specific features like
-      sending to players directly and creating components for
-      entities and items.
+      sending chains to players directly and creating components
+      for entities and items.
 
 ### Versions
 
