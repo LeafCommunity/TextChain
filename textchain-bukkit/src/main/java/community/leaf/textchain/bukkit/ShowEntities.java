@@ -34,7 +34,7 @@ public class ShowEntities
     
     public static Key entityKey(EntityType type)
     {
-        return BukkitKeys.convertKey(type);
+        return BukkitToAdventure.key(type);
     }
     
     public static Key entityKey(Entity entity)

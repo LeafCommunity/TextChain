@@ -7,7 +7,7 @@ public class LegacyBukkitComponentSerializer
 {
     private LegacyBukkitComponentSerializer() { throw new UnsupportedOperationException(); }
     
-    private static final LegacyComponentSerializer  LEGACY_HEX_SECTION;
+    private static final LegacyComponentSerializer LEGACY_HEX_SECTION;
     
     private static final LegacyComponentSerializer LEGACY_HEX_AMPERSAND;
     

@@ -77,7 +77,7 @@ public class ShowItems
     
     public static Key itemKey(Material material)
     {
-        return BukkitKeys.convertKey(material);
+        return BukkitToAdventure.key(material);
     }
     
     public static Key itemKey(ItemStack item)
