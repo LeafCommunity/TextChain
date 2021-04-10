@@ -12,6 +12,7 @@
     <modules>
         <module>textchain-adventure</module>
         <module>textchain-bukkit</module>
+        <module>textchain-bungeecord</module>
     </modules>
 
     <properties>
@@ -19,9 +20,12 @@
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+        <javadocs.url>https://leafcommunity.github.io/TextChain/javadocs</javadocs.url>
+
         <!-- Dependency versions -->
         <versions.kyori.adventure>4.7.0</versions.kyori.adventure>
         <versions.kyori.adventure-platform>4.0.0-SNAPSHOT</versions.kyori.adventure-platform>
+        <versions.minecraft.bungeecord>1.16-R0.5-SNAPSHOT</versions.minecraft.bungeecord>
         <versions.minecraft.spigot>1.16.5-R0.1-SNAPSHOT</versions.minecraft.spigot>
     </properties>
 

@@ -10,13 +10,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>textchain-bukkit</artifactId>
+    <artifactId>textchain-bungeecord</artifactId>
 
     <repositories>
-        <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
         <repository>
             <id>sonatype-oss</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
@@ -25,20 +21,20 @@
 
     <dependencies>
         <!--
-        Spigot API (via spigot-repo)
+        BungeeCord API (via sonatype-oss)
         -->
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>${versions.minecraft.spigot}</version>
+            <groupId>net.md-5</groupId>
+            <artifactId>bungeecord-api</artifactId>
+            <version>${versions.minecraft.bungeecord}</version>
             <scope>provided</scope>
         </dependency>
         <!--
-        Kyori Adventure Bukkit Platform (via sonatype-oss)
+        Kyori Adventure BungeeCord Platform (via sonatype-oss)
         -->
         <dependency>
             <groupId>net.kyori</groupId>
-            <artifactId>adventure-platform-bukkit</artifactId>
+            <artifactId>adventure-platform-bungeecord</artifactId>
             <version>${versions.kyori.adventure-platform}</version>
             <scope>provided</scope>
         </dependency>

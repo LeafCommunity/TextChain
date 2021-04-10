@@ -37,7 +37,7 @@ public enum LegacyColorCodeAliases
     STRIKETHROUGH('m', TextDecoration.STRIKETHROUGH),
     UNDERLINED('n', TextDecoration.UNDERLINED, "underline"),
     ITALIC('o', TextDecoration.ITALIC),
-    RESET('r', Reset.INSTANCE, "clear");
+    RESET('r', Reset.RESET, "clear");
     
     private static final Map<Character, LegacyColorCodeAliases> aliasesByCode = new HashMap<>();
     private static final Map<TextFormat, LegacyColorCodeAliases> aliasesByFormat = new HashMap<>();
@@ -104,7 +104,7 @@ public enum LegacyColorCodeAliases
         return (isDecoration()) ? Optional.of((TextDecoration) format) : Optional.empty();
     }
     
-    public boolean isReset() { return format == Reset.INSTANCE; }
+    public boolean isReset() { return format == Reset.RESET; }
     
     public static Optional<LegacyColorCodeAliases> resolveByCharacter(char code)
     {
@@ -140,7 +140,7 @@ public enum LegacyColorCodeAliases
     
     public static final class Reset implements TextFormat
     {
-        public static final Reset INSTANCE = new Reset();
+        public static final Reset RESET = new Reset();
         
         private Reset() {}
     }
