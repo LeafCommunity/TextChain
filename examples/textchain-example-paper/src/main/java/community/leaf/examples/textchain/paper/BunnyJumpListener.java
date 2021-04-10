@@ -77,6 +77,6 @@ public class BunnyJumpListener implements Listener
                 .hover(ShowItems.itemHover(gift))
             .then(", you silly rabbit.")
             .send((Audience) player)
-            .send(plugin.showcase);
+            .send(plugin.exampleAudience());
     }
 }

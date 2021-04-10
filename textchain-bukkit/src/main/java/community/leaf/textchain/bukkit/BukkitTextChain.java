@@ -14,13 +14,13 @@ public final class BukkitTextChain extends BukkitChain<BukkitTextChain>
     }
     
     @Override
-    protected ChainConstructor<BukkitTextChain> getConstructor()
+    public ChainConstructor<BukkitTextChain> getConstructor()
     {
-        return builder -> new BukkitTextChain(builder, getAudiences());
+        return builder -> new BukkitTextChain(builder, adventure());
     }
     
     @Override
-    protected TextComponent processText(String text)
+    public TextComponent processText(String text)
     {
         return TextProcessor.none(text);
     }

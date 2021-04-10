@@ -9,7 +9,8 @@ import org.bukkit.command.CommandSender;
 
 import java.util.Objects;
 
-public abstract class BukkitChain<C extends BukkitChain<C>> extends Chain<C> implements ChainedRecipientSender<CommandSender, C>
+public abstract class BukkitChain<C extends BukkitChain<C>> extends Chain<C>
+    implements BukkitAudiencesProvider, ChainedRecipientSender<CommandSender, C>
 {
     private final BukkitAudiences audiences;
     
@@ -19,11 +20,12 @@ public abstract class BukkitChain<C extends BukkitChain<C>> extends Chain<C> imp
         this.audiences = Objects.requireNonNull(audiences, "audiences");
     }
     
-    public final BukkitAudiences getAudiences() { return audiences; }
+    @Override
+    public final BukkitAudiences adventure() { return audiences; }
     
     @Override
-    public final Audience getRecipientAudience(CommandSender recipient)
+    public final Audience recipientToAudience(CommandSender recipient)
     {
-        return getAudiences().sender(recipient);
+        return adventure().sender(recipient);
     }
 }

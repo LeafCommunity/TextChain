@@ -21,7 +21,7 @@ public interface ChainedRecipientSender<R, S extends ChainedRecipientSender<R, S
      * @param recipient     the recipient
      * @return  an audience for the recipient
      */
-    Audience getRecipientAudience(R recipient);
+    Audience recipientToAudience(R recipient);
     
     /**
      * Converts into a component message and sends
@@ -32,7 +32,7 @@ public interface ChainedRecipientSender<R, S extends ChainedRecipientSender<R, S
      *
      * @see ChainedAudienceSender#send(Audience)
      */
-    default S send(R recipient) { return send(getRecipientAudience(recipient)); }
+    default S send(R recipient) { return send(recipientToAudience(recipient)); }
     
     /**
      * Converts into a component message and sends
@@ -46,7 +46,7 @@ public interface ChainedRecipientSender<R, S extends ChainedRecipientSender<R, S
      *
      * @see ChainedAudienceSender#send(Audience, Identity)
      */
-    default S send(R recipient, Identity source) { return send(getRecipientAudience(recipient), source); }
+    default S send(R recipient, Identity source) { return send(recipientToAudience(recipient), source); }
     
     /**
      * Converts into a component message and sends
@@ -60,7 +60,7 @@ public interface ChainedRecipientSender<R, S extends ChainedRecipientSender<R, S
      *
      * @see ChainedAudienceSender#send(Audience, Identified)
      */
-    default S send(R recipient, Identified source) { return send(getRecipientAudience(recipient), source); }
+    default S send(R recipient, Identified source) { return send(recipientToAudience(recipient), source); }
     
     /**
      * Converts into a component action bar and
@@ -71,5 +71,5 @@ public interface ChainedRecipientSender<R, S extends ChainedRecipientSender<R, S
      *
      * @see ChainedAudienceSender#actionBar(Audience)
      */
-    default S actionBar(R recipient) { return actionBar(getRecipientAudience(recipient)); }
+    default S actionBar(R recipient) { return actionBar(recipientToAudience(recipient)); }
 }

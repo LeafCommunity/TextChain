@@ -563,8 +563,8 @@ public final class TextChain extends Chain<TextChain>
     public TextChain(WrappedTextComponentBuilder builder) { super(builder); }
     
     @Override
-    protected ChainConstructor<TextChain> getConstructor() { return TextChain::new; }
+    public ChainConstructor<TextChain> getConstructor() { return TextChain::new; }
     
     @Override
-    protected TextComponent processText(String text) { return TextProcessor.none(text); }
+    public TextComponent processText(String text) { return TextProcessor.none(text); }
 }

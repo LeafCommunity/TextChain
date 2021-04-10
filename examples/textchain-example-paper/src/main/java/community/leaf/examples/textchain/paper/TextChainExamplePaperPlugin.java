@@ -21,11 +21,10 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import pl.tlinkowski.annotation.basic.NullOr;
 
 public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
 {
-    protected final Showcase showcase = new Showcase();
-    
     @Override
     public void onEnable()
     {
@@ -37,7 +36,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
                 .color(NamedTextColor.GOLD)
             .then("TextChain Example (Paper version)")
             .send((Audience) getServer().getConsoleSender())
-            .send(showcase);
+            .send(exampleAudience());
     }
     
     @Override
@@ -74,7 +73,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
                             .color(TextColor.color(0xd0e2dc))
                     )
                 .send(sender)
-                .send(showcase);
+                .send(exampleAudience());
         }
         else if ("website".equalsIgnoreCase(args[0]))
         {
@@ -90,7 +89,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
                 .link("https://github.com/LeafCommunity/TextChain/")
                 .tooltip("Click to try: website")
                 .send(sender)
-                .send(showcase);
+                .send(exampleAudience());
         }
         else if ("suggestion".equalsIgnoreCase(args[0]))
         {
@@ -106,7 +105,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
                 .suggest("/" + label + " insertion <- try this one, eh?")
                 .tooltip("Click to try: suggestion")
                 .send(sender)
-                .send(showcase);
+                .send(exampleAudience());
         }
         else if ("insertion".equalsIgnoreCase(args[0]))
         {
@@ -122,7 +121,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
                 .insertion("consider yourself inserted")
                 .tooltip("Shift + click to try: insertion")
                 .send(sender)
-                .send(showcase);
+                .send(exampleAudience());
         }
         else
         {
@@ -132,7 +131,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
                     .tooltip("&4&oOops??")
                 .then(" is.")
                 .send(sender)
-                .send(showcase);
+                .send(exampleAudience());
         }
         
         return true;
@@ -161,7 +160,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
                 .italic()
                 .color(NamedTextColor.DARK_AQUA)
             .send((Audience) player)
-            .send(showcase);
+            .send(exampleAudience());
     
         ItemRarity rarity = ShowItems.rarity(hand);
         
@@ -174,7 +173,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
                 .bold()
                 .italic()
             .send((Audience) player)
-            .send(showcase);
+            .send(exampleAudience());
     }
     
     @EventHandler
@@ -191,7 +190,19 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
                 .color(TextColor.color(0xe8c3ae))
             .then("!")
             .send((Audience) player)
-            .send(showcase);
+            .send(exampleAudience());
+    }
+    
+    //
+    //
+    //
+    
+    private static @NullOr Showcase EXAMPLE;
+    
+    protected Showcase exampleAudience()
+    {
+        if (EXAMPLE == null) { EXAMPLE = new Showcase(); }
+        return EXAMPLE;
     }
     
     private class Showcase implements Audience

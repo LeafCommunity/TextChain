@@ -19,8 +19,8 @@ public final class LegacyTextChain extends Chain<LegacyTextChain>
     public LegacyTextChain(WrappedTextComponentBuilder builder) { super(builder); }
     
     @Override
-    protected ChainConstructor<LegacyTextChain> getConstructor() { return LegacyTextChain::new; }
+    public ChainConstructor<LegacyTextChain> getConstructor() { return LegacyTextChain::new; }
     
     @Override
-    protected TextComponent processText(String text) { return TextProcessor.legacyAmpersand(text); }
+    public TextComponent processText(String text) { return TextProcessor.legacyAmpersand(text); }
 }

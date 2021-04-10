@@ -7,11 +7,11 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Plugin;
+import pl.tlinkowski.annotation.basic.NullOr;
 
-@SuppressWarnings("NotNullFieldNotInitialized")
 public class TextChainExampleBungeePlugin extends Plugin implements BungeeTextChainSource
 {
-    private BungeeAudiences audiences;
+    private @NullOr BungeeAudiences audiences;
     
     @Override
     public void onEnable()
@@ -27,9 +27,20 @@ public class TextChainExampleBungeePlugin extends Plugin implements BungeeTextCh
     }
     
     @Override
-    public BungeeAudiences getAudiences()
+    public void onDisable()
     {
-        return audiences;
+        if (this.audiences != null)
+        {
+            this.audiences.close();
+            this.audiences = null;
+        }
+    }
+    
+    @Override
+    public BungeeAudiences adventure()
+    {
+        if (this.audiences != null) { return this.audiences; }
+        throw new IllegalStateException("Audiences not initialized (plugin is disabled).");
     }
     
     public static class ExampleCommand extends Command

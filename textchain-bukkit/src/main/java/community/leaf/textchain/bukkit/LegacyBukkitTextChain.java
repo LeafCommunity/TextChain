@@ -13,13 +13,13 @@ public final class LegacyBukkitTextChain extends BukkitChain<LegacyBukkitTextCha
     }
     
     @Override
-    protected ChainConstructor<LegacyBukkitTextChain> getConstructor()
+    public ChainConstructor<LegacyBukkitTextChain> getConstructor()
     {
-        return builder -> new LegacyBukkitTextChain(builder, getAudiences());
+        return builder -> new LegacyBukkitTextChain(builder, adventure());
     }
     
     @Override
-    protected TextComponent processText(String text)
+    public TextComponent processText(String text)
     {
         return LegacyBukkitComponentSerializer.legacyHexAmpersand().deserialize(text);
     }

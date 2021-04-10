@@ -14,13 +14,13 @@ public final class BungeeTextChain extends BungeeChain<BungeeTextChain>
     }
     
     @Override
-    protected ChainConstructor<BungeeTextChain> getConstructor()
+    public ChainConstructor<BungeeTextChain> getConstructor()
     {
-        return builder -> new BungeeTextChain(builder, getAudiences());
+        return builder -> new BungeeTextChain(builder, adventure());
     }
     
     @Override
-    protected TextComponent processText(String text)
+    public TextComponent processText(String text)
     {
         return TextProcessor.none(text);
     }

@@ -24,18 +24,16 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import pl.tlinkowski.annotation.basic.NullOr;
 
-@SuppressWarnings("NotNullFieldNotInitialized")
 public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTextChainSource, Listener
 {
-    private BukkitAudiences audiences;
-    private Showcase showcase;
+    private @NullOr BukkitAudiences audiences;
     
     @Override
     public void onEnable()
     {
         this.audiences = BukkitAudiences.create(this);
-        this.showcase = new Showcase();
         
         getServer().getPluginManager().registerEvents(this, this);
         getServer().getPluginManager().registerEvents(new VillagerPickpocketListener(this), this);
@@ -45,11 +43,25 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
                 .color(NamedTextColor.DARK_AQUA)
             .then("TextChain Example (Bukkit version)")
             .send(audiences.console())
-            .send(showcase);
+            .send(exampleAudience());
     }
     
     @Override
-    public BukkitAudiences getAudiences() { return audiences; }
+    public void onDisable()
+    {
+        if (this.audiences != null)
+        {
+            this.audiences.close();
+            this.audiences = null;
+        }
+    }
+    
+    @Override
+    public BukkitAudiences adventure()
+    {
+        if (this.audiences != null) { return this.audiences; }
+        throw new IllegalStateException("Audiences not initialized (plugin is disabled).");
+    }
     
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
@@ -64,8 +76,8 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
                 .color(TextColor.color(0xFF0000))
                 .tooltip("Click here to respond with \"pretty good\"")
                 .suggest("pretty good")
-            .send(getAudiences().sender(sender))
-            .send(showcase);
+            .send(adventure().sender(sender))
+            .send(exampleAudience());
             
         return true;
     }
@@ -93,7 +105,7 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
                 .italic()
                 .color(NamedTextColor.DARK_AQUA)
             .send(player)
-            .send(showcase);
+            .send(exampleAudience());
         
         ItemRarity rarity = ShowItems.rarity(tool);
         
@@ -106,7 +118,7 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
                 .bold()
                 .italic()
             .send(player)
-            .send(showcase);
+            .send(exampleAudience());
     }
     
     @EventHandler
@@ -123,7 +135,19 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
                 .color(TextColor.color(0xe0c0e8))
             .then(".")
             .send(player)
-            .send(showcase);
+            .send(exampleAudience());
+    }
+    
+    //
+    //
+    //
+    
+    private static @NullOr Showcase EXAMPLE;
+    
+    private Showcase exampleAudience()
+    {
+        if (EXAMPLE == null) { EXAMPLE = new Showcase(); }
+        return EXAMPLE;
     }
     
     private class Showcase implements Audience
@@ -135,7 +159,7 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
                 .then("Sent JSON component: ")
                 .then(GsonComponentSerializer.gson().serialize(message))
                 .color(NamedTextColor.AQUA)
-                .send(audiences.console());
+                .send(adventure().console());
         }
     }
 }

@@ -6,7 +6,7 @@ import community.leaf.textchain.adventure.WrappedTextComponentBuilder;
 import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 import net.kyori.adventure.text.TextComponent;
 
-public class LegacyBungeeTextChain extends BungeeChain<LegacyBungeeTextChain>
+public final class LegacyBungeeTextChain extends BungeeChain<LegacyBungeeTextChain>
 {
     public LegacyBungeeTextChain(WrappedTextComponentBuilder builder, BungeeAudiences audiences)
     {
@@ -14,13 +14,13 @@ public class LegacyBungeeTextChain extends BungeeChain<LegacyBungeeTextChain>
     }
     
     @Override
-    protected ChainConstructor<LegacyBungeeTextChain> getConstructor()
+    public ChainConstructor<LegacyBungeeTextChain> getConstructor()
     {
-        return builder -> new LegacyBungeeTextChain(builder, getAudiences());
+        return builder -> new LegacyBungeeTextChain(builder, adventure());
     }
     
     @Override
-    protected TextComponent processText(String text)
+    public TextComponent processText(String text)
     {
         return TextProcessor.legacyAmpersand(text);
     }

@@ -9,7 +9,8 @@ import net.md_5.bungee.api.CommandSender;
 
 import java.util.Objects;
 
-public abstract class BungeeChain<C extends BungeeChain<C>> extends Chain<C> implements ChainedRecipientSender<CommandSender, C>
+public abstract class BungeeChain<C extends BungeeChain<C>> extends Chain<C>
+    implements BungeeAudiencesProvider, ChainedRecipientSender<CommandSender, C>
 {
     private final BungeeAudiences audiences;
     
@@ -19,11 +20,12 @@ public abstract class BungeeChain<C extends BungeeChain<C>> extends Chain<C> imp
         this.audiences = Objects.requireNonNull(audiences, "audiences");
     }
     
-    public final BungeeAudiences getAudiences() { return audiences; }
+    @Override
+    public final BungeeAudiences adventure() { return audiences; }
     
     @Override
-    public final Audience getRecipientAudience(CommandSender recipient)
+    public final Audience recipientToAudience(CommandSender recipient)
     {
-        return audiences.sender(recipient);
+        return adventure().sender(recipient);
     }
 }
