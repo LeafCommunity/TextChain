@@ -22,7 +22,7 @@ public abstract class BungeeChain<C extends BungeeChain<C>> extends Chain<C> imp
     public final BungeeAudiences getAudiences() { return audiences; }
     
     @Override
-    public Audience getRecipientAudience(CommandSender recipient)
+    public final Audience getRecipientAudience(CommandSender recipient)
     {
         return audiences.sender(recipient);
     }

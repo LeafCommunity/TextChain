@@ -1,0 +1,3 @@
+main: community.leaf.examples.textchain.bungeecord.TextChainExampleBungeePlugin
+name: ${project.name}
+version: ${revision}

@@ -10,35 +10,43 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>textchain-example-paper</artifactId>
+    <artifactId>textchain-example-bungeecord</artifactId>
 
     <properties>
-        <shade.relocation>community.leaf.examples.textchain.paper.shaded</shade.relocation>
+        <shade.relocation>community.leaf.examples.textchain.bungeecord.shaded</shade.relocation>
     </properties>
 
     <repositories>
         <repository>
-            <id>papermc-repo</id>
-            <url>https://papermc.io/repo/repository/maven-public/</url>
+            <id>sonatype-oss</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </repository>
     </repositories>
 
     <dependencies>
         <!--
-        Paper API (via papermc-repo)
+        BungeeCord API (via sonatype-oss)
         -->
         <dependency>
-            <groupId>com.destroystokyo.paper</groupId>
-            <artifactId>paper-api</artifactId>
-            <version>${versions.minecraft.spigot}</version>
+            <groupId>net.md-5</groupId>
+            <artifactId>bungeecord-api</artifactId>
+            <version>${versions.minecraft.bungeecord}</version>
             <scope>provided</scope>
         </dependency>
         <!--
-        TextChain (via local project)
+        Kyori Adventure BungeeCord Platform (via sonatype-oss)
+        -->
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-platform-bungeecord</artifactId>
+            <version>${versions.kyori.adventure-platform}</version>
+        </dependency>
+        <!--
+        TextChain BungeeCord (via local project)
         -->
         <dependency>
             <groupId>community.leaf.textchain</groupId>
-            <artifactId>textchain-bukkit</artifactId>
+            <artifactId>textchain-bungeecord</artifactId>
             <version>${revision}</version>
         </dependency>
     </dependencies>
@@ -69,6 +77,11 @@
                             <pattern>community.leaf.textchain</pattern>
                             <shadedPattern>${shade.relocation}.textchain</shadedPattern>
                         </relocation>
+                        <!-- Kyori Adventure -->
+                        <relocation>
+                            <pattern>net.kyori</pattern>
+                            <shadedPattern>${shade.relocation}.net.kyori</shadedPattern>
+                        </relocation>
                     </relocations>
                     <artifactSet>
                         <!-- Exclude annotations from built jar -->
@@ -84,5 +97,6 @@
             </plugin>
         </plugins>
     </build>
+
 
 </project>

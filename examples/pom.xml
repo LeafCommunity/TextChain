@@ -15,6 +15,7 @@
 
     <modules>
         <module>textchain-example-bukkit</module>
+        <module>textchain-example-bungeecord</module>
         <module>textchain-example-paper</module>
     </modules>
 
