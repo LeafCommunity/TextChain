@@ -2,54 +2,39 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>textchain-parent</artifactId>
         <groupId>community.leaf.textchain</groupId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
     <artifactId>textchain-bungee-chat</artifactId>
 
-    <repositories>
-        <repository>
-            <id>sonatype-oss</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </repository>
-    </repositories>
-
     <dependencies>
-        <!--
-        BungeeCord API (via sonatype-oss)
-        -->
+        <!-- BungeeCord API (via sonatype-oss) -->
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-api</artifactId>
             <version>${versions.minecraft.bungeecord}</version>
             <scope>provided</scope>
         </dependency>
-        <!--
-        Kyori Adventure API (via maven-central)
-        -->
+        <!-- Kyori Adventure API (via maven-central) -->
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-api</artifactId>
             <version>${versions.kyori.adventure}</version>
             <scope>provided</scope>
         </dependency>
-        <!--
-        Kyori Adventure BungeeCord Serializer (via sonatype-oss)
-        -->
+        <!-- Kyori Adventure BungeeCord Serializer (via sonatype-oss) -->
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-bungeecord</artifactId>
             <version>${versions.kyori.adventure-platform}</version>
             <scope>provided</scope>
         </dependency>
-        <!--
-        TextChain (via local project)
-        -->
+        <!-- TextChain (via local project) -->
         <dependency>
             <groupId>community.leaf.textchain</groupId>
             <artifactId>textchain-adventure</artifactId>
