@@ -74,8 +74,12 @@ See also:
       wherever Adventure runs.
 - **`textchain-bukkit`** → 🚰
     - TextChain with additional Bukkit-specific features like
-      sending chains to players directly and creating components
-      for entities and items.
+      sending chains directly to players and helpful utilities
+      like creating components for entities, items, and converting
+      from Bukkit objects to Adventure-equivalent objects.
+- **`textchain-bungeecord`** → 🟠
+    - TextChain with additional Bungee-specific features like
+      sending chains directly to proxied players.
 
 ### Versions
 

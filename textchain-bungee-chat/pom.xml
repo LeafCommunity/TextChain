@@ -39,7 +39,7 @@
             <scope>provided</scope>
         </dependency>
         <!--
-        Kyori Adventure GSON Serializer (via maven-central)
+        Kyori Adventure BungeeCord Serializer (via sonatype-oss)
         -->
         <dependency>
             <groupId>net.kyori</groupId>
