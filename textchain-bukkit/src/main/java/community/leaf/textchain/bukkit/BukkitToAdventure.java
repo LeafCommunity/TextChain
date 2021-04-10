@@ -4,7 +4,7 @@ import community.leaf.textchain.adventure.LegacyColorCodeAliases;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import net.md_5.bungee.api.ChatColor;
+import org.bukkit.ChatColor;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
 
@@ -27,12 +27,7 @@ public class BukkitToAdventure
     
     public static LegacyColorCodeAliases format(ChatColor color)
     {
-        return LegacyColorCodeAliases.resolveByAlias(color.getName()).orElseThrow();
-    }
-    
-    public static LegacyColorCodeAliases format(org.bukkit.ChatColor color)
-    {
-        return format(color.asBungee());
+        return LegacyColorCodeAliases.resolveByCharacter(color.getChar()).orElseThrow();
     }
     
     public static Optional<NamedTextColor> color(ChatColor color)
@@ -40,18 +35,8 @@ public class BukkitToAdventure
         return format(color).asColor();
     }
     
-    public static Optional<NamedTextColor> color(org.bukkit.ChatColor color)
-    {
-        return color(color.asBungee());
-    }
-    
     public static Optional<TextDecoration> decoration(ChatColor color)
     {
         return format(color).asDecoration();
-    }
-    
-    public static Optional<TextDecoration> decoration(org.bukkit.ChatColor color)
-    {
-        return decoration(color.asBungee());
     }
 }

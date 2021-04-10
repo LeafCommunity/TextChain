@@ -50,6 +50,14 @@
             <artifactId>textchain-adventure</artifactId>
             <version>${revision}</version>
         </dependency>
+        <!--
+        TextChain Bungee Chat (via local project)
+        -->
+        <dependency>
+            <groupId>community.leaf.textchain</groupId>
+            <artifactId>textchain-bungee-chat</artifactId>
+            <version>${revision}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -63,6 +71,10 @@
                         <offlineLink>
                             <url>${javadocs.url}/textchain-adventure/${revision}/</url>
                             <location>${project.basedir}/../textchain-adventure/target/apidocs/</location>
+                        </offlineLink>
+                        <offlineLink>
+                            <url>${javadocs.url}/textchain-bungee-chat/${revision}/</url>
+                            <location>${project.basedir}/../textchain-bungee-chat/target/apidocs/</location>
                         </offlineLink>
                     </offlineLinks>
                 </configuration>

@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>textchain-bungeecord</artifactId>
+    <artifactId>textchain-bungee-chat</artifactId>
 
     <repositories>
         <repository>
@@ -30,11 +30,20 @@
             <scope>provided</scope>
         </dependency>
         <!--
-        Kyori Adventure BungeeCord Platform (via sonatype-oss)
+        Kyori Adventure API (via maven-central)
         -->
         <dependency>
             <groupId>net.kyori</groupId>
-            <artifactId>adventure-platform-bungeecord</artifactId>
+            <artifactId>adventure-api</artifactId>
+            <version>${versions.kyori.adventure}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--
+        Kyori Adventure GSON Serializer (via maven-central)
+        -->
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-bungeecord</artifactId>
             <version>${versions.kyori.adventure-platform}</version>
             <scope>provided</scope>
         </dependency>
@@ -44,14 +53,6 @@
         <dependency>
             <groupId>community.leaf.textchain</groupId>
             <artifactId>textchain-adventure</artifactId>
-            <version>${revision}</version>
-        </dependency>
-        <!--
-        TextChain Bungee Chat (via local project)
-        -->
-        <dependency>
-            <groupId>community.leaf.textchain</groupId>
-            <artifactId>textchain-bungee-chat</artifactId>
             <version>${revision}</version>
         </dependency>
     </dependencies>
@@ -67,10 +68,6 @@
                         <offlineLink>
                             <url>${javadocs.url}/textchain-adventure/${revision}/</url>
                             <location>${project.basedir}/../textchain-adventure/target/apidocs/</location>
-                        </offlineLink>
-                        <offlineLink>
-                            <url>${javadocs.url}/textchain-bungee-chat/${revision}/</url>
-                            <location>${project.basedir}/../textchain-bungee-chat/target/apidocs/</location>
                         </offlineLink>
                     </offlineLinks>
                 </configuration>
