@@ -13,10 +13,10 @@
     <artifactId>textchain-common-bungee-chat</artifactId>
 
     <dependencies>
-        <!-- BungeeCord API (via sonatype-oss) -->
+        <!-- BungeeCord Chat API (via sonatype-oss) -->
         <dependency>
             <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-api</artifactId>
+            <artifactId>bungeecord-chat</artifactId>
             <version>${versions.minecraft.bungeecord}</version>
             <scope>provided</scope>
         </dependency>

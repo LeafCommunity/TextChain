@@ -148,13 +148,6 @@
                 </executions>
             </plugin>
         </plugins>
-        <resources>
-            <!-- Filter resource files -->
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
     </build>
 
 </project>
