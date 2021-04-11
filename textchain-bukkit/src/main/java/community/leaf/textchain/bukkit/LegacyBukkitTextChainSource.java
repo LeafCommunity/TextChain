@@ -2,8 +2,10 @@ package community.leaf.textchain.bukkit;
 
 import community.leaf.textchain.adventure.ChainConstructor;
 import community.leaf.textchain.adventure.ChainSource;
+import community.leaf.textchain.platforms.AdventureProvider;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 
-public interface LegacyBukkitTextChainSource extends BukkitAudiencesProvider, ChainSource<LegacyBukkitTextChain>
+public interface LegacyBukkitTextChainSource extends AdventureProvider<BukkitAudiences>, ChainSource<LegacyBukkitTextChain>
 {
     @Override
     default ChainConstructor<LegacyBukkitTextChain> getChainConstructor()

@@ -197,15 +197,15 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
     //
     //
     
-    private static @NullOr Showcase EXAMPLE;
+    private static @NullOr IgnoreMe EXAMPLE;
     
-    protected Showcase exampleAudience()
+    protected IgnoreMe exampleAudience()
     {
-        if (EXAMPLE == null) { EXAMPLE = new Showcase(); }
+        if (EXAMPLE == null) { EXAMPLE = new IgnoreMe(); }
         return EXAMPLE;
     }
     
-    private class Showcase implements Audience
+    private class IgnoreMe implements Audience
     {
         @Override
         public void sendMessage(final Identity source, final Component message, final MessageType type)

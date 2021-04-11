@@ -10,7 +10,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>textchain-bungee-chat</artifactId>
+    <artifactId>textchain-common-bungee-chat</artifactId>
 
     <dependencies>
         <!-- BungeeCord API (via sonatype-oss) -->

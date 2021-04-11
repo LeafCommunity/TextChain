@@ -142,15 +142,15 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
     //
     //
     
-    private static @NullOr Showcase EXAMPLE;
+    private static @NullOr IgnoreMe EXAMPLE;
     
-    private Showcase exampleAudience()
+    private IgnoreMe exampleAudience()
     {
-        if (EXAMPLE == null) { EXAMPLE = new Showcase(); }
+        if (EXAMPLE == null) { EXAMPLE = new IgnoreMe(); }
         return EXAMPLE;
     }
     
-    private class Showcase implements Audience
+    private class IgnoreMe implements Audience
     {
         @Override
         public void sendMessage(final Identity source, final Component message, final MessageType type)

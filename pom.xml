@@ -11,7 +11,8 @@
 
     <modules>
         <module>textchain-adventure</module>
-        <module>textchain-bungee-chat</module>
+        <module>textchain-common-bungee-chat</module>
+        <module>textchain-common-platforms</module>
         <module>textchain-bukkit</module>
         <module>textchain-bungeecord</module>
     </modules>
