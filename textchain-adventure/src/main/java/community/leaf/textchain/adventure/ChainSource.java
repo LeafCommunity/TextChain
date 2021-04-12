@@ -5,6 +5,7 @@ package community.leaf.textchain.adventure;
  *
  * @param <C>   chain type
  */
+@FunctionalInterface
 public interface ChainSource<C extends Chain<C>>
 {
     /**

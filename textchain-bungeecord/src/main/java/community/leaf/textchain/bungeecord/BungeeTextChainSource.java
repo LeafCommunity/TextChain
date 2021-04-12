@@ -5,6 +5,7 @@ import community.leaf.textchain.adventure.ChainSource;
 import community.leaf.textchain.platforms.AdventureProvider;
 import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 
+@FunctionalInterface
 public interface BungeeTextChainSource extends AdventureProvider<BungeeAudiences>, ChainSource<BungeeTextChain>
 {
     @Override

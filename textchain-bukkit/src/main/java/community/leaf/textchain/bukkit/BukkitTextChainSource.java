@@ -5,6 +5,7 @@ import community.leaf.textchain.adventure.ChainSource;
 import community.leaf.textchain.platforms.AdventureProvider;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 
+@FunctionalInterface
 public interface BukkitTextChainSource extends AdventureProvider<BukkitAudiences>, ChainSource<BukkitTextChain>
 {
     @Override
