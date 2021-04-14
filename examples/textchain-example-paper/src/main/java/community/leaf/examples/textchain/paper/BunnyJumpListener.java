@@ -26,7 +26,7 @@ public class BunnyJumpListener implements Listener
         Player player = event.getPlayer();
         
         boolean isBunny =
-            player.getNearbyEntities(10, 10, 10).stream()
+            player.getNearbyEntities(5, 3, 5).stream()
                 .map(Entity::getType)
                 .anyMatch(type -> type == EntityType.RABBIT);
         

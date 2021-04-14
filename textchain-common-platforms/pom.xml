@@ -20,6 +20,12 @@
             <version>${versions.kyori.adventure-platform}</version>
             <scope>provided</scope>
         </dependency>
+        <!-- TextChain (via local project) -->
+        <dependency>
+            <groupId>community.leaf.textchain</groupId>
+            <artifactId>textchain-adventure</artifactId>
+            <version>${revision}</version>
+        </dependency>
     </dependencies>
 
 </project>
