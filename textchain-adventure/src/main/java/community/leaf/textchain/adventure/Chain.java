@@ -183,7 +183,7 @@ public abstract class Chain<C extends Chain<C>> implements ChainedAudienceSender
     public C extra(Consumer<? super C> consumer)
     {
         Objects.requireNonNull(consumer, "consumer");
-        consumer.accept(getBuilder().peekOrCreateChild().wrap(getConstructor()));
+        consumer.accept(getBuilder().peekOrCreateChild().into(getConstructor()));
         return self();
     }
     
@@ -202,7 +202,7 @@ public abstract class Chain<C extends Chain<C>> implements ChainedAudienceSender
     public C thenExtra(Consumer<? super C> consumer)
     {
         Objects.requireNonNull(consumer, "consumer");
-        consumer.accept(getBuilder().createNextChild().wrap(getConstructor()));
+        consumer.accept(getBuilder().createNextChild().into(getConstructor()));
         return self();
     }
     

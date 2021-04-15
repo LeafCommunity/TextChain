@@ -43,7 +43,7 @@ public class WrappedTextComponentBuilder implements ComponentLike
     public TextComponent.Builder getComponentBuilder() { return builder; }
     
     /**
-     * Wrap this wrapper into something else.
+     * Puts this wrapped builder into something else.
      * Applies the wrapper function with {@code this}
      * instance and returns the result.
      *
@@ -51,7 +51,7 @@ public class WrappedTextComponentBuilder implements ComponentLike
      * @param <W>   wrapper type
      * @return  result of applying the wrapper function
      */
-    public <W> W wrap(Function<WrappedTextComponentBuilder, W> wrapper)
+    public <W> W into(Function<WrappedTextComponentBuilder, W> wrapper)
     {
         return wrapper.apply(this);
     }

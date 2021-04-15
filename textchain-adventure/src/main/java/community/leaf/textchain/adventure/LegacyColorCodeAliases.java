@@ -55,7 +55,7 @@ public enum LegacyColorCodeAliases
         }
     }
     
-    private final Set<String> strictAliases = new LinkedHashSet<>(getMutationsOfAlias(name()));
+    private final Set<String> strictAliases = new LinkedHashSet<>(getPermutationsOfAlias(name()));
     private final Set<String> extendedAliases = new LinkedHashSet<>();
     
     private final char character;
@@ -67,10 +67,10 @@ public enum LegacyColorCodeAliases
         this.format = format;
         this.extendedAliases.addAll(strictAliases);
         
-        Arrays.stream(aliases).map(this::getMutationsOfAlias).forEach(this.extendedAliases::addAll);
+        Arrays.stream(aliases).map(this::getPermutationsOfAlias).forEach(this.extendedAliases::addAll);
     }
     
-    private List<String> getMutationsOfAlias(String alias)
+    private List<String> getPermutationsOfAlias(String alias)
     {
         List<String> mutations = new ArrayList<>();
         String lowercase = alias.toLowerCase();
