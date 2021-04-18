@@ -1,4 +1,4 @@
- # TextChain ⛓️
+ # ⛓️ TextChain
 
 [![](https://jitpack.io/v/community.leaf/textchain.svg)](https://jitpack.io/#community.leaf/textchain "Get maven artifacts on JitPack")
 [![](https://img.shields.io/badge/License-MIT-blue)](./LICENSE "Project license: MIT")
