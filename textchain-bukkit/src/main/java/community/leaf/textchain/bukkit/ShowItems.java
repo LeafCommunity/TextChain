@@ -26,6 +26,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class ShowItems
 {
     private ShowItems() { throw new UnsupportedOperationException(); }
@@ -77,7 +78,7 @@ public class ShowItems
     
     public static Key itemKey(Material material)
     {
-        return BukkitToAdventure.key(material);
+        return BukkitToAdventure.keys().key(material::getKey);
     }
     
     public static Key itemKey(ItemStack item)

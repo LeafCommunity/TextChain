@@ -1,42 +1,28 @@
 package community.leaf.textchain.bukkit;
 
 import community.leaf.textchain.adventure.LegacyColorCodeAliases;
-import net.kyori.adventure.key.Key;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
+import community.leaf.textchain.bukkit.converters.BukkitEntityConverter;
+import community.leaf.textchain.bukkit.converters.NamespacedKeyConverter;
+import community.leaf.textchain.platforms.ColorConverter;
+import community.leaf.textchain.platforms.delegates.AdventureEntity;
 import org.bukkit.ChatColor;
-import org.bukkit.Keyed;
-import org.bukkit.NamespacedKey;
-
-import java.util.Optional;
+import org.bukkit.entity.Entity;
 
 public class BukkitToAdventure
 {
     private BukkitToAdventure() { throw new UnsupportedOperationException(); }
     
-    @SuppressWarnings("PatternValidation")
-    public static Key key(NamespacedKey key)
+    private static final NamespacedKeyConverter keys = new NamespacedKeyConverter();
+    private static final BukkitEntityConverter entities = new BukkitEntityConverter(keys);
+    
+    public static ColorConverter<ChatColor> colors()
     {
-        return Key.key(key.getNamespace(), key.getKey());
+        return color -> LegacyColorCodeAliases.resolveByCharacter(color.getChar()).orElseThrow();
     }
     
-    public static Key key(Keyed keyed)
-    {
-        return key(keyed.getKey());
-    }
+    public static NamespacedKeyConverter keys() { return keys; }
     
-    public static LegacyColorCodeAliases format(ChatColor color)
-    {
-        return LegacyColorCodeAliases.resolveByCharacter(color.getChar()).orElseThrow();
-    }
+    public static BukkitEntityConverter entities() { return entities; }
     
-    public static Optional<NamedTextColor> color(ChatColor color)
-    {
-        return format(color).asColor();
-    }
-    
-    public static Optional<TextDecoration> decoration(ChatColor color)
-    {
-        return format(color).asDecoration();
-    }
+    public static AdventureEntity<Entity> entity(Entity entity) { return new AdventureEntity<>(entities, entity); }
 }

@@ -20,6 +20,7 @@ import java.lang.invoke.MethodHandle;
 import java.util.Objects;
 import java.util.Optional;
 
+@Deprecated
 public class ShowEntities
 {
     private ShowEntities() { throw new UnsupportedOperationException(); }
@@ -34,7 +35,7 @@ public class ShowEntities
     
     public static Key entityKey(EntityType type)
     {
-        return BukkitToAdventure.key(type);
+        return BukkitToAdventure.keys().key(type::getKey);
     }
     
     public static Key entityKey(Entity entity)
