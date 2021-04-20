@@ -26,7 +26,7 @@ public interface EntityConverter<T, E>
     
     void customName(E entity, ComponentLike componentLike);
     
-    default Key entityKey(E entity)
+    default Key key(E entity)
     {
         return types().key(type(entity));
     }
@@ -34,7 +34,7 @@ public interface EntityConverter<T, E>
     default HoverEvent<ShowEntity> hover(E entity, @NullOr ComponentLike customName)
     {
         @NullOr Component name = (customName == null) ? null : Components.safelyAsComponent(customName);
-        return HoverEvent.showEntity(ShowEntity.of(entityKey(entity), uuid(entity), name));
+        return HoverEvent.showEntity(ShowEntity.of(key(entity), uuid(entity), name));
     }
     
     default HoverEvent<ShowEntity> hover(E entity)

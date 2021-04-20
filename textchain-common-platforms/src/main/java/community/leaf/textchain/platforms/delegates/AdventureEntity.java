@@ -32,7 +32,7 @@ public class AdventureEntity<E> implements ComponentLike, HoverEventSource<ShowE
     public UUID uuid() { return converter.uuid(entity); }
     
     @Override
-    public Key key() { return converter.entityKey(entity); }
+    public Key key() { return converter.key(entity); }
     
     public String translationKey() { return converter.translationKey(entity); }
     
