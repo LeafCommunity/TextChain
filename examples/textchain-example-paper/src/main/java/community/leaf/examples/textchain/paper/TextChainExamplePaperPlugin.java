@@ -2,8 +2,7 @@ package community.leaf.examples.textchain.paper;
 
 import community.leaf.textchain.adventure.ItemRarity;
 import community.leaf.textchain.adventure.TextChain;
-import community.leaf.textchain.bukkit.ShowEntities;
-import community.leaf.textchain.bukkit.ShowItems;
+import community.leaf.textchain.bukkit.BukkitToAdventure;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.audience.MessageType;
 import net.kyori.adventure.identity.Identity;
@@ -146,27 +145,27 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
         
         TextChain.chain()
             .then("You placed ")
-            .then(ShowItems.itemComponentInBrackets(placed))
+            .then(BukkitToAdventure.items().componentInBrackets(placed))
                 .color(NamedTextColor.RED)
             .then(" ")
-            .thenExtra(extra -> extra.then("(").then(ShowItems.itemClientName(placed)).then(")"))
+            .thenExtra(extra -> extra.then("(").then(BukkitToAdventure.items().clientName(placed)).then(")"))
                 .italic()
                 .color(NamedTextColor.DARK_RED)
             .then(" using ")
-            .then(ShowItems.itemComponentInBrackets(hand))
+            .then(BukkitToAdventure.items().componentInBrackets(hand))
                 .color(NamedTextColor.AQUA)
             .then(" ")
-            .thenExtra(extra -> extra.then("(").then(ShowItems.itemClientName(hand)).then(")"))
+            .thenExtra(extra -> extra.then("(").then(BukkitToAdventure.items().clientName(hand)).then(")"))
                 .italic()
                 .color(NamedTextColor.DARK_AQUA)
             .send((Audience) player)
             .send(exampleAudience());
     
-        ItemRarity rarity = ShowItems.rarity(hand);
+        ItemRarity rarity = BukkitToAdventure.items().rarity(hand);
         
         TextChain.chain()
             .then("Rarity of ")
-            .then(ShowItems.itemComponentInBrackets(hand))
+            .then(BukkitToAdventure.items().componentInBrackets(hand))
                 .color(rarity)
             .then(" is ")
             .then(rarity)
@@ -186,7 +185,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
         
         TextChain.chain()
             .then("You damaged ")
-            .then(ShowEntities.entityComponent(damaged))
+            .then(BukkitToAdventure.entities().component(damaged))
                 .color(TextColor.color(0xe8c3ae))
             .then("!")
             .send((Audience) player)

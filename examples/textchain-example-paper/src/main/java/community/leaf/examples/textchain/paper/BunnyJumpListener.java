@@ -2,7 +2,7 @@ package community.leaf.examples.textchain.paper;
 
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import community.leaf.textchain.adventure.TextChain;
-import community.leaf.textchain.bukkit.ShowItems;
+import community.leaf.textchain.bukkit.BukkitToAdventure;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Material;
@@ -74,7 +74,7 @@ public class BunnyJumpListener implements Listener
             .then("treat")
                 .italic()
                 .color(TextColor.color(0xfcad25))
-                .hover(ShowItems.itemHover(gift))
+                .hover(BukkitToAdventure.items().hover(gift))
             .then(", you silly rabbit.")
             .send((Audience) player)
             .send(plugin.exampleAudience());

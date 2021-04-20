@@ -10,9 +10,4 @@ public interface KeyConverter<K, H>
     Key key(K key);
     
     Keyed keyed(H keyed);
-    
-    default Key key(Supplier<K> key)
-    {
-        return key(key.get());
-    }
 }

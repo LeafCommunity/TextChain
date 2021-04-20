@@ -34,9 +34,9 @@ public class AdventureEntity<E> implements ComponentLike, HoverEventSource<ShowE
     @Override
     public Key key() { return converter.entityKey(entity); }
     
-    public String translationKey() { return converter.entityTranslationKey(entity); }
+    public String translationKey() { return converter.translationKey(entity); }
     
-    public TranslatableComponent asTranslatable() { return converter.entityTranslatable(entity); }
+    public TranslatableComponent asTranslatable() { return converter.translatable(entity); }
     
     public Optional<Component> customName() { return converter.customName(entity); }
     

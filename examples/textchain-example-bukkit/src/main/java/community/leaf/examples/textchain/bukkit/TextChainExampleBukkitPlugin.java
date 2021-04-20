@@ -3,8 +3,7 @@ package community.leaf.examples.textchain.bukkit;
 import community.leaf.textchain.adventure.ItemRarity;
 import community.leaf.textchain.adventure.TextChain;
 import community.leaf.textchain.bukkit.BukkitTextChainSource;
-import community.leaf.textchain.bukkit.ShowEntities;
-import community.leaf.textchain.bukkit.ShowItems;
+import community.leaf.textchain.bukkit.BukkitToAdventure;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.audience.MessageType;
 import net.kyori.adventure.identity.Identity;
@@ -91,27 +90,27 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
         
         TextChain.chain(this)
             .then("You broke ")
-            .then(ShowItems.itemComponentInBrackets(broken))
+            .then(BukkitToAdventure.items().componentInBrackets(broken))
                 .color(NamedTextColor.RED)
             .then(" ")
-            .thenExtra(extra -> extra.then("(").then(ShowItems.itemClientName(broken)).then(")"))
+            .thenExtra(extra -> extra.then("(").then(BukkitToAdventure.items().clientName(broken)).then(")"))
                 .italic()
                 .color(NamedTextColor.DARK_RED)
             .then(" using ")
-            .then(ShowItems.itemComponentInBrackets(tool))
+            .then(BukkitToAdventure.items().componentInBrackets(tool))
                 .color(NamedTextColor.AQUA)
             .then(" ")
-            .thenExtra(extra -> extra.then("(").then(ShowItems.itemClientName(tool)).then(")"))
+            .thenExtra(extra -> extra.then("(").then(BukkitToAdventure.items().clientName(tool)).then(")"))
                 .italic()
                 .color(NamedTextColor.DARK_AQUA)
             .send(player)
             .send(exampleAudience());
         
-        ItemRarity rarity = ShowItems.rarity(tool);
+        ItemRarity rarity = BukkitToAdventure.items().rarity(tool);
         
         TextChain.chain(this)
             .then("Rarity of ")
-            .then(ShowItems.itemComponentInBrackets(tool))
+            .then(BukkitToAdventure.items().componentInBrackets(tool))
                 .color(rarity)
             .then(" is ")
             .then(rarity)
@@ -131,7 +130,7 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
         
         TextChain.chain(this)
             .then("You clicked on ")
-            .then(ShowEntities.entityComponent(clicked))
+            .then(BukkitToAdventure.entities().component(clicked))
                 .color(TextColor.color(0xe0c0e8))
             .then(".")
             .send(player)

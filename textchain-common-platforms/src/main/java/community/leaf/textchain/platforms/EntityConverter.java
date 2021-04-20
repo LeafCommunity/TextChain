@@ -16,13 +16,11 @@ import java.util.UUID;
 
 public interface EntityConverter<T, E>
 {
-    T typeOfEntity(E entity);
+    EntityTypeConverter<T> types();
     
-    Key typeKey(T type);
+    T type(E entity);
     
     UUID uuid(E entity);
-    
-    String typeTranslationKey(T type);
     
     Optional<Component> customName(E entity);
     
@@ -30,7 +28,7 @@ public interface EntityConverter<T, E>
     
     default Key entityKey(E entity)
     {
-        return typeKey(typeOfEntity(entity));
+        return types().key(type(entity));
     }
     
     default HoverEvent<ShowEntity> hover(E entity, @NullOr ComponentLike customName)
@@ -44,24 +42,19 @@ public interface EntityConverter<T, E>
         return hover(entity, customName(entity).orElse(null));
     }
     
-    default String entityTranslationKey(E entity)
+    default String translationKey(E entity)
     {
-        return typeTranslationKey(typeOfEntity(entity));
+        return types().translationKey(type(entity));
     }
     
-    default TranslatableComponent typeTranslatable(T type)
+    default TranslatableComponent translatable(E entity)
     {
-        return Component.translatable(typeTranslationKey(type));
-    }
-    
-    default TranslatableComponent entityTranslatable(E entity)
-    {
-        return typeTranslatable(typeOfEntity(entity));
+        return types().translatable(type(entity));
     }
     
     default Component customOrTranslatableName(E entity)
     {
-        return customName(entity).orElseGet(() -> entityTranslatable(entity));
+        return customName(entity).orElseGet(() -> translatable(entity));
     }
     
     default TextComponent component(E entity, String prefix, String suffix)

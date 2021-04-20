@@ -5,7 +5,7 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.key.Keyed;
 import org.bukkit.NamespacedKey;
 
-public class NamespacedKeyConverter implements KeyConverter<NamespacedKey, org.bukkit.Keyed>
+public class BukkitKeyConverter implements KeyConverter<NamespacedKey, org.bukkit.Keyed>
 {
     @SuppressWarnings("PatternValidation")
     @Override

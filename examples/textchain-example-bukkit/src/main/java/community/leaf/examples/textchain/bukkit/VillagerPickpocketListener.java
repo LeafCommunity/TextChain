@@ -1,7 +1,7 @@
 package community.leaf.examples.textchain.bukkit;
 
 import community.leaf.textchain.adventure.TextChain;
-import community.leaf.textchain.bukkit.ShowItems;
+import community.leaf.textchain.bukkit.BukkitToAdventure;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -36,8 +36,8 @@ public class VillagerPickpocketListener implements Listener
         if (!isNearVillager) { return; }
         
         ItemStack emerald = new ItemStack(Material.EMERALD);
-        
-        ShowItems.setItemDisplayName(
+    
+        BukkitToAdventure.items().displayName(
             emerald,
             TextChain.chain()
                 .then("Villager's Emerald")
@@ -45,7 +45,7 @@ public class VillagerPickpocketListener implements Listener
                     .color(TextColor.color(0xadfc85))
         );
         
-        ShowItems.setItemLore(
+        BukkitToAdventure.items().lore(
             emerald,
             TextChain.reset()
                 .then("Wow, you ")

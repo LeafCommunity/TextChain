@@ -2,27 +2,31 @@ package community.leaf.textchain.bukkit.converters;
 
 import community.leaf.textchain.adventure.Components;
 import community.leaf.textchain.bukkit.LegacyBukkitComponentSerializer;
-import community.leaf.textchain.bukkit.internal.nms.EntityReflection;
 import community.leaf.textchain.platforms.EntityConverter;
-import net.kyori.adventure.key.Key;
+import community.leaf.textchain.platforms.EntityTypeConverter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import pl.tlinkowski.annotation.basic.NullOr;
 
 import java.util.Optional;
 import java.util.UUID;
 
 public class BukkitEntityConverter implements EntityConverter<EntityType, Entity>
 {
-    private final NamespacedKeyConverter keys;
+    private final BukkitEntityTypeConverter types;
     
-    public BukkitEntityConverter(NamespacedKeyConverter keys) { this.keys = keys; }
+    public BukkitEntityConverter(BukkitEntityTypeConverter types) { this.types = types; }
     
     @Override
-    public EntityType typeOfEntity(Entity entity)
+    public EntityTypeConverter<EntityType> types()
+    {
+        return types;
+    }
+    
+    @Override
+    public EntityType type(Entity entity)
     {
         return entity.getType();
     }
@@ -31,27 +35,6 @@ public class BukkitEntityConverter implements EntityConverter<EntityType, Entity
     public UUID uuid(Entity entity)
     {
         return entity.getUniqueId();
-    }
-    
-    @Override
-    public Key typeKey(EntityType type)
-    {
-        return keys.key(type::getKey);
-    }
-    
-    @Override
-    public String typeTranslationKey(EntityType type)
-    {
-        @NullOr String entityTypeName = type.getName();
-        
-        try
-        {
-            Object nmsEntityTypes = EntityReflection.getEntityTypesByName(entityTypeName)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid entity name: " + entityTypeName));
-            
-            return EntityReflection.getTranslationKeyByNmsEntityTypes(nmsEntityTypes);
-        }
-        catch (Throwable throwable) { throw new RuntimeException(throwable); }
     }
     
     @Override
