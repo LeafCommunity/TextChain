@@ -4,7 +4,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.util.RGBLike;
 
 import java.util.Optional;
 
@@ -15,7 +14,7 @@ import java.util.Optional;
  * but it uses Adventure colors, components, and isn't
  * restricted to a specific platform.
  */
-public enum ItemRarity implements ComponentLike, RGBLike
+public enum ItemRarity implements ColorSource, ComponentLike
 {
     COMMON(NamedTextColor.WHITE),
     UNCOMMON(NamedTextColor.YELLOW),
@@ -37,19 +36,11 @@ public enum ItemRarity implements ComponentLike, RGBLike
      *
      * @return  rarity level's color
      */
-    public NamedTextColor getColor() { return color; }
+    @Override
+    public NamedTextColor color() { return color; }
     
     @Override
     public Component asComponent() { return component; }
-    
-    @Override
-    public int red() { return color.red(); }
-    
-    @Override
-    public int green() { return color.green(); }
-    
-    @Override
-    public int blue() { return color.blue(); }
     
     /**
      * Resolves the enum value that matches the

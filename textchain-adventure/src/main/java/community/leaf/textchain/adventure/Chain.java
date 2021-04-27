@@ -476,6 +476,21 @@ public abstract class Chain<C extends Chain<C>> implements ChainedAudienceSender
     }
     
     /**
+     * Sets the color of the
+     * <b>latest</b> chain element
+     * by getting the color from
+     * the provided color source.
+     *
+     * @param color     color source
+     * @return  self (for method chaining)
+     */
+    public C color(ColorSource color)
+    {
+        Objects.requireNonNull(color, "color");
+        return color(color.color()); // color? color! (color!!)
+    }
+    
+    /**
      * Formats the <b>latest</b> chain element
      * with the provided decoration. The
      * decoration state will be set to:
