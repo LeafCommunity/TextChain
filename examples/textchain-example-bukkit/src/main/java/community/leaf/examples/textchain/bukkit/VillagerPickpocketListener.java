@@ -1,7 +1,7 @@
 package community.leaf.examples.textchain.bukkit;
 
 import community.leaf.textchain.adventure.TextChain;
-import community.leaf.textchain.bukkit.BukkitToAdventure;
+import community.leaf.textchain.bukkit.adapters.BukkitToAdventure;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;

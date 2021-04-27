@@ -1,11 +1,11 @@
-package community.leaf.textchain.platforms;
+package community.leaf.textchain.platforms.adapters;
 
 import community.leaf.textchain.adventure.ItemRarity;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 
-public interface ItemTypeConverter<T>
+public interface ItemTypeAdapter<T>
 {
     Key key(T type);
     

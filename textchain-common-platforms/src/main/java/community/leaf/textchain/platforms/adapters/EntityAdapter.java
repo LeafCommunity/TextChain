@@ -1,4 +1,4 @@
-package community.leaf.textchain.platforms;
+package community.leaf.textchain.platforms.adapters;
 
 import community.leaf.textchain.adventure.Components;
 import community.leaf.textchain.adventure.TextChain;
@@ -14,9 +14,9 @@ import pl.tlinkowski.annotation.basic.NullOr;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface EntityConverter<T, E>
+public interface EntityAdapter<T, E>
 {
-    EntityTypeConverter<T> types();
+    EntityTypeAdapter<T> types();
     
     T type(E entity);
     

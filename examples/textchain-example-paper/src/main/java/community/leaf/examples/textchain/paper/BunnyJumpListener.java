@@ -2,7 +2,7 @@ package community.leaf.examples.textchain.paper;
 
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import community.leaf.textchain.adventure.TextChain;
-import community.leaf.textchain.bukkit.BukkitToAdventure;
+import community.leaf.textchain.bukkit.adapters.BukkitToAdventure;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Material;

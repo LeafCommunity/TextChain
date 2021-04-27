@@ -1,10 +1,10 @@
-package community.leaf.textchain.platforms;
+package community.leaf.textchain.platforms.adapters;
 
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 
-public interface EntityTypeConverter<T>
+public interface EntityTypeAdapter<T>
 {
     Key key(T type);
     

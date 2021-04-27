@@ -1,10 +1,10 @@
-package community.leaf.textchain.bukkit.converters;
+package community.leaf.textchain.bukkit.adapters;
 
 import community.leaf.textchain.adventure.LegacyColorCodeAliases;
-import community.leaf.textchain.platforms.ColorConverter;
+import community.leaf.textchain.platforms.adapters.ColorAdapter;
 import org.bukkit.ChatColor;
 
-public class BukkitColorConverter implements ColorConverter<ChatColor>
+class BukkitColorAdapter implements ColorAdapter<ChatColor>
 {
     @Override
     public LegacyColorCodeAliases format(ChatColor color)

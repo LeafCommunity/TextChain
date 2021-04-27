@@ -1,9 +1,9 @@
-package community.leaf.textchain.bukkit.converters;
+package community.leaf.textchain.bukkit.adapters;
 
 import community.leaf.textchain.adventure.Components;
 import community.leaf.textchain.bukkit.LegacyBukkitComponentSerializer;
-import community.leaf.textchain.platforms.EntityConverter;
-import community.leaf.textchain.platforms.EntityTypeConverter;
+import community.leaf.textchain.platforms.adapters.EntityAdapter;
+import community.leaf.textchain.platforms.adapters.EntityTypeAdapter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -13,14 +13,14 @@ import org.bukkit.entity.EntityType;
 import java.util.Optional;
 import java.util.UUID;
 
-public class BukkitEntityConverter implements EntityConverter<EntityType, Entity>
+class BukkitEntityAdapter implements EntityAdapter<EntityType, Entity>
 {
-    private final BukkitEntityTypeConverter types;
+    private final BukkitEntityTypeAdapter types;
     
-    public BukkitEntityConverter(BukkitEntityTypeConverter types) { this.types = types; }
+    public BukkitEntityAdapter(BukkitEntityTypeAdapter types) { this.types = types; }
     
     @Override
-    public EntityTypeConverter<EntityType> types()
+    public EntityTypeAdapter<EntityType> types()
     {
         return types;
     }

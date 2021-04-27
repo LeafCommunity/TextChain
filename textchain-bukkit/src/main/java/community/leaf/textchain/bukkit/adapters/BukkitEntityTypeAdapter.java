@@ -1,17 +1,17 @@
-package community.leaf.textchain.bukkit.converters;
+package community.leaf.textchain.bukkit.adapters;
 
-import community.leaf.textchain.platforms.EntityTypeConverter;
+import community.leaf.textchain.platforms.adapters.EntityTypeAdapter;
 import net.kyori.adventure.key.Key;
 import org.bukkit.entity.EntityType;
 import pl.tlinkowski.annotation.basic.NullOr;
 
 import static community.leaf.textchain.bukkit.internal.nms.EntityReflection.*;
 
-public class BukkitEntityTypeConverter implements EntityTypeConverter<EntityType>
+class BukkitEntityTypeAdapter implements EntityTypeAdapter<EntityType>
 {
-    private final BukkitKeyConverter keys;
+    private final BukkitKeyAdapter keys;
     
-    public BukkitEntityTypeConverter(BukkitKeyConverter keys) { this.keys = keys; }
+    public BukkitEntityTypeAdapter(BukkitKeyAdapter keys) { this.keys = keys; }
     
     @Override
     public Key key(EntityType type)

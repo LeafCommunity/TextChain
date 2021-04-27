@@ -1,11 +1,11 @@
-package community.leaf.textchain.bukkit.converters;
+package community.leaf.textchain.bukkit.adapters;
 
-import community.leaf.textchain.platforms.KeyConverter;
+import community.leaf.textchain.platforms.adapters.KeyAdapter;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.key.Keyed;
 import org.bukkit.NamespacedKey;
 
-public class BukkitKeyConverter implements KeyConverter<NamespacedKey, org.bukkit.Keyed>
+class BukkitKeyAdapter implements KeyAdapter<NamespacedKey, org.bukkit.Keyed>
 {
     @SuppressWarnings("PatternValidation")
     @Override

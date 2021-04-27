@@ -1,4 +1,4 @@
-package community.leaf.textchain.platforms;
+package community.leaf.textchain.platforms.adapters;
 
 import community.leaf.textchain.adventure.Components;
 import community.leaf.textchain.adventure.ItemRarity;
@@ -14,9 +14,9 @@ import net.kyori.adventure.text.event.HoverEvent;
 import java.util.List;
 import java.util.Optional;
 
-public interface ItemConverter<T, I>
+public interface ItemAdapter<T, I>
 {
-    ItemTypeConverter<T> types();
+    ItemTypeAdapter<T> types();
     
     T type(I item);
     

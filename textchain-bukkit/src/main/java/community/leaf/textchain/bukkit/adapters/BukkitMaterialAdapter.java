@@ -1,18 +1,18 @@
-package community.leaf.textchain.bukkit.converters;
+package community.leaf.textchain.bukkit.adapters;
 
 import community.leaf.textchain.adventure.ItemRarity;
-import community.leaf.textchain.platforms.ItemTypeConverter;
+import community.leaf.textchain.platforms.adapters.ItemTypeAdapter;
 import net.kyori.adventure.key.Key;
 import net.md_5.bungee.chat.TranslationRegistry;
 import org.bukkit.Material;
 
 import static community.leaf.textchain.bukkit.internal.nms.ItemReflection.*;
 
-public class BukkitMaterialConverter implements ItemTypeConverter<Material>
+class BukkitMaterialAdapter implements ItemTypeAdapter<Material>
 {
-    private final BukkitKeyConverter keys;
+    private final BukkitKeyAdapter keys;
     
-    public BukkitMaterialConverter(BukkitKeyConverter keys) { this.keys = keys; }
+    public BukkitMaterialAdapter(BukkitKeyAdapter keys) { this.keys = keys; }
     
     @Override
     public Key key(Material type)

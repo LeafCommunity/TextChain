@@ -3,7 +3,7 @@ package community.leaf.examples.textchain.bukkit;
 import community.leaf.textchain.adventure.ItemRarity;
 import community.leaf.textchain.adventure.TextChain;
 import community.leaf.textchain.bukkit.BukkitTextChainSource;
-import community.leaf.textchain.bukkit.BukkitToAdventure;
+import community.leaf.textchain.bukkit.adapters.BukkitToAdventure;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.audience.MessageType;
 import net.kyori.adventure.identity.Identity;

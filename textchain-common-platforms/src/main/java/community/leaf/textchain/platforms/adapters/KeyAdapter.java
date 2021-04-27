@@ -1,11 +1,9 @@
-package community.leaf.textchain.platforms;
+package community.leaf.textchain.platforms.adapters;
 
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.key.Keyed;
 
-import java.util.function.Supplier;
-
-public interface KeyConverter<K, H>
+public interface KeyAdapter<K, H>
 {
     Key key(K key);
     

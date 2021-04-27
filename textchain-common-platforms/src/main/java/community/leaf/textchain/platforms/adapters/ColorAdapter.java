@@ -1,4 +1,4 @@
-package community.leaf.textchain.platforms;
+package community.leaf.textchain.platforms.adapters;
 
 import community.leaf.textchain.adventure.LegacyColorCodeAliases;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -7,7 +7,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import java.util.Optional;
 
 @FunctionalInterface
-public interface ColorConverter<C>
+public interface ColorAdapter<C>
 {
     LegacyColorCodeAliases format(C color);
     
