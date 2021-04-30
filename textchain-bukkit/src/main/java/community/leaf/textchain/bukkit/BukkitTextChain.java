@@ -9,19 +9,19 @@ package community.leaf.textchain.bukkit;
 
 import community.leaf.textchain.adventure.ChainConstructor;
 import community.leaf.textchain.adventure.TextProcessor;
-import community.leaf.textchain.adventure.WrappedTextComponentBuilder;
+import community.leaf.textchain.adventure.LinearTextComponentBuilderImpl;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.TextComponent;
 
 public final class BukkitTextChain extends BukkitChain<BukkitTextChain>
 {
-    public BukkitTextChain(WrappedTextComponentBuilder builder, BukkitAudiences audiences)
+    public BukkitTextChain(LinearTextComponentBuilderImpl builder, BukkitAudiences audiences)
     {
         super(builder, audiences);
     }
     
     @Override
-    public ChainConstructor<BukkitTextChain> getConstructor()
+    public ChainConstructor<BukkitTextChain> constructor()
     {
         return builder -> new BukkitTextChain(builder, adventure());
     }

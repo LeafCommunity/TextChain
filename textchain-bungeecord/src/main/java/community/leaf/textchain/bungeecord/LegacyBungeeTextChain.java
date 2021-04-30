@@ -9,19 +9,19 @@ package community.leaf.textchain.bungeecord;
 
 import community.leaf.textchain.adventure.ChainConstructor;
 import community.leaf.textchain.adventure.TextProcessor;
-import community.leaf.textchain.adventure.WrappedTextComponentBuilder;
+import community.leaf.textchain.adventure.LinearTextComponentBuilderImpl;
 import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 import net.kyori.adventure.text.TextComponent;
 
 public final class LegacyBungeeTextChain extends BungeeChain<LegacyBungeeTextChain>
 {
-    public LegacyBungeeTextChain(WrappedTextComponentBuilder builder, BungeeAudiences audiences)
+    public LegacyBungeeTextChain(LinearTextComponentBuilderImpl builder, BungeeAudiences audiences)
     {
         super(builder, audiences);
     }
     
     @Override
-    public ChainConstructor<LegacyBungeeTextChain> getConstructor()
+    public ChainConstructor<LegacyBungeeTextChain> constructor()
     {
         return builder -> new LegacyBungeeTextChain(builder, adventure());
     }

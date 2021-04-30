@@ -21,14 +21,25 @@ import pl.tlinkowski.annotation.basic.NullOr;
  * <p>As a chain type, it doesn't do anything special
  * or unexpected. Text appended to this chain will remain
  * intact and unprocessed (by using
- * {@link TextProcessor#none(String)}).</p>
+ * {@link TextProcessor#none()}).</p>
  *
  * <p>Think of it as the chain type closest to
  * Adventure's own component builders. It's the
  * vanilla variety, if you will.</p>
  */
-public final class TextChain extends Chain<TextChain>
+@SuppressWarnings("unused")
+public interface TextChain extends Chain<TextChain>
 {
+    static <C extends Chain<C>> C chain(ChainConstructor<C> constructor, TextComponent.Builder builder, TextProcessor processor)
+    {
+        return constructor.construct(LinearTextComponentBuilder.with(builder), processor);
+    }
+    
+    static <C extends Chain<C>> C chain(ChainSource<C> source, TextComponent.Builder builder, TextProcessor processor)
+    {
+        return chain(source.getChainConstructor(), builder, processor);
+    }
+    
     /**
      * Constructs a new chain by wrapping the provided
      * text component builder and supplying it to the
@@ -42,9 +53,9 @@ public final class TextChain extends Chain<TextChain>
      * @return  a new chain created by the constructor
      *          that internally uses the provided builder
      */
-    public static <C extends Chain<C>> C chain(ChainConstructor<C> constructor, TextComponent.Builder builder)
+    static <C extends Chain<C>> C chain(ChainConstructor<C> constructor, TextComponent.Builder builder)
     {
-        return constructor.apply(new WrappedTextComponentBuilder(builder));
+        return constructor.construct(LinearTextComponentBuilder.with(builder), TextProcessor.none());
     }
     
     /**
@@ -60,9 +71,9 @@ public final class TextChain extends Chain<TextChain>
      * @return  a new chain created by the source's constructor
      *          that internally uses the provided builder
      */
-    public static <C extends Chain<C>> C chain(ChainSource<C> source, TextComponent.Builder builder)
+    static <C extends Chain<C>> C chain(ChainSource<C> source, TextComponent.Builder builder)
     {
-        return chain(source.getChainConstructor(), builder);
+        return chain(source.getChainConstructor(), builder, TextProcessor.none());
     }
     
     /**
@@ -76,13 +87,13 @@ public final class TextChain extends Chain<TextChain>
      * @return  a new text chain
      *          that internally uses the provided builder
      */
-    public static TextChain chain(TextComponent.Builder builder)
+    static TextChain chain(TextComponent.Builder builder)
     {
-        return chain(TextChain::new, builder);
+        return chain(TextChainImpl::new, builder, TextProcessor.none());
     }
     
     /**
-     * Constructs a new {@link LegacyTextChain} instance
+     * Constructs a new {@link TextChain} instance
      * by wrapping the provided text component builder.
      * Operations performed on the builder will be
      * reflected in the chain, since the same builder
@@ -94,9 +105,19 @@ public final class TextChain extends Chain<TextChain>
      *
      * @see #legacy()
      */
-    public static LegacyTextChain legacy(TextComponent.Builder builder)
+    static TextChain legacy(TextComponent.Builder builder)
     {
-        return chain(LegacyTextChain::new, builder);
+        return chain(TextChainImpl::new, builder, TextProcessor.legacyAmpersand());
+    }
+    
+    static <C extends Chain<C>> C chain(ChainConstructor<C> constructor, TextProcessor processor)
+    {
+        return chain(constructor, Component.text(), processor);
+    }
+    
+    static <C extends Chain<C>> C chain(ChainSource<C> source, TextProcessor processor)
+    {
+        return chain(source.getChainConstructor(), processor);
     }
     
     /**
@@ -107,7 +128,7 @@ public final class TextChain extends Chain<TextChain>
      * @param <C>   chain type
      * @return  a new chain created by the constructor
      */
-    public static <C extends Chain<C>> C chain(ChainConstructor<C> constructor)
+    static <C extends Chain<C>> C chain(ChainConstructor<C> constructor)
     {
         return chain(constructor, Component.text());
     }
@@ -120,7 +141,7 @@ public final class TextChain extends Chain<TextChain>
      * @param <C>   chain type
      * @return  a new chain created by the source's constructor
      */
-    public static <C extends Chain<C>> C chain(ChainSource<C> source)
+    static <C extends Chain<C>> C chain(ChainSource<C> source)
     {
         return chain(source.getChainConstructor());
     }
@@ -130,22 +151,22 @@ public final class TextChain extends Chain<TextChain>
      *
      * @return  an empty text chain
      */
-    public static TextChain chain()
+    static TextChain chain()
     {
-        return chain(TextChain::new);
+        return chain(TextChainImpl::new);
     }
     
     /**
-     * Creates a new, empty {@link LegacyTextChain} instance.
+     * Creates a new, empty {@link TextChain} instance.
      * This chain will automatically process legacy ampersand-style
      * color codes in text (like {@code "&3&o"}).
      *
      * @return  an empty legacy text chain
-     * @see TextProcessor#legacyAmpersand(String)
+     * @see TextProcessor#legacyAmpersand()
      */
-    public static LegacyTextChain legacy()
+    static TextChain legacy()
     {
-        return chain(LegacyTextChain::new);
+        return chain(TextChainImpl::new, TextProcessor.legacyAmpersand());
     }
     
     /**
@@ -161,7 +182,7 @@ public final class TextChain extends Chain<TextChain>
      * @return  a new chain created by the constructor
      *          with the provided style applied
      */
-    public static <C extends Chain<C>> C chain(ChainConstructor<C> constructor, Style style)
+    static <C extends Chain<C>> C chain(ChainConstructor<C> constructor, Style style)
     {
         return chain(constructor, Component.text().style(style));
     }
@@ -179,7 +200,7 @@ public final class TextChain extends Chain<TextChain>
      * @return  a new chain created by the source's constructor
      *          with the provided style applied
      */
-    public static <C extends Chain<C>> C chain(ChainSource<C> source, Style style)
+    static <C extends Chain<C>> C chain(ChainSource<C> source, Style style)
     {
         return chain(source.getChainConstructor(), style);
     }
@@ -195,13 +216,13 @@ public final class TextChain extends Chain<TextChain>
      * @return  a new text chain
      *          with the provided style applied
      */
-    public static TextChain chain(Style style)
+    static TextChain chain(Style style)
     {
-        return chain(TextChain::new, style);
+        return chain(TextChainImpl::new, style);
     }
     
     /**
-     * Creates a new {@link LegacyTextChain} instance
+     * Creates a new {@link TextChain} instance
      * by applying the provided style to the chain's
      * internal text component builder. All elements in
      * the chain will inherit the style unless specifically
@@ -213,9 +234,10 @@ public final class TextChain extends Chain<TextChain>
      *
      * @see #legacy()
      */
-    public static LegacyTextChain legacy(Style style)
+    static TextChain legacy(Style style)
     {
-        return chain(LegacyTextChain::new, style);
+        // TODO: add processor
+        return chain(TextChainImpl::new, style);
     }
     
     /**
@@ -237,7 +259,7 @@ public final class TextChain extends Chain<TextChain>
      *          that internally uses a text component builder
      *          derived from the provided component-like
      */
-    public static <C extends Chain<C>> C chain(ChainConstructor<C> constructor, ComponentLike componentLike)
+    static <C extends Chain<C>> C chain(ChainConstructor<C> constructor, ComponentLike componentLike)
     {
         Component component = Components.safelyAsComponent(componentLike);
         
@@ -267,7 +289,7 @@ public final class TextChain extends Chain<TextChain>
      *          that internally uses a text component builder
      *          derived from the provided component-like
      */
-    public static <C extends Chain<C>> C chain(ChainSource<C> source, ComponentLike componentLike)
+    static <C extends Chain<C>> C chain(ChainSource<C> source, ComponentLike componentLike)
     {
         return chain(source.getChainConstructor(), componentLike);
     }
@@ -289,13 +311,13 @@ public final class TextChain extends Chain<TextChain>
      *          that internally uses a text component builder
      *          derived from the provided component-like
      */
-    public static TextChain chain(ComponentLike componentLike)
+    static TextChain chain(ComponentLike componentLike)
     {
-        return chain(TextChain::new, componentLike);
+        return chain(TextChainImpl::new, componentLike);
     }
     
     /**
-     * Creates a new {@link LegacyTextChain} instance
+     * Creates a new {@link TextChain} instance
      * by deriving a new text component builder from the
      * provided component-like. If the component received
      * by {@link ComponentLike#asComponent()} is a
@@ -313,9 +335,9 @@ public final class TextChain extends Chain<TextChain>
      *
      * @see #legacy()
      */
-    public static LegacyTextChain legacy(ComponentLike componentLike)
+    static TextChain legacy(ComponentLike componentLike)
     {
-        return chain(LegacyTextChain::new, componentLike);
+        return chain(TextChainImpl::new, componentLike);
     }
     
     /**
@@ -336,7 +358,7 @@ public final class TextChain extends Chain<TextChain>
      * @see #chain(ChainConstructor, Style)
      * @see Components#RESET
      */
-    public static <C extends Chain<C>> C reset(ChainConstructor<C> constructor)
+    static <C extends Chain<C>> C reset(ChainConstructor<C> constructor)
     {
         return chain(constructor, Components.RESET);
     }
@@ -359,7 +381,7 @@ public final class TextChain extends Chain<TextChain>
      * @see #chain(ChainSource, Style)
      * @see Components#RESET
      */
-    public static <C extends Chain<C>> C reset(ChainSource<C> source)
+    static <C extends Chain<C>> C reset(ChainSource<C> source)
     {
         return reset(source.getChainConstructor());
     }
@@ -380,13 +402,13 @@ public final class TextChain extends Chain<TextChain>
      * @see #chain(Style)
      * @see Components#RESET
      */
-    public static TextChain reset()
+    static TextChain reset()
     {
-        return reset(TextChain::new);
+        return reset(TextChainImpl::new);
     }
     
     /**
-     * Creates a new {@link LegacyTextChain} instance
+     * Creates a new {@link TextChain} instance
      * with a new, explicitly-unformatted text component
      * builder (thus "resetting" its style).
      * Use this to avoid inheriting styles from a parent
@@ -401,9 +423,10 @@ public final class TextChain extends Chain<TextChain>
      * @see #legacy(Style)
      * @see Components#RESET
      */
-    public static LegacyTextChain legacyReset()
+    static TextChain legacyReset()
     {
-        return reset(LegacyTextChain::new);
+        // TODO: text processor
+        return reset(TextChainImpl::new);
     }
     
     /**
@@ -431,7 +454,7 @@ public final class TextChain extends Chain<TextChain>
      * @see #chain(ChainConstructor, Style)
      * @see Components#UNFORMATTED
      */
-    public static <C extends Chain<C>> C reset(ChainConstructor<C> constructor, @NullOr TextColor color)
+    static <C extends Chain<C>> C reset(ChainConstructor<C> constructor, @NullOr TextColor color)
     {
         return chain(
             constructor,
@@ -466,7 +489,7 @@ public final class TextChain extends Chain<TextChain>
      * @see #chain(ChainSource, Style)
      * @see Components#UNFORMATTED
      */
-    public static <C extends Chain<C>> C reset(ChainSource<C> source, @NullOr TextColor color)
+    static <C extends Chain<C>> C reset(ChainSource<C> source, @NullOr TextColor color)
     {
         return reset(source.getChainConstructor(), color);
     }
@@ -494,13 +517,13 @@ public final class TextChain extends Chain<TextChain>
      * @see #chain(Style)
      * @see Components#UNFORMATTED
      */
-    public static TextChain reset(@NullOr TextColor color)
+    static TextChain reset(@NullOr TextColor color)
     {
-        return reset(TextChain::new, color);
+        return reset(TextChainImpl::new, color);
     }
     
     /**
-     * Creates a new {@link LegacyTextChain} instance
+     * Creates a new {@link TextChain} instance
      * with a new, explicitly-unformatted text component
      * builder (thus "resetting" its style)
      * with the specified color applied.
@@ -522,21 +545,22 @@ public final class TextChain extends Chain<TextChain>
      * @see #legacy(Style)
      * @see Components#UNFORMATTED
      */
-    public static LegacyTextChain legacyReset(@NullOr TextColor color)
+    static TextChain legacyReset(@NullOr TextColor color)
     {
-        return reset(LegacyTextChain::new, color);
+        // todo: text processor
+        return reset(TextChainImpl::new, color);
     }
     
     /**
-     * Wraps an existing {@link WrappedTextComponentBuilder}
+     * Wraps an existing {@link LinearTextComponentBuilder}
      * instance with a new {@link TextChain}.
      *
      * @param builder   an existing builder
      * @return  a new text chain containing the builder
      */
-    public static TextChain wrap(WrappedTextComponentBuilder builder)
+    static TextChain wrap(LinearTextComponentBuilder builder, TextProcessor processor)
     {
-        return new TextChain(builder);
+        return new TextChainImpl(builder, processor);
     }
     
     /**
@@ -558,20 +582,8 @@ public final class TextChain extends Chain<TextChain>
      * @return  a new text chain containing the existing
      *          chain's internal builder
      */
-    public static <C extends Chain<C>> TextChain wrap(C chain)
+    static <C extends Chain<C>> TextChain wrap(C chain)
     {
-        return wrap(chain.getBuilder());
+        return wrap(chain.builder(), chain.processor());
     }
-    
-    /**
-     * Make a new TextChain, but
-     * {@link #chain()} is better.
-     */
-    public TextChain(WrappedTextComponentBuilder builder) { super(builder); }
-    
-    @Override
-    public ChainConstructor<TextChain> getConstructor() { return TextChain::new; }
-    
-    @Override
-    public TextComponent processText(String text) { return TextProcessor.none(text); }
 }
