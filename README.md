@@ -1,7 +1,7 @@
  # ⛓️ TextChain
 
 [![](https://jitpack.io/v/community.leaf/textchain.svg)](https://jitpack.io/#community.leaf/textchain "Get maven artifacts on JitPack")
-[![](https://img.shields.io/badge/License-MIT-blue)](./LICENSE "Project license: MIT")
+[![](https://img.shields.io/badge/License-MPL--2.0-blue)](./LICENSE "Project license: MPL-2.0")
 [![](https://img.shields.io/badge/Java-11-orange)](#java-version "This project targets Java 11")
 [![](https://img.shields.io/badge/View-Javadocs-%234D7A97)](https://leafcommunity.github.io/TextChain/ "View the javadocs")
 
@@ -165,7 +165,7 @@ To exclude them, check the example below.
 >             <exclude>org.checkerframework:checker-qual</exclude>
 >             <exclude>org.jetbrains:annotations</exclude>
 >             <exclude>org.jetbrains.kotlin:kotlin-annotations-jvm</exclude>
->             <exclude>pl.tlinkowski.annotation:pl.tlinkowski.annotation.basic</> exclude>
+>             <exclude>pl.tlinkowski.annotation:pl.tlinkowski.annotation.basic</exclude>
 >         </excludes>
 >     </artifactSet>
 > </configuration>

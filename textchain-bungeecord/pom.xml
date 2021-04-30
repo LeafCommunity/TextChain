@@ -33,40 +33,18 @@
             <artifactId>textchain-adventure</artifactId>
             <version>${revision}</version>
         </dependency>
-        <!-- TextChain Common Bungee Chat (via local project) -->
+        <!-- TextChain Bungee Chat (via local project) -->
         <dependency>
             <groupId>community.leaf.textchain</groupId>
-            <artifactId>textchain-common-bungee-chat</artifactId>
+            <artifactId>textchain-bungee-chat</artifactId>
             <version>${revision}</version>
         </dependency>
-        <!-- TextChain Common Platform (via local project) -->
+        <!-- TextChain Platforms (via local project) -->
         <dependency>
             <groupId>community.leaf.textchain</groupId>
-            <artifactId>textchain-common-platforms</artifactId>
+            <artifactId>textchain-platforms</artifactId>
             <version>${revision}</version>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration>
-                    <offlineLinks>
-                        <!-- Local project javadoc resolution -->
-                        <offlineLink>
-                            <url>${javadocs.url}/textchain-adventure/${revision}/</url>
-                            <location>${project.basedir}/../textchain-adventure/target/apidocs/</location>
-                        </offlineLink>
-                        <offlineLink>
-                            <url>${javadocs.url}/textchain-bungee-chat/${revision}/</url>
-                            <location>${project.basedir}/../textchain-bungee-chat/target/apidocs/</location>
-                        </offlineLink>
-                    </offlineLinks>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
