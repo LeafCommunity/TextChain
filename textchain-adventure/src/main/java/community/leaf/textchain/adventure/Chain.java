@@ -264,7 +264,7 @@ public abstract class Chain<C extends Chain<C>> implements ChainedAudienceSender
     {
         Objects.requireNonNull(text, "text");
         Objects.requireNonNull(processor, "processor");
-        return then(processor.apply(text));
+        return then(processor.process(text));
     }
     
     /**
@@ -928,7 +928,7 @@ public abstract class Chain<C extends Chain<C>> implements ChainedAudienceSender
     {
         Objects.requireNonNull(tooltipText, "tooltipText");
         Objects.requireNonNull(processor, "processor");
-        return tooltip(processor.apply(tooltipText));
+        return tooltip(processor.process(tooltipText));
     }
     
     /**

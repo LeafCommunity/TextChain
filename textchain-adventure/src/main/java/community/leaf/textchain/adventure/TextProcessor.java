@@ -11,14 +11,20 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
-import java.util.function.Function;
-
 /**
  * Converts a string into a text component.
  */
 @FunctionalInterface
-public interface TextProcessor extends Function<String, TextComponent>
+public interface TextProcessor
 {
+    TextComponent process(String text);
+    
+    @FunctionalInterface
+    interface Direct extends TextProcessor {}
+    
+    @FunctionalInterface
+    interface Legacy extends TextProcessor {}
+    
     /**
      * Simply creates a text component containing
      * the input string. The text isn't "processed"
@@ -30,6 +36,11 @@ public interface TextProcessor extends Function<String, TextComponent>
     static TextComponent none(String text)
     {
         return Component.text(text);
+    }
+    
+    static Direct none()
+    {
+        return TextProcessor::none;
     }
     
     /**
@@ -45,5 +56,10 @@ public interface TextProcessor extends Function<String, TextComponent>
     static TextComponent legacyAmpersand(String text)
     {
         return LegacyComponentSerializer.legacyAmpersand().deserialize(text);
+    }
+    
+    static Legacy legacyAmpersand()
+    {
+        return TextProcessor::legacyAmpersand;
     }
 }
