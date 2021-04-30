@@ -39,9 +39,14 @@
     </issueManagement>
 
     <modules>
+        <!-- Common API -->
         <module>textchain-adventure</module>
-        <module>textchain-common-bungee-chat</module>
-        <module>textchain-common-platforms</module>
+
+        <!-- Common Platform APIs -->
+        <module>textchain-platforms</module>
+        <module>textchain-bungee-chat</module>
+
+        <!-- Platform Implementations -->
         <module>textchain-bukkit</module>
         <module>textchain-bungeecord</module>
     </modules>
@@ -50,8 +55,6 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <javadocs.url>https://leafcommunity.github.io/TextChain/javadocs</javadocs.url>
 
         <!-- License headers -->
         <license.header.year>${project.inceptionYear}</license.header.year>

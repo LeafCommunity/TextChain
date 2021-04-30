@@ -10,7 +10,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>textchain-common-platforms</artifactId>
+    <artifactId>textchain-platforms</artifactId>
 
     <dependencies>
         <!-- Kyori Adventure Platform API (via sonatype-oss) -->
