@@ -7,74 +7,48 @@
  */
 package community.leaf.textchain.platforms.adapters.delegates;
 
-import community.leaf.textchain.adventure.Components;
 import community.leaf.textchain.adventure.ItemRarity;
 import community.leaf.textchain.platforms.adapters.ItemAdapter;
-import net.kyori.adventure.key.Key;
 import net.kyori.adventure.key.Keyed;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TranslatableComponent;
-import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.event.HoverEvent.ShowItem;
 import net.kyori.adventure.text.event.HoverEventSource;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.function.UnaryOperator;
 
-public class AdventureItem<I> implements ComponentLike, HoverEventSource<ShowItem>, Keyed
+public interface AdventureItem<I> extends ComponentLike, HoverEventSource<ShowItem>, Keyed
 {
-    private final ItemAdapter<?, I> adapter;
-    private final I item;
-    
-    public AdventureItem(ItemAdapter<?, I> adapter, I item)
+    static <T, I> AdventureItem<I> with(ItemAdapter<T, I> adapter, I item)
     {
-        this.adapter = Objects.requireNonNull(adapter, "adapter");
-        this.item = Objects.requireNonNull(item, "item");
+        return new AdventureItemImpl<>(adapter, item);
     }
     
-    public I item() { return item; }
+    I item();
     
-    @Override
-    public Key key() { return adapter.key(item); }
+    String translationKey();
     
-    public String translationKey() { return adapter.translationKey(item); }
+    TranslatableComponent asTranslatable();
     
-    public TranslatableComponent asTranslatable() { return adapter.translatable(item); }
+    Optional<Component> displayName();
     
-    public Optional<Component> displayName() { return adapter.displayName(item); }
+    Component displayOrTranslatableName();
     
-    public Component displayOrTranslatableName() { return adapter.displayOrTranslatableName(item); }
+    void displayName(ComponentLike componentLike);
     
-    public void displayName(ComponentLike componentLike) { adapter.displayName(item, componentLike); }
+    List<Component> lore();
     
-    public List<Component> lore() { return adapter.lore(item); }
+    void lore(List<Component> lore);
     
-    public void lore(List<Component> lore) { adapter.lore(item, lore); }
+    void lore(ComponentLike componentLike);
     
-    public void lore(ComponentLike componentLike)
-    {
-        adapter.lore(item, Components.flattenExtraSplitByNewLine(Components.safelyAsComponent(componentLike)));
-    }
+    String clientName();
     
-    public String clientName() { return adapter.clientName(item); }
+    ItemRarity rarity();
     
-    public ItemRarity rarity() { return adapter.rarity(item); }
+    Component asComponent(String prefix, String suffix);
     
-    @Override
-    public HoverEvent<ShowItem> asHoverEvent(UnaryOperator<ShowItem> op)
-    {
-        HoverEvent<ShowItem> hover = adapter.hover(item);
-        if (op == UnaryOperator.<ShowItem>identity()) { return hover; }
-        return HoverEvent.showItem(op.apply(hover.value()));
-    }
-    
-    @Override
-    public Component asComponent() { return adapter.component(item); }
-    
-    public Component asComponent(String prefix, String suffix) { return adapter.component(item, prefix, suffix); }
-    
-    public Component asComponentInBrackets() { return adapter.componentInBrackets(item); }
+    Component asComponentInBrackets();
 }

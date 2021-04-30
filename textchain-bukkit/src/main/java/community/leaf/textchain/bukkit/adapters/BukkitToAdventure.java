@@ -41,11 +41,11 @@ public class BukkitToAdventure
     
     public static EntityAdapter<EntityType, Entity> entities() { return entities; }
     
-    public static AdventureEntity<Entity> entity(Entity entity) { return new AdventureEntity<>(entities, entity); }
+    public static AdventureEntity<Entity> entity(Entity entity) { return AdventureEntity.with(entities, entity); }
     
     public static ItemTypeAdapter<Material> materials() { return materials; }
     
     public static ItemMetaAdapter<Material, ItemStack, ItemMeta> items() { return items; }
     
-    public static AdventureItem<ItemStack> item(ItemStack item) { return new AdventureItem<>(items, item); }
+    public static AdventureItem<ItemStack> item(ItemStack item) { return AdventureItem.with(items, item); }
 }
