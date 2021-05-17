@@ -26,11 +26,8 @@ import java.util.function.Function;
 @SuppressWarnings("unused")
 public interface Chain<C extends Chain<C>> extends ComponentLike, ChainedAudienceSender<C>
 {
-    @SuppressWarnings({"NullableProblems", "unchecked"})
-    private static <C extends Chain<C>> C self(Chain<?> instance)
-    {
-        return (C) instance;
-    }
+    @SuppressWarnings("unchecked")
+    private C self() { return (C) this; }
     
     /**
      * Gets the internal wrapped text component
@@ -134,8 +131,8 @@ public interface Chain<C extends Chain<C>> extends ComponentLike, ChainedAudienc
     default C apply(Consumer<? super C> consumer)
     {
         Objects.requireNonNull(consumer, "consumer");
-        consumer.accept(Chain.<C>self(this));
-        return self(this);
+        consumer.accept(self());
+        return self();
     }
     
     /**
@@ -148,7 +145,7 @@ public interface Chain<C extends Chain<C>> extends ComponentLike, ChainedAudienc
     default  <@NullOr V> V map(Function<? super C, V> mapper)
     {
         Objects.requireNonNull(mapper, "mapper");
-        return mapper.apply(Chain.<C>self(this));
+        return mapper.apply(self());
     }
     
     /**
@@ -171,7 +168,7 @@ public interface Chain<C extends Chain<C>> extends ComponentLike, ChainedAudienc
         consumer.accept(builder().peekOrCreateChild()
             .into(builder -> constructor().construct(builder, processor())));
         
-        return self(this);
+        return self();
     }
     
     /**
@@ -193,7 +190,7 @@ public interface Chain<C extends Chain<C>> extends ComponentLike, ChainedAudienc
         consumer.accept(builder().createNextChild()
             .into(builder -> constructor().construct(builder, processor())));
         
-        return self(this);
+        return self();
     }
     
     /**
@@ -224,7 +221,7 @@ public interface Chain<C extends Chain<C>> extends ComponentLike, ChainedAudienc
             builder().createNextChild().getComponentBuilder().append(component);
         }
         
-        return self(this);
+        return self();
     }
     
     /**
@@ -383,7 +380,7 @@ public interface Chain<C extends Chain<C>> extends ComponentLike, ChainedAudienc
     {
         Objects.requireNonNull(text, "text");
         builder().peekThenApply(child -> child.content(text));
-        return self(this);
+        return self();
     }
     
     /**
@@ -402,7 +399,7 @@ public interface Chain<C extends Chain<C>> extends ComponentLike, ChainedAudienc
     {
         Objects.requireNonNull(style, "style");
         builder().peekThenApply(child -> child.style(style));
-        return self(this);
+        return self();
     }
     
     /**
@@ -420,7 +417,7 @@ public interface Chain<C extends Chain<C>> extends ComponentLike, ChainedAudienc
     {
         Objects.requireNonNull(style, "style");
         builder().peekThenApply(child -> child.style(styleBuilder -> styleBuilder.merge(style)));
-        return self(this);
+        return self();
     }
     
     /**
@@ -447,7 +444,7 @@ public interface Chain<C extends Chain<C>> extends ComponentLike, ChainedAudienc
     {
         Objects.requireNonNull(color, "color");
         builder().peekThenApply(child -> child.color(color));
-        return self(this);
+        return self();
     }
     
     /**
@@ -495,7 +492,7 @@ public interface Chain<C extends Chain<C>> extends ComponentLike, ChainedAudienc
     {
         Objects.requireNonNull(decoration, "decoration");
         builder().peekThenApply(child -> child.decorate(decoration));
-        return self(this);
+        return self();
     }
     
     /**
@@ -513,7 +510,7 @@ public interface Chain<C extends Chain<C>> extends ComponentLike, ChainedAudienc
     {
         Objects.requireNonNull(decorations, "decorations");
         builder().peekThenApply(child -> child.decorate(decorations));
-        return self(this);
+        return self();
     }
     
     /**
@@ -535,7 +532,7 @@ public interface Chain<C extends Chain<C>> extends ComponentLike, ChainedAudienc
     {
         Objects.requireNonNull(decoration, "decoration");
         builder().peekThenApply(child -> child.decoration(decoration, state));
-        return self(this);
+        return self();
     }
     
     /**
@@ -554,7 +551,7 @@ public interface Chain<C extends Chain<C>> extends ComponentLike, ChainedAudienc
         Objects.requireNonNull(decoration, "decoration");
         Objects.requireNonNull(state, "state");
         builder().peekThenApply(child -> child.decoration(decoration, state));
-        return self(this);
+        return self();
     }
     
     /**
@@ -757,7 +754,7 @@ public interface Chain<C extends Chain<C>> extends ComponentLike, ChainedAudienc
     {
         Objects.requireNonNull(event, "event");
         builder().peekThenApply(child -> child.clickEvent(event));
-        return self(this);
+        return self();
     }
     
     /**
@@ -825,7 +822,7 @@ public interface Chain<C extends Chain<C>> extends ComponentLike, ChainedAudienc
     {
         Objects.requireNonNull(insertion, "insertion");
         builder().peekThenApply(child -> child.insertion(insertion));
-        return self(this);
+        return self();
     }
     
     /**
@@ -843,7 +840,7 @@ public interface Chain<C extends Chain<C>> extends ComponentLike, ChainedAudienc
     {
         Objects.requireNonNull(eventSource, "eventSource");
         builder().peekThenApply(child -> child.hoverEvent(eventSource));
-        return self(this);
+        return self();
     }
     
     /**
