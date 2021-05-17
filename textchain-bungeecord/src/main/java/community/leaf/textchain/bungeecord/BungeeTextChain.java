@@ -7,28 +7,27 @@
  */
 package community.leaf.textchain.bungeecord;
 
+import community.leaf.textchain.adventure.Chain;
 import community.leaf.textchain.adventure.ChainConstructor;
-import community.leaf.textchain.adventure.TextProcessor;
-import community.leaf.textchain.adventure.LinearTextComponentBuilderImpl;
+import community.leaf.textchain.adventure.ChainedRecipientSender;
+import community.leaf.textchain.platforms.AdventureSource;
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
-import net.kyori.adventure.text.TextComponent;
+import net.md_5.bungee.api.CommandSender;
 
-public final class BungeeTextChain extends BungeeChain<BungeeTextChain>
+public interface BungeeTextChain extends
+    AdventureSource<BungeeAudiences>,
+    Chain<BungeeTextChain>,
+    ChainedRecipientSender<CommandSender, BungeeTextChain>
 {
-    public BungeeTextChain(LinearTextComponentBuilderImpl builder, BungeeAudiences audiences)
+    static ChainConstructor<BungeeTextChain> using(BungeeAudiences audiences)
     {
-        super(builder, audiences);
+        return (builder, processor) -> new BungeeTextChainImpl(builder, processor, audiences);
     }
     
     @Override
-    public ChainConstructor<BungeeTextChain> constructor()
+    default Audience recipientToAudience(CommandSender recipient)
     {
-        return builder -> new BungeeTextChain(builder, adventure());
-    }
-    
-    @Override
-    public TextComponent processText(String text)
-    {
-        return TextProcessor.none(text);
+        return adventure().sender(recipient);
     }
 }
