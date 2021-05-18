@@ -19,9 +19,11 @@ import net.kyori.adventure.text.ComponentLike;
  * @param <S>   self-returning subtype
  *              (for method chaining)
  */
-@SuppressWarnings("unchecked")
 public interface ChainedAudienceSender<S extends ChainedAudienceSender<S>> extends ComponentLike
 {
+    @SuppressWarnings("unchecked")
+    private S self() { return (S) this; }
+    
     /**
      * Converts into a component message and sends
      * it to the provided audience.
@@ -34,7 +36,7 @@ public interface ChainedAudienceSender<S extends ChainedAudienceSender<S>> exten
     default S send(Audience audience)
     {
         audience.sendMessage(asComponent());
-        return (S) this;
+        return self();
     }
     
     /**
@@ -52,7 +54,7 @@ public interface ChainedAudienceSender<S extends ChainedAudienceSender<S>> exten
     default S send(Audience audience, Identity source)
     {
         audience.sendMessage(source, asComponent());
-        return (S) this;
+        return self();
     }
     
     /**
@@ -70,7 +72,7 @@ public interface ChainedAudienceSender<S extends ChainedAudienceSender<S>> exten
     default S send(Audience audience, Identified source)
     {
         audience.sendMessage(source, asComponent());
-        return (S) this;
+        return self();
     }
     
     /**
@@ -85,6 +87,6 @@ public interface ChainedAudienceSender<S extends ChainedAudienceSender<S>> exten
     default S actionBar(Audience audience)
     {
         audience.sendActionBar(asComponent());
-        return (S) this;
+        return self();
     }
 }
