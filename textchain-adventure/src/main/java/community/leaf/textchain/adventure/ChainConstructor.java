@@ -7,6 +7,8 @@
  */
 package community.leaf.textchain.adventure;
 
+import net.kyori.adventure.text.TextComponent;
+
 /**
  * Standard chain constructor: takes a
  * {@link LinearTextComponentBuilder}
@@ -18,4 +20,9 @@ package community.leaf.textchain.adventure;
 public interface ChainConstructor<C extends Chain<C>>
 {
     C construct(LinearTextComponentBuilder builder, TextProcessor processor);
+    
+    default C construct(TextComponent.Builder builder, TextProcessor processor)
+    {
+        return construct(LinearTextComponentBuilder.wrap(builder), processor);
+    }
 }

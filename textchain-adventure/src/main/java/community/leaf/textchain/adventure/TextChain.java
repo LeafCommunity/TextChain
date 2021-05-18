@@ -32,7 +32,7 @@ public interface TextChain extends Chain<TextChain>
 {
     static <C extends Chain<C>> C chain(ChainConstructor<C> constructor, TextComponent.Builder builder, TextProcessor processor)
     {
-        return constructor.construct(LinearTextComponentBuilder.with(builder), processor);
+        return constructor.construct(LinearTextComponentBuilder.wrap(builder), processor);
     }
     
     static <C extends Chain<C>> C chain(ChainSource<C> source, TextComponent.Builder builder, TextProcessor processor)
@@ -55,7 +55,7 @@ public interface TextChain extends Chain<TextChain>
      */
     static <C extends Chain<C>> C chain(ChainConstructor<C> constructor, TextComponent.Builder builder)
     {
-        return constructor.construct(LinearTextComponentBuilder.with(builder), TextProcessor.none());
+        return chain(constructor, builder, TextProcessor.none());
     }
     
     /**
@@ -552,18 +552,6 @@ public interface TextChain extends Chain<TextChain>
     }
     
     /**
-     * Wraps an existing {@link LinearTextComponentBuilder}
-     * instance with a new {@link TextChain}.
-     *
-     * @param builder   an existing builder
-     * @return  a new text chain containing the builder
-     */
-    static TextChain wrap(LinearTextComponentBuilder builder, TextProcessor processor)
-    {
-        return new TextChainImpl(builder, processor);
-    }
-    
-    /**
      * Wraps an existing chain with a new {@link TextChain}.
      * This is primarily useful for easily converting to the
      * "standard" chain type, as other chain subtypes may
@@ -584,6 +572,8 @@ public interface TextChain extends Chain<TextChain>
      */
     static <C extends Chain<C>> TextChain wrap(C chain)
     {
-        return wrap(chain.builder(), chain.processor());
+        return (chain instanceof TextChain)
+            ? (TextChain) chain
+            : new TextChainImpl(chain.builder(), chain.processor());
     }
 }

@@ -33,7 +33,7 @@ public interface LinearTextComponentBuilder extends ComponentLike
      * @return  a linear text component builder containing
      *          the provided builder
      */
-    static LinearTextComponentBuilder with(TextComponent.Builder existing)
+    static LinearTextComponentBuilder wrap(TextComponent.Builder existing)
     {
         return new LinearTextComponentBuilderImpl(existing);
     }
