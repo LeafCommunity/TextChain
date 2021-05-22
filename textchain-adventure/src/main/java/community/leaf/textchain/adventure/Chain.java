@@ -447,41 +447,17 @@ public interface Chain<C extends Chain<C>> extends ComponentLike, ChainedAudienc
      * @param color     the color
      * @return  self (for method chaining)
      */
-    default C color(TextColor color)
+    default C color(RGBLike color)
     {
         Objects.requireNonNull(color, "color");
-        builder().peekThenApply(child -> child.color(color));
+        TextColor result;
+        
+        if (color instanceof TextColor) { result = (TextColor) color; }
+        else if (color instanceof ColorSource) { result = ((ColorSource) color).color(); }
+        else { result = TextColor.color(color); }
+        
+        builder().peekThenApply(child -> child.color(result));
         return self();
-    }
-    
-    /**
-     * Sets the color of the
-     * <b>latest</b> chain element
-     * by converting the provided
-     * RGB-like into a color.
-     *
-     * @param rgb   something containing RGB color values
-     * @return  self (for method chaining)
-     */
-    default C color(RGBLike rgb)
-    {
-        Objects.requireNonNull(rgb, "rgb");
-        return color(TextColor.color(rgb));
-    }
-    
-    /**
-     * Sets the color of the
-     * <b>latest</b> chain element
-     * by getting the color from
-     * the provided color source.
-     *
-     * @param color     color source
-     * @return  self (for method chaining)
-     */
-    default C color(ColorSource color)
-    {
-        Objects.requireNonNull(color, "color");
-        return color(color.color()); // color? color! (color!!)
     }
     
     /**
@@ -499,6 +475,15 @@ public interface Chain<C extends Chain<C>> extends ComponentLike, ChainedAudienc
     {
         Objects.requireNonNull(decoration, "decoration");
         builder().peekThenApply(child -> child.decorate(decoration));
+        return self();
+    }
+    
+    // TODO: documentation
+    default C format(LegacyColorAlias code)
+    {
+        Objects.requireNonNull(code, "code");
+        if (code.isColor()) { code.asColor().ifPresent(this::color); }
+        else if (code.isDecoration()) { code.asDecoration().ifPresent(this::format); }
         return self();
     }
     

@@ -30,26 +30,24 @@ public class ChainSerializer
 {
     private ChainSerializer() { throw new UnsupportedOperationException(); }
     
+    public static final ChainPlaceholderProcessor NONE = ChainPlaceholderProcessor.strings(Function.identity());
+    
     private static <K, V> Optional<V> query(Map<K, V> map, K key) { return Optional.ofNullable(map.get(key)); }
+    
+    private static <K, V> Optional<String> string(Map<K, V> map, K key)
+    {
+        return query(map, key).filter(v -> v instanceof String).map(v -> (String) v);
+    }
     
     private static void resolveStyleOptionThenApply(TextChain chain, String option)
     {
         Objects.requireNonNull(chain, "chain");
         Objects.requireNonNull(option, "option");
         
-        String upperCaseOption = option.toUpperCase().replace("-", "_");
-        
-        @NullOr NamedTextColor named = NamedTextColor.NAMES.value(upperCaseOption);
-        if (named != null)
+        @NullOr LegacyColorAlias alias = LegacyColorAlias.resolveByAlias(option).orElse(null);
+        if (alias != null)
         {
-            chain.color(named);
-            return;
-        }
-    
-        @NullOr TextDecoration decoration = TextDecoration.NAMES.value(upperCaseOption);
-        if (decoration != null)
-        {
-            chain.format(decoration);
+            chain.format(alias);
             return;
         }
     
@@ -59,36 +57,38 @@ public class ChainSerializer
             chain.color(color);
             return;
         }
+    
+        //noinspection UnnecessaryReturnStatement
+        return; // simply do nothing.
     }
     
-    public static TextChain deserializeFromStringMapList(
-        List<Map<String, String>> maps,
-        Function<String, String> placeholderProcessor
-    )
+    public static TextChain deserializeFromStringMapList(List<Map<String, Object>> maps, ChainPlaceholderProcessor placeholders)
     {
         Objects.requireNonNull(maps, "maps");
-        Objects.requireNonNull(placeholderProcessor, "placeholderProcessor");
+        Objects.requireNonNull(placeholders, "placeholders");
         
         TextChain chain = TextChain.chain();
         
-        for (Map<String, String> values : maps)
+        for (Map<String, Object> values : maps)
         {
-            String text = query(values, "text").orElse("");
+            String text = string(values, "text").orElse("");
             if (text.isEmpty()) { continue; }
             
-            chain.then(placeholderProcessor.apply(text.replace("%nl%", "\n")));
+            @NullOr Component processed = placeholders.processAsComponent(text.replace("%nl%", "\n"));
+            if (processed == null) { continue; }
+            chain.then(processed);
             
-            query(values, "command").map(placeholderProcessor).ifPresent(chain::command);
-            query(values, "insertion").map(placeholderProcessor).ifPresent(chain::insertion);
-            query(values, "link").map(placeholderProcessor).ifPresent(chain::link);
-            query(values, "suggest").map(placeholderProcessor).ifPresent(chain::suggest);
+            string(values, "command").map(placeholders::processAsString).ifPresent(chain::command);
+            string(values, "insertion").map(placeholders::processAsString).ifPresent(chain::insertion);
+            string(values, "link").map(placeholders::processAsString).ifPresent(chain::link);
+            string(values, "suggest").map(placeholders::processAsString).ifPresent(chain::suggest);
             
-            query(values, "tooltip")
+            string(values, "tooltip")
                 .map(tooltip -> tooltip.replace("%nl%", "\n"))
-                .map(placeholderProcessor)
+                .map(placeholders::processAsComponent)
                 .ifPresent(chain::tooltip);
             
-            query(values, "style").ifPresent(style ->
+            string(values, "style").ifPresent(style ->
                 Arrays.stream(style.split(" ")).forEach(option -> resolveStyleOptionThenApply(chain, option))
             );
         }
@@ -96,20 +96,20 @@ public class ChainSerializer
         return chain;
     }
     
-    public static TextChain deserializeFromStringMapList(List<Map<String, String>> maps)
+    public static TextChain deserializeFromMapList(List<Map<String, Object>> maps)
     {
-        return deserializeFromStringMapList(maps, Function.identity());
+        return deserializeFromStringMapList(maps, NONE);
     }
     
-    private static Optional<Map<String, String>> flattenComponentAsStringMap(TextComponent component)
+    private static Optional<Map<String, Object>> flattenComponentAsStringMap(TextComponent component)
     {
         Objects.requireNonNull(component, "component");
         
         String text = component.content();
         if (text.isEmpty()) { return Optional.empty(); }
         
-        Map<String, String> values = new LinkedHashMap<>();
-    
+        Map<String, Object> values = new LinkedHashMap<>();
+        
         values.put("text", component.content().replace("\n", "%nl%"));
         
         // Tooltip
@@ -167,10 +167,10 @@ public class ChainSerializer
         return Optional.of(values);
     }
     
-    public static List<Map<String, String>> serializeAsStringMapList(TextComponent component)
+    public static List<Map<String, Object>> serializeAsMapList(TextComponent component)
     {
         Objects.requireNonNull(component, "component");
-        List<Map<String, String>> maps = new ArrayList<>();
+        List<Map<String, Object>> maps = new ArrayList<>();
         
         flattenComponentAsStringMap(component).ifPresent(maps::add);
     
@@ -181,15 +181,15 @@ public class ChainSerializer
         for (Component child : children)
         {
             // Flatten extra components recursively and add to list after initial component.
-            if (child instanceof TextComponent) { maps.addAll(serializeAsStringMapList((TextComponent) child)); }
+            if (child instanceof TextComponent) { maps.addAll(serializeAsMapList((TextComponent) child)); }
         }
         
         return maps;
     }
     
-    public static List<Map<String, String>> serializeAsStringMapList(TextChain chain)
+    public static List<Map<String, Object>> serializeAsMapList(TextChain chain)
     {
         Objects.requireNonNull(chain, "chain");
-        return serializeAsStringMapList(chain.asComponent());
+        return serializeAsMapList(chain.asComponent());
     }
 }
