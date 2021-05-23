@@ -5,8 +5,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package community.leaf.textchain.adventure;
+package community.leaf.textchain.adventure.serializers;
 
+import community.leaf.textchain.adventure.LegacyColorAlias;
+import community.leaf.textchain.adventure.TextChain;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -26,9 +28,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class ChainSerializer
+public class ChainSerializers
 {
-    private ChainSerializer() { throw new UnsupportedOperationException(); }
+    private ChainSerializers() { throw new UnsupportedOperationException(); }
     
     public static final ChainPlaceholderProcessor NONE = ChainPlaceholderProcessor.strings(Function.identity());
     

@@ -30,6 +30,11 @@ import pl.tlinkowski.annotation.basic.NullOr;
 @SuppressWarnings("unused")
 public interface TextChain extends Chain<TextChain>
 {
+    static TextChain chain(LinearTextComponentBuilder builder, TextProcessor processor)
+    {
+        return new TextChainImpl(builder, processor);
+    }
+    
     static <C extends Chain<C>> C chain(ChainConstructor<C> constructor, TextComponent.Builder builder, TextProcessor processor)
     {
         return constructor.construct(LinearTextComponentBuilder.wrap(builder), processor);

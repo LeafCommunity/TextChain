@@ -1,4 +1,4 @@
-package community.leaf.textchain.adventure;
+package community.leaf.textchain.adventure.serializers;
 
 import net.kyori.adventure.text.Component;
 import pl.tlinkowski.annotation.basic.NullOr;
