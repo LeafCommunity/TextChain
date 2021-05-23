@@ -1,3 +1,10 @@
+/*
+ * Copyright © 2021, RezzedUp <https://github.com/LeafCommunity/TextChain>
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 package community.leaf.textchain.adventure.serializers;
 
 import community.leaf.textchain.adventure.Chain;
@@ -7,11 +14,17 @@ import community.leaf.textchain.adventure.LinearTextComponentBuilder;
 import community.leaf.textchain.adventure.TextProcessor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import pl.tlinkowski.annotation.basic.NullOr;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -44,7 +57,7 @@ final class ChainSerializerImpl implements ChainSerializer
     }
     
     @Override
-    public List<Map<String, Object>> serialize(TextComponent component)
+    public List<Map<String, Object>> serialize(Component component)
     {
         return new Serializer().serialize(component);
     }
@@ -131,7 +144,7 @@ final class ChainSerializerImpl implements ChainSerializer
             @NullOr LegacyColorAlias alias = LegacyColorAlias.resolveByAlias(option).orElse(null);
             if (alias != null) { return chain -> chain.format(alias); }
             
-            @NullOr TextColor color = TextColor.fromCSSHexString(option);
+            @NullOr TextColor color = TextColor.fromCSSHexString(option.replaceFirst("(?i)^0x", "#"));
             if (color != null) { return chain -> chain.color(color); }
             
             return chain -> {};
@@ -184,15 +197,101 @@ final class ChainSerializerImpl implements ChainSerializer
         }
     }
     
-    class Serializer
+    static class Serializer
     {
+        @SuppressWarnings("unchecked")
         List<Map<String, Object>> serialize(Component component)
         {
-            List<Map<String, Object>> serialized = new ArrayList<>();
+            @NullOr Map<String, Object> serialized = serializeAsMap(component);
+            if (serialized == null) { return new ArrayList<>(); }
             
+            if (serialized.size() == 1 && serialized.containsKey("extra"))
+            {
+                return (List<Map<String, Object>>) serialized.get("extra");
+            }
             
+            List<Map<String, Object>> result = new ArrayList<>();
+            result.add(serialized);
+            return result;
+        }
+        
+        @NullOr Map<String, Object> serializeAsMap(Component component)
+        {
+            String text = (component instanceof TextComponent) ? ((TextComponent) component).content() : "";
+            if (text.isEmpty() && component.children().isEmpty()) { return null; }
             
-            return serialized;
+            Map<String, Object> values = new LinkedHashMap<>();
+            
+            // Text
+            if (!text.isEmpty()) { values.put("text", text.replace("\n", "%nl%")); }
+            
+            // Tooltip
+            Optional.ofNullable(component.hoverEvent())
+                .filter(hover -> hover.action() == HoverEvent.Action.SHOW_TEXT)
+                .map(HoverEvent::value)
+                .filter(value -> value instanceof Component)
+                .map(value -> LegacyComponentSerializer.legacyAmpersand().serialize((Component) value))
+                .ifPresent(tooltip -> values.put("tooltip", tooltip));
+            
+            // Clickables
+            @NullOr ClickEvent click = component.clickEvent();
+            
+            if (click != null && !click.value().isEmpty())
+            {
+                String clickValue = click.value();
+                ClickEvent.Action action = click.action();
+                
+                if (action == ClickEvent.Action.RUN_COMMAND) { values.put("command", clickValue); }
+                else if (action == ClickEvent.Action.OPEN_URL) { values.put("link", clickValue); }
+                else if (action == ClickEvent.Action.SUGGEST_COMMAND) { values.put("suggest", clickValue); }
+            }
+            
+            // Insertion
+            @NullOr String insertion = component.insertion();
+            if (insertion != null && !insertion.isEmpty()) { values.put("insertion", insertion); }
+            
+            // Styles
+            List<String> style = new ArrayList<>();
+        
+            @NullOr TextColor color = component.color();
+            if (color != null)
+            {
+                NamedTextColor namedColorValue = NamedTextColor.nearestTo(color);
+                @NullOr String namedColorName = NamedTextColor.NAMES.key(namedColorValue);
+                
+                if (namedColorValue.value() == color.value() && namedColorName != null)
+                {
+                    style.add(namedColorName.toLowerCase().replace("_", "-"));
+                }
+                else
+                {
+                    style.add(color.asHexString());
+                }
+            }
+        
+            if (component.hasDecoration(TextDecoration.BOLD)) { style.add("bold"); }
+            if (component.hasDecoration(TextDecoration.ITALIC)) { style.add("italic"); }
+            if (component.hasDecoration(TextDecoration.OBFUSCATED)) { style.add("obfuscated"); }
+            if (component.hasDecoration(TextDecoration.STRIKETHROUGH)) { style.add("strikethrough"); }
+            if (component.hasDecoration(TextDecoration.UNDERLINED)) { style.add("underlined"); }
+        
+            if (!style.isEmpty()) { values.put("style", String.join(" ", style)); }
+            
+            // Children
+            if (!component.children().isEmpty())
+            {
+                List<Map<String, Object>> extra = new ArrayList<>();
+                
+                for (Component child : component.children())
+                {
+                    @NullOr Map<String, Object> childValues = serializeAsMap(child);
+                    if (childValues != null) { extra.add(childValues); }
+                }
+                
+                if (!extra.isEmpty()) { values.put("extra", extra); }
+            }
+            
+            return values;
         }
     }
 }
