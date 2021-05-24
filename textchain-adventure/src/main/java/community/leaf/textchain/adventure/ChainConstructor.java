@@ -7,14 +7,22 @@
  */
 package community.leaf.textchain.adventure;
 
-import java.util.function.Function;
+import net.kyori.adventure.text.TextComponent;
 
 /**
  * Standard chain constructor: takes a
- * {@link WrappedTextComponentBuilder}
+ * {@link LinearTextComponentBuilder}
  * and creates a new chain instance.
  *
  * @param <C>   chain type
  */
 @FunctionalInterface
-public interface ChainConstructor<C extends Chain<C>> extends Function<WrappedTextComponentBuilder, C> {}
+public interface ChainConstructor<C extends Chain<C>>
+{
+    C construct(LinearTextComponentBuilder builder, TextProcessor processor);
+    
+    default C construct(TextComponent.Builder builder, TextProcessor processor)
+    {
+        return construct(LinearTextComponentBuilder.wrap(builder), processor);
+    }
+}

@@ -10,11 +10,7 @@ package community.leaf.textchain.adventure;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TextComponent;
-import pl.tlinkowski.annotation.basic.NullOr;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -22,23 +18,24 @@ import java.util.function.Function;
  * Contains text component builders for modification
  * and eventual component generation and caching.
  */
-@SuppressWarnings("UnusedReturnValue")
-public class WrappedTextComponentBuilder implements ComponentLike
+public interface LinearTextComponentBuilder extends ComponentLike
 {
-    private final Deque<WrappedTextComponentBuilder> children = new ArrayDeque<>();
-    
-    private final TextComponent.Builder builder;
-    
-    private @NullOr TextComponent result = null;
+    static LinearTextComponentBuilder empty()
+    {
+        return new LinearTextComponentBuilderImpl(Component.text());
+    }
     
     /**
      * Wraps an existing Adventure text component builder.
      *
-     * @param builder   an unwrapped text component builder
+     * @param existing  an unwrapped text component builder
+     *
+     * @return  a linear text component builder containing
+     *          the provided builder
      */
-    public WrappedTextComponentBuilder(TextComponent.Builder builder)
+    static LinearTextComponentBuilder wrap(TextComponent.Builder existing)
     {
-        this.builder = Objects.requireNonNull(builder, "builder");
+        return new LinearTextComponentBuilderImpl(existing);
     }
     
     /**
@@ -47,21 +44,7 @@ public class WrappedTextComponentBuilder implements ComponentLike
      *
      * @return  the internal text component builder
      */
-    public TextComponent.Builder getComponentBuilder() { return builder; }
-    
-    /**
-     * Puts this wrapped builder into something else.
-     * Applies the wrapper function with {@code this}
-     * instance and returns the result.
-     *
-     * @param wrapper   wrapper function
-     * @param <W>   wrapper type
-     * @return  result of applying the wrapper function
-     */
-    public <W> W into(Function<WrappedTextComponentBuilder, W> wrapper)
-    {
-        return wrapper.apply(this);
-    }
+    TextComponent.Builder getComponentBuilder();
     
     /**
      * Generates or gets the cached component resulting
@@ -72,11 +55,7 @@ public class WrappedTextComponentBuilder implements ComponentLike
      * @see #aggregateThenRebuildComponent()
      */
     @Override
-    public TextComponent asComponent()
-    {
-        // Store the result to avoid constantly rebuilding the component.
-        return (result != null) ? result : (result = aggregateThenRebuildComponent());
-    }
+    TextComponent asComponent();
     
     /**
      * Generate a new component by cloning and
@@ -88,16 +67,7 @@ public class WrappedTextComponentBuilder implements ComponentLike
      *
      * @return  an aggregate built component
      */
-    public TextComponent aggregateThenRebuildComponent()
-    {
-        result = null; // Invalidate existing result since it is being rebuilt (guarantees fresh results of children).
-        if (children.isEmpty()) { return builder.build(); } // No children - simply build the builder.
-        
-        // Create a copy of the builder in order to avoid editing the mutable builder instance within this wrapper.
-        TextComponent.Builder aggregate = builder.build().toBuilder();
-        for (WrappedTextComponentBuilder child : children) { aggregate.append(child.aggregateThenRebuildComponent()); }
-        return aggregate.build();
-    }
+    TextComponent aggregateThenRebuildComponent();
     
     /**
      * Creates a new child wrapper containing
@@ -111,13 +81,7 @@ public class WrappedTextComponentBuilder implements ComponentLike
      * @param builder   the child's internal builder
      * @return  a new child containing the provided builder
      */
-    public WrappedTextComponentBuilder createNextChildWithBuilder(TextComponent.Builder builder)
-    {
-        result = null;
-        WrappedTextComponentBuilder child = new WrappedTextComponentBuilder(builder);
-        children.add(child);
-        return child;
-    }
+    LinearTextComponentBuilder createNextChildWithBuilder(TextComponent.Builder builder);
     
     /**
      * Creates a new child wrapper containing
@@ -130,11 +94,7 @@ public class WrappedTextComponentBuilder implements ComponentLike
      *
      * @return  a new child
      */
-    public WrappedTextComponentBuilder createNextChild()
-    {
-        // result invalidated in createNextChildWithBuilder()
-        return createNextChildWithBuilder(Component.text());
-    }
+    LinearTextComponentBuilder createNextChild();
     
     /**
      * Gets the latest child or creates
@@ -146,11 +106,7 @@ public class WrappedTextComponentBuilder implements ComponentLike
      *
      * @return  the latest child
      */
-    public WrappedTextComponentBuilder peekOrCreateChild()
-    {
-        result = null;
-        return (children.isEmpty()) ? createNextChild() : children.getLast();
-    }
+    LinearTextComponentBuilder peekOrCreateChild();
     
     /**
      * Gets the latest child or creates one
@@ -165,9 +121,19 @@ public class WrappedTextComponentBuilder implements ComponentLike
      * @param action    the action to perform on the
      *                  child's internal builder
      */
-    public void peekThenApply(Consumer<TextComponent.Builder> action)
+    void peekThenApply(Consumer<TextComponent.Builder> action);
+    
+    /**
+     * Puts this wrapped builder into something else.
+     * Applies the wrapper function with {@code this}
+     * instance and returns the result.
+     *
+     * @param wrapper   wrapper function
+     * @param <W>   wrapper type
+     * @return  result of applying the wrapper function
+     */
+    default  <W> W into(Function<LinearTextComponentBuilder, W> wrapper)
     {
-        // result invalidated in peekOrCreateChild()
-        action.accept(peekOrCreateChild().getComponentBuilder());
+        return wrapper.apply(this);
     }
 }

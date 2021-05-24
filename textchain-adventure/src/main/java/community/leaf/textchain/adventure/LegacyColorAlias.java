@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-public enum LegacyColorCodeAliases
+public enum LegacyColorAlias
 {
     BLACK('0', NamedTextColor.BLACK),
     DARK_BLUE('1', NamedTextColor.DARK_BLUE),
@@ -46,14 +46,14 @@ public enum LegacyColorCodeAliases
     ITALIC('o', TextDecoration.ITALIC),
     RESET('r', Reset.RESET, "clear");
     
-    private static final Map<Character, LegacyColorCodeAliases> aliasesByCode = new HashMap<>();
-    private static final Map<TextFormat, LegacyColorCodeAliases> aliasesByFormat = new HashMap<>();
-    private static final Map<String, LegacyColorCodeAliases> aliasesByStrict = new HashMap<>();
-    private static final Map<String, LegacyColorCodeAliases> aliasesByExtended = new HashMap<>();
+    private static final Map<Character, LegacyColorAlias> aliasesByCode = new HashMap<>();
+    private static final Map<TextFormat, LegacyColorAlias> aliasesByFormat = new HashMap<>();
+    private static final Map<String, LegacyColorAlias> aliasesByStrict = new HashMap<>();
+    private static final Map<String, LegacyColorAlias> aliasesByExtended = new HashMap<>();
     
     static
     {
-        for (LegacyColorCodeAliases alias : values())
+        for (LegacyColorAlias alias : values())
         {
             aliasesByCode.put(alias.character, alias);
             aliasesByFormat.put(alias.format, alias);
@@ -68,7 +68,7 @@ public enum LegacyColorCodeAliases
     private final char character;
     private final TextFormat format;
     
-    LegacyColorCodeAliases(char character, TextFormat format, String ... aliases)
+    LegacyColorAlias(char character, TextFormat format, String ... aliases)
     {
         this.character = character;
         this.format = format;
@@ -113,34 +113,34 @@ public enum LegacyColorCodeAliases
     
     public boolean isReset() { return format == Reset.RESET; }
     
-    public static Optional<LegacyColorCodeAliases> resolveByCharacter(char code)
+    public static Optional<LegacyColorAlias> resolveByCharacter(char code)
     {
         return Optional.ofNullable(aliasesByCode.get(Character.toLowerCase(code)));
     }
     
-    public static Optional<LegacyColorCodeAliases> resolveByFormat(TextFormat format)
+    public static Optional<LegacyColorAlias> resolveByFormat(TextFormat format)
     {
         return Optional.ofNullable(aliasesByFormat.get(format));
     }
     
-    public static LegacyColorCodeAliases of(TextFormat format)
+    public static LegacyColorAlias of(TextFormat format)
     {
         return resolveByFormat(format).orElseThrow(() ->
             new IllegalArgumentException("Unsupported format: " + format)
         );
     }
     
-    private static Optional<LegacyColorCodeAliases> resolveByAlias(Map<String, LegacyColorCodeAliases> map, String alias)
+    private static Optional<LegacyColorAlias> resolveByAlias(Map<String, LegacyColorAlias> map, String alias)
     {
         return Optional.ofNullable(map.get(alias.toLowerCase()));
     }
     
-    public static Optional<LegacyColorCodeAliases> resolveByAlias(String alias)
+    public static Optional<LegacyColorAlias> resolveByAlias(String alias)
     {
         return resolveByAlias(aliasesByExtended, alias);
     }
     
-    public static Optional<LegacyColorCodeAliases> resolveByStrictAlias(String alias)
+    public static Optional<LegacyColorAlias> resolveByStrictAlias(String alias)
     {
         return resolveByAlias(aliasesByStrict, alias);
     }

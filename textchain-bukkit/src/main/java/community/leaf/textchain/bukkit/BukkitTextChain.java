@@ -7,28 +7,27 @@
  */
 package community.leaf.textchain.bukkit;
 
+import community.leaf.textchain.adventure.Chain;
 import community.leaf.textchain.adventure.ChainConstructor;
-import community.leaf.textchain.adventure.TextProcessor;
-import community.leaf.textchain.adventure.WrappedTextComponentBuilder;
+import community.leaf.textchain.adventure.ChainedRecipientSender;
+import community.leaf.textchain.platforms.AdventureSource;
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import net.kyori.adventure.text.TextComponent;
+import org.bukkit.command.CommandSender;
 
-public final class BukkitTextChain extends BukkitChain<BukkitTextChain>
+public interface BukkitTextChain extends
+    AdventureSource<BukkitAudiences>,
+    Chain<BukkitTextChain>,
+    ChainedRecipientSender<CommandSender, BukkitTextChain>
 {
-    public BukkitTextChain(WrappedTextComponentBuilder builder, BukkitAudiences audiences)
+    static ChainConstructor<BukkitTextChain> using(BukkitAudiences audiences)
     {
-        super(builder, audiences);
+        return (builder, processor) -> new BukkitTextChainImpl(builder, processor, audiences);
     }
     
     @Override
-    public ChainConstructor<BukkitTextChain> getConstructor()
+    default Audience recipientToAudience(CommandSender recipient)
     {
-        return builder -> new BukkitTextChain(builder, adventure());
-    }
-    
-    @Override
-    public TextComponent processText(String text)
-    {
-        return TextProcessor.none(text);
+        return adventure().sender(recipient);
     }
 }
