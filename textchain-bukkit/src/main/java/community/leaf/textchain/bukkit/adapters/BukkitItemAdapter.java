@@ -8,6 +8,7 @@
 package community.leaf.textchain.bukkit.adapters;
 
 import community.leaf.textchain.adventure.ItemRarity;
+import community.leaf.textchain.bukkit.internal.nms.ItemReflection;
 import community.leaf.textchain.platforms.adapters.ItemMetaAdapter;
 import community.leaf.textchain.platforms.adapters.ItemTypeAdapter;
 import community.leaf.textchain.platforms.adapters.MetaAdapter;
@@ -16,8 +17,6 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.tlinkowski.annotation.basic.NullOr;
-
-import static community.leaf.textchain.bukkit.internal.nms.ItemReflection.*;
 
 class BukkitItemAdapter implements ItemMetaAdapter<Material, ItemStack, ItemMeta>
 {
@@ -69,23 +68,15 @@ class BukkitItemAdapter implements ItemMetaAdapter<Material, ItemStack, ItemMeta
     @Override
     public BinaryTagHolder nbt(ItemStack item)
     {
-        try { return BinaryTagHolder.of(String.valueOf(getOrCreateTag(asNmsCopy(item)))); }
+        try { return BinaryTagHolder.of(ItemReflection.items().toCompoundTag(item)); }
         catch (Throwable throwable) { throw new RuntimeException(throwable); }
     }
     
     @Override
     public ItemRarity rarity(ItemStack item)
     {
-        Material type = item.getType();
-        if (!type.isItem()) { return ItemRarity.COMMON; }
-        
-        try
-        {
-            Object nmsItem = getNmsItemByMaterial(type);
-            Object nmsItemStack = asNmsCopy(item);
-            Object nmsRarity = getItemRarityOfNmsItemStack(nmsItem, nmsItemStack);
-            return ItemRarity.resolveByName(String.valueOf(nmsRarity)).orElse(ItemRarity.COMMON);
-        }
+        if (!item.getType().isItem()) { return ItemRarity.COMMON; }
+        try { return ItemReflection.items().rarity(item); }
         catch (Throwable throwable) { throw new RuntimeException(throwable); }
     }
 }

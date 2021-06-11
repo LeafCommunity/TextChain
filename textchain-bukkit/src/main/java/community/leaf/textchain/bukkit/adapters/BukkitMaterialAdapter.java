@@ -8,12 +8,11 @@
 package community.leaf.textchain.bukkit.adapters;
 
 import community.leaf.textchain.adventure.ItemRarity;
+import community.leaf.textchain.bukkit.internal.nms.ItemReflection;
 import community.leaf.textchain.platforms.adapters.ItemTypeAdapter;
 import net.kyori.adventure.key.Key;
 import net.md_5.bungee.chat.TranslationRegistry;
 import org.bukkit.Material;
-
-import static community.leaf.textchain.bukkit.internal.nms.ItemReflection.*;
 
 class BukkitMaterialAdapter implements ItemTypeAdapter<Material>
 {
@@ -30,11 +29,7 @@ class BukkitMaterialAdapter implements ItemTypeAdapter<Material>
     @Override
     public String translationKey(Material type)
     {
-        try
-        {
-            if (type.isBlock()) { return getNmsBlockName(getNmsBlockByMaterial(type)); }
-            else { return getNmsItemName(getNmsItemByMaterial(type)); }
-        }
+        try { return ItemReflection.items().translationKey(type); }
         catch (Throwable throwable) { throw new RuntimeException(throwable); }
     }
     
@@ -48,13 +43,7 @@ class BukkitMaterialAdapter implements ItemTypeAdapter<Material>
     public ItemRarity rarity(Material type)
     {
         if (!type.isItem()) { return ItemRarity.COMMON; }
-        
-        try
-        {
-            Object nmsItem = getNmsItemByMaterial(type);
-            Object nmsRarity = getItemRarityOfNmsItem(nmsItem);
-            return ItemRarity.resolveByName(String.valueOf(nmsRarity)).orElse(ItemRarity.COMMON);
-        }
+        try { return ItemReflection.items().rarity(type); }
         catch (Throwable throwable) { throw new RuntimeException(throwable); }
     }
 }

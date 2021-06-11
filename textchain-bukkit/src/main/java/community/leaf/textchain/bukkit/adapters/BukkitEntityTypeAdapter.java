@@ -7,12 +7,10 @@
  */
 package community.leaf.textchain.bukkit.adapters;
 
+import community.leaf.textchain.bukkit.internal.nms.EntityReflection;
 import community.leaf.textchain.platforms.adapters.EntityTypeAdapter;
 import net.kyori.adventure.key.Key;
 import org.bukkit.entity.EntityType;
-import pl.tlinkowski.annotation.basic.NullOr;
-
-import static community.leaf.textchain.bukkit.internal.nms.EntityReflection.*;
 
 class BukkitEntityTypeAdapter implements EntityTypeAdapter<EntityType>
 {
@@ -29,15 +27,7 @@ class BukkitEntityTypeAdapter implements EntityTypeAdapter<EntityType>
     @Override
     public String translationKey(EntityType type)
     {
-        @NullOr String entityTypeName = type.getName();
-        
-        try
-        {
-            Object nmsEntityTypes = getEntityTypesByName(entityTypeName)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid entity name: " + entityTypeName));
-            
-            return getTranslationKeyByNmsEntityTypes(nmsEntityTypes);
-        }
+        try { return EntityReflection.entities().translationKey(type); }
         catch (Throwable throwable) { throw new RuntimeException(throwable); }
     }
 }
