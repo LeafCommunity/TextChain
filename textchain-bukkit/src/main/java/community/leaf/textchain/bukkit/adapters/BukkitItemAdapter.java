@@ -68,7 +68,7 @@ class BukkitItemAdapter implements ItemMetaAdapter<Material, ItemStack, ItemMeta
     @Override
     public BinaryTagHolder nbt(ItemStack item)
     {
-        try { return BinaryTagHolder.of(ItemReflection.items().toCompoundTag(item)); }
+        try { return BinaryTagHolder.of(ItemReflection.items().compoundTag(item)); }
         catch (Throwable throwable) { throw new RuntimeException(throwable); }
     }
     

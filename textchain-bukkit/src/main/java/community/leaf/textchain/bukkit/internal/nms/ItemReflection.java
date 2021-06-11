@@ -15,9 +15,9 @@ public interface ItemReflection
 {
     static ItemReflection items() { return ItemReflections.ITEMS; }
     
-    String translationKey(Material type) throws Throwable;
+    String compoundTag(ItemStack item) throws Throwable;
     
-    String toCompoundTag(ItemStack item) throws Throwable;
+    String translationKey(Material type) throws Throwable;
     
     ItemRarity rarity(Material type) throws Throwable;
     
