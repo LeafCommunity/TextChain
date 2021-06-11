@@ -24,9 +24,12 @@ final class EntityReflections
     
     static
     {
-        ENTITIES = (BukkitVersion.getServerVersion().isAtLeast(1, 17)) ? null : new Impl_v1_16();
+        ENTITIES = (BukkitVersion.getServerVersion().isAtLeast(1, 17)) ? new Impl_v1_17() : new Impl_v1_16();
     }
     
+    /**
+     * 1.x -> 1.16
+     */
     private static class Impl_v1_16 implements EntityReflection
     {
         private static final Class<?> NMS_ENTITY_TYPES = ServerReflection.requireNmsClass("EntityTypes");
@@ -38,6 +41,34 @@ final class EntityReflections
         // NMS EntityTypes -> String
         private static final ThrowsOr<MethodHandle> translationKeyByNmsEntityTypes =
             ServerReflection.requireMethod(NMS_ENTITY_TYPES, "f", String.class);
+        
+        @Override
+        public String translationKey(EntityType type) throws Throwable
+        {
+            @NullOr String entityTypeName = type.getName();
+            
+            Object nmsEntityTypes =
+                ((Optional<?>) nmsEntityTypesByName.getOrThrow().invoke(entityTypeName))
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid entity name: " + entityTypeName));
+                
+            return String.valueOf(translationKeyByNmsEntityTypes.getOrThrow().invoke(nmsEntityTypes));
+        }
+    }
+    
+    /**
+     * 1.17+
+     */
+    private static class Impl_v1_17 implements EntityReflection
+    {
+        private static final Class<?> NMS_ENTITY_TYPES = ServerReflection.requireNmsClass("world.entity.EntityTypes");
+        
+        // String -> Optional<NMS EntityTypes>
+        private static final ThrowsOr<MethodHandle> nmsEntityTypesByName =
+            ServerReflection.requireStaticMethod(NMS_ENTITY_TYPES, "a", Optional.class, String.class);
+        
+        // NMS EntityTypes -> String
+        private static final ThrowsOr<MethodHandle> translationKeyByNmsEntityTypes =
+            ServerReflection.requireMethod(NMS_ENTITY_TYPES, "g", String.class);
         
         @Override
         public String translationKey(EntityType type) throws Throwable

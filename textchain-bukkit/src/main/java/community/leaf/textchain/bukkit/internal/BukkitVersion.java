@@ -19,10 +19,6 @@ public class BukkitVersion
             "org\\.bukkit\\.craftbukkit\\.(?<version>v(?<release>\\d+)_(?<major>\\d+)_R(?<revision>\\d+))\\."
         );
     
-    private static final String CRAFT_BUKKIT_PACKAGE = "org.bukkit.craftbukkit";
-    
-    private static final String NMS_PACKAGE = "net.minecraft.server";
-    
     private static final ThrowsOr<BukkitVersion> INSTANCE =
         ThrowsOr.result(() -> new BukkitVersion(Bukkit.getServer().getClass().getCanonicalName()));
     
@@ -63,13 +59,13 @@ public class BukkitVersion
     
     public String craftbukkit(String className)
     {
-        return versionedClassPath(CRAFT_BUKKIT_PACKAGE, className);
+        return versionedClassPath("org.bukkit.craftbukkit", className);
     }
     
     public String nms(String className)
     {
         return (isAtLeast(1, 17))
-            ? String.join(".", NMS_PACKAGE, className)
-            : versionedClassPath(NMS_PACKAGE, className);
+            ? String.join(".", "net.minecraft", className)
+            : versionedClassPath("net.minecraft.server", className);
     }
 }
