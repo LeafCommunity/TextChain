@@ -5,13 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+@NonNullPackage
 package community.leaf.textchain.bukkit.internal.nms;
 
-import org.bukkit.entity.EntityType;
-
-public interface EntityReflection
-{
-    static EntityReflection entities() { return EntityReflections.ENTITIES; }
-    
-    String translationKey(EntityType type) throws Throwable;
-}
+import pl.tlinkowski.annotation.basic.NonNullPackage;

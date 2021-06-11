@@ -47,17 +47,25 @@ public class BukkitVersion
     @Override
     public String toString() { return packageVersion; }
     
-    private String classPath(String prefix, String className)
+    public boolean isAtLeast(int release, int major)
+    {
+        return this.release >= release && this.major >= major;
+    }
+    
+    private String versionedClassPath(String prefix, String className)
     {
         return String.join(".", prefix, packageVersion, className);
     }
     
-    public String nms(String className) { return classPath("net.minecraft.server", className); }
-    
-    public String craftbukkit(String className) { return classPath("org.bukkit.craftbukkit", className); }
-    
-    public boolean isAtLeast(int release, int major)
+    public String craftbukkit(String className)
     {
-        return this.release >= release && this.major >= major;
+        return versionedClassPath("org.bukkit.craftbukkit", className);
+    }
+    
+    public String nms(String className)
+    {
+        return (isAtLeast(1, 17))
+            ? String.join(".", "net.minecraft", className)
+            : versionedClassPath("net.minecraft.server", className);
     }
 }
