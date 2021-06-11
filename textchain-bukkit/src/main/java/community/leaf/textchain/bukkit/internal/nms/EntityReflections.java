@@ -29,35 +29,26 @@ final class EntityReflections
     
     private static class Impl_v1_16 implements EntityReflection
     {
-        private final Class<?> NMS_ENTITY_TYPES = ServerReflection.requireNmsClass("EntityTypes");
+        private static final Class<?> NMS_ENTITY_TYPES = ServerReflection.requireNmsClass("EntityTypes");
         
         // String -> Optional<NMS EntityTypes>
-        private final ThrowsOr<MethodHandle> GET_ENTITY_TYPE_BY_NAME =
+        private static final ThrowsOr<MethodHandle> nmsEntityTypesByName =
             ServerReflection.requireStaticMethod(NMS_ENTITY_TYPES, "a", Optional.class, String.class);
         
-        private Optional<?> getEntityTypesByName(@NullOr String entityTypeName) throws Throwable
-        {
-            return ((Optional<?>) GET_ENTITY_TYPE_BY_NAME.getOrThrow().invoke(entityTypeName));
-        }
-        
         // NMS EntityTypes -> String
-        private final ThrowsOr<MethodHandle> GET_TRANSLATION_KEY =
+        private static final ThrowsOr<MethodHandle> translationKeyByNmsEntityTypes =
             ServerReflection.requireMethod(NMS_ENTITY_TYPES, "f", String.class);
-        
-        private String getTranslationKeyByNmsEntityTypes(Object nmsEntityTypes) throws Throwable
-        {
-            return String.valueOf(GET_TRANSLATION_KEY.getOrThrow().invoke(nmsEntityTypes));
-        }
         
         @Override
         public String translationKey(EntityType type) throws Throwable
         {
             @NullOr String entityTypeName = type.getName();
-        
-            Object nmsEntityTypes = getEntityTypesByName(entityTypeName)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid entity name: " + entityTypeName));
+            
+            Object nmsEntityTypes =
+                ((Optional<?>) nmsEntityTypesByName.getOrThrow().invoke(entityTypeName))
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid entity name: " + entityTypeName));
                 
-            return getTranslationKeyByNmsEntityTypes(nmsEntityTypes);
+            return String.valueOf(translationKeyByNmsEntityTypes.getOrThrow().invoke(nmsEntityTypes));
         }
     }
 }
