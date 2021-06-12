@@ -22,7 +22,7 @@ import java.util.UUID;
 
 public interface AdventureEntity<E> extends ComponentLike, HoverEventSource<ShowEntity>, Keyed
 {
-    static <T, E> AdventureEntity<E> with(EntityAdapter<T, E> adapter, E entity)
+    static <T, E> AdventureEntity<E> of(EntityAdapter<T, E> adapter, E entity)
     {
         return new AdventureEntityImpl<>(adapter, entity);
     }

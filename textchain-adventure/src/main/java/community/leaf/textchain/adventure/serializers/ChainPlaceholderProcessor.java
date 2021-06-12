@@ -15,7 +15,7 @@ import java.util.function.Function;
 
 public interface ChainPlaceholderProcessor
 {
-    static ChainPlaceholderProcessor using(
+    static ChainPlaceholderProcessor of(
         Function<String, @NullOr String> stringProcessor,
         Function<String, @NullOr Component> componentProcessor
     )

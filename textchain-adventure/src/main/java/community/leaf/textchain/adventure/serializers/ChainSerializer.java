@@ -24,7 +24,7 @@ public interface ChainSerializer extends
     Buildable<ChainSerializer, ChainSerializer.Builder>,
     ComponentSerializer<Component, TextComponent, List<Map<String, Object>>>
 {
-    static ChainSerializer none()
+    static ChainSerializer direct()
     {
         return ChainSerializerImpl.NONE;
     }
@@ -36,7 +36,7 @@ public interface ChainSerializer extends
     
     static ChainSerializer.Builder builder()
     {
-        return none().toBuilder();
+        return direct().toBuilder();
     }
     
     <C extends Chain<C>> C deserializeAsChain(ChainConstructor<C> constructor, List<Map<String, Object>> input);

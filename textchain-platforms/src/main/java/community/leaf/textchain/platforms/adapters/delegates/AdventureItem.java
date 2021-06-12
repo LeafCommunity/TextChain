@@ -21,7 +21,7 @@ import java.util.Optional;
 
 public interface AdventureItem<I> extends ComponentLike, HoverEventSource<ShowItem>, Keyed
 {
-    static <T, I> AdventureItem<I> with(ItemAdapter<T, I> adapter, I item)
+    static <T, I> AdventureItem<I> of(ItemAdapter<T, I> adapter, I item)
     {
         return new AdventureItemImpl<>(adapter, item);
     }
