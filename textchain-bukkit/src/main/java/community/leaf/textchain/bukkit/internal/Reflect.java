@@ -22,7 +22,7 @@ public final class Reflect
         return new PackageResolver(packageName);
     }
     
-    public static PackageResolver inMinecraft() { return in("net.minecraft"); }
+    public static PackageResolver inMinecraft() { return in(BukkitVersion.server().minecraftPackage()); }
     
     public static PackageResolver inCraftBukkit() { return in(BukkitVersion.server().craftBukkitPackage()); }
     

@@ -25,6 +25,7 @@ public class BukkitVersion
     public static BukkitVersion server() { return INSTANCE.getOrThrow(); }
     
     private final String craftBukkitPackage;
+    private final String minecraftPackage;
     private final String packageVersion;
     private final int release;
     private final int major;
@@ -44,12 +45,16 @@ public class BukkitVersion
         this.release = Integer.parseInt(matcher.group("release"));
         this.major = Integer.parseInt(matcher.group("major"));
         this.revision = Integer.parseInt(matcher.group("revision"));
+        
+        this.minecraftPackage = (isAtLeast(1, 17)) ? "net.minecraft" : "net.minecraft.server" + "." + packageVersion;
     }
     
     @Override
     public String toString() { return packageVersion; }
     
     public String craftBukkitPackage() { return craftBukkitPackage; }
+    
+    public String minecraftPackage() { return minecraftPackage; }
     
     public String packageVersion() { return packageVersion; }
     
@@ -64,20 +69,13 @@ public class BukkitVersion
         return this.release >= release && this.major >= major;
     }
     
-    private String versionedClassPath(String prefix, String className)
+    public String craftBukkit(String className)
     {
-        return String.join(".", prefix, packageVersion, className);
+        return craftBukkitPackage + "." + className;
     }
     
-    public String craftbukkit(String className)
+    public String minecraft(String className)
     {
-        return versionedClassPath("org.bukkit.craftbukkit", className);
-    }
-    
-    public String nms(String className)
-    {
-        return (isAtLeast(1, 17))
-            ? String.join(".", "net.minecraft", className)
-            : versionedClassPath("net.minecraft.server", className);
+        return minecraftPackage + "." + className;
     }
 }

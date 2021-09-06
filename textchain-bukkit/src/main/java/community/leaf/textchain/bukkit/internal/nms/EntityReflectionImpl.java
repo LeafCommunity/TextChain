@@ -8,7 +8,6 @@
 package community.leaf.textchain.bukkit.internal.nms;
 
 import community.leaf.textchain.bukkit.internal.Reflect;
-import community.leaf.textchain.bukkit.internal.ServerReflection;
 import community.leaf.textchain.bukkit.internal.ThrowsOr;
 import org.bukkit.entity.EntityType;
 import pl.tlinkowski.annotation.basic.NullOr;
@@ -24,7 +23,7 @@ final class EntityReflectionImpl implements EntityReflection
     
     final Class<?> NMS_ENTITY_TYPES =
         Reflect.inMinecraft().requireAnyClass(
-            "server.EntityTypes", "world.entity.EntityTypes"
+            "EntityTypes", "world.entity.EntityTypes"
         );
     
     final ThrowsOr<MethodHandle> nmsEntityTypesByName =

@@ -29,12 +29,12 @@ public class ServerReflection
     
     public static Optional<Class<?>> resolveNmsClass(String className)
     {
-        return resolveClass(BukkitVersion.server().nms(className));
+        return resolveClass(BukkitVersion.server().minecraft(className));
     }
     
     public static Optional<Class<?>> resolveCraftClass(String className)
     {
-        return resolveClass(BukkitVersion.server().craftbukkit(className));
+        return resolveClass(BukkitVersion.server().craftBukkit(className));
     }
     
     public static Optional<Class<?>> findNetMinecraft(String ... classes)
@@ -49,12 +49,12 @@ public class ServerReflection
     
     public static Class<?> requireNmsClass(String className)
     {
-        return requireClass(BukkitVersion.server().nms(className));
+        return requireClass(BukkitVersion.server().minecraft(className));
     }
     
     public static Class<?> requireCraftClass(String className)
     {
-        return requireClass(BukkitVersion.server().craftbukkit(className));
+        return requireClass(BukkitVersion.server().craftBukkit(className));
     }
     
     public static Optional<MethodHandle> resolveMethod(Class<?> containingClass, String methodName, Class<?> returnType, Class<?> ... parameterTypes)
