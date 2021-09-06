@@ -20,7 +20,7 @@ public class LegacyBukkitComponentSerializer
     
     static
     {
-        if (BukkitVersion.getServerVersion().isAtLeast(1, 16))
+        if (BukkitVersion.server().isAtLeast(1, 16))
         {
             LEGACY_HEX_SECTION =
                 LegacyComponentSerializer.builder()

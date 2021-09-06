@@ -25,7 +25,7 @@ final class ItemReflections
     
     static
     {
-        ITEMS = (BukkitVersion.getServerVersion().isAtLeast(1, 17)) ? new Impl_v1_17() : new Impl_v1_16();
+        ITEMS = (BukkitVersion.server().isAtLeast(1, 17)) ? new Impl_v1_17() : new Impl_v1_16();
     }
     
     /**

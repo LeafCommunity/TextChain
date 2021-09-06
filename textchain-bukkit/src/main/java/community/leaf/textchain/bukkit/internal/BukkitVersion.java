@@ -16,18 +16,19 @@ public class BukkitVersion
 {
     public static final Pattern PACKAGE_VERSION_PATTERN =
         Pattern.compile(
-            "org\\.bukkit\\.craftbukkit\\.(?<version>v(?<release>\\d+)_(?<major>\\d+)_R(?<revision>\\d+))\\."
+            "(?<package>org\\.bukkit\\.craftbukkit\\.(?<version>v(?<release>\\d+)_(?<major>\\d+)_R(?<revision>\\d+)))\\."
         );
     
     private static final ThrowsOr<BukkitVersion> INSTANCE =
         ThrowsOr.result(() -> new BukkitVersion(Bukkit.getServer().getClass().getCanonicalName()));
     
-    public static BukkitVersion getServerVersion() { return INSTANCE.getOrThrow(); }
+    public static BukkitVersion server() { return INSTANCE.getOrThrow(); }
     
-    public final String packageVersion;
-    public final int release;
-    public final int major;
-    public final int revision;
+    private final String craftBukkitPackage;
+    private final String packageVersion;
+    private final int release;
+    private final int major;
+    private final int revision;
     
     public BukkitVersion(String versionClassPath)
     {
@@ -37,7 +38,8 @@ public class BukkitVersion
         {
             throw new IllegalArgumentException("Invalid version (unsupported server): " + versionClassPath);
         }
-    
+        
+        this.craftBukkitPackage = matcher.group("package");
         this.packageVersion = matcher.group("version");
         this.release = Integer.parseInt(matcher.group("release"));
         this.major = Integer.parseInt(matcher.group("major"));
@@ -46,6 +48,16 @@ public class BukkitVersion
     
     @Override
     public String toString() { return packageVersion; }
+    
+    public String craftBukkitPackage() { return craftBukkitPackage; }
+    
+    public String packageVersion() { return packageVersion; }
+    
+    public int release() { return release; }
+    
+    public int major() { return major; }
+    
+    public int revision() { return revision; }
     
     public boolean isAtLeast(int release, int major)
     {
