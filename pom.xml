@@ -62,18 +62,13 @@
         <license.header.url>https://github.com/LeafCommunity/TextChain</license.header.url>
 
         <!-- Dependency versions -->
-        <versions.kyori.adventure>4.7.0</versions.kyori.adventure>
-        <versions.kyori.adventure-platform>4.0.0-SNAPSHOT</versions.kyori.adventure-platform>
-        <versions.minecraft.bungeecord>1.16-R0.5-SNAPSHOT</versions.minecraft.bungeecord>
-        <versions.minecraft.spigot>1.16.5-R0.1-SNAPSHOT</versions.minecraft.spigot>
+        <versions.kyori.adventure>4.9.3</versions.kyori.adventure>
+        <versions.kyori.adventure-platform>4.0.1</versions.kyori.adventure-platform>
+        <versions.minecraft.bungeecord>1.18-R0.1-SNAPSHOT</versions.minecraft.bungeecord>
+        <versions.minecraft.spigot>1.18.1-R0.1-SNAPSHOT</versions.minecraft.spigot>
+        <!-- Examples target older version due to the project targeting Java 11 -->
+        <versions.minecraft.examples>1.16.5-R0.1-SNAPSHOT</versions.minecraft.examples>
     </properties>
-
-    <repositories>
-        <repository>
-            <id>sonatype-oss</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </repository>
-    </repositories>
 
     <dependencies>
         <!-- Nullness Annotations: @NullOr (via maven-central) -->

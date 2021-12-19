@@ -18,17 +18,17 @@
 
     <repositories>
         <repository>
-            <id>papermc-repo</id>
+            <id>papermc</id>
             <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
     </repositories>
 
     <dependencies>
-        <!-- Paper API (via papermc-repo) -->
+        <!-- Paper API (via papermc) -->
         <dependency>
             <groupId>com.destroystokyo.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>${versions.minecraft.spigot}</version>
+            <version>${versions.minecraft.examples}</version>
             <scope>provided</scope>
         </dependency>
         <!-- TextChain (via local project) -->
