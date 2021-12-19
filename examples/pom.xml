@@ -13,6 +13,11 @@
     <artifactId>textchain-examples</artifactId>
     <packaging>pom</packaging>
 
+    <properties>
+        <!-- Note: examples target older version due to the project targeting Java 11 -->
+        <versions.minecraft.examples>1.16.5-R0.1-SNAPSHOT</versions.minecraft.examples>
+    </properties>
+
     <modules>
         <module>textchain-example-bukkit</module>
         <module>textchain-example-bungeecord</module>

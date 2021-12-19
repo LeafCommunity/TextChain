@@ -64,11 +64,8 @@
         <!-- Dependency versions -->
         <versions.kyori.adventure>4.9.3</versions.kyori.adventure>
         <versions.kyori.adventure-platform>4.0.1</versions.kyori.adventure-platform>
-        <versions.minecraft.bungee-chat>1.16-R0.4</versions.minecraft.bungee-chat>
-        <versions.minecraft.bungeecord>1.18-R0.1-SNAPSHOT</versions.minecraft.bungeecord>
+        <versions.bungeecord.api>1.16-R0.4</versions.bungeecord.api>
         <versions.minecraft.spigot>1.18.1-R0.1-SNAPSHOT</versions.minecraft.spigot>
-        <!-- Examples target older version due to the project targeting Java 11 -->
-        <versions.minecraft.examples>1.16.5-R0.1-SNAPSHOT</versions.minecraft.examples>
     </properties>
 
     <dependencies>

@@ -13,14 +13,14 @@
     <artifactId>textchain-platform-bungeecord</artifactId>
 
     <dependencies>
-        <!-- BungeeCord API (via sonatype-oss) -->
+        <!-- BungeeCord API (via maven central) -->
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-api</artifactId>
-            <version>${versions.minecraft.bungeecord}</version>
+            <version>${versions.bungeecord.api}</version>
             <scope>provided</scope>
         </dependency>
-        <!-- Kyori Adventure BungeeCord Platform (via sonatype-oss) -->
+        <!-- Kyori Adventure BungeeCord Platform (via maven central) -->
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bungeecord</artifactId>
