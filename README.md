@@ -72,12 +72,12 @@ See also:
     - The standalone, platform-independent version of TextChain.
       It **only** requires Kyori Adventure, so this module runs
       wherever Adventure runs.
-- **`textchain-bukkit`** → 🚰
+- **`textchain-platform-bukkit`** → 🚰
     - TextChain with additional Bukkit-specific features like
       sending chains directly to players and helpful utilities
       like creating components for entities, items, and converting
       from Bukkit objects to Adventure-equivalent objects.
-- **`textchain-bungeecord`** → 🟠
+- **`textchain-platform-bungeecord`** → 🟠
     - TextChain with additional Bungee-specific features like
       sending chains directly to proxied players.
 

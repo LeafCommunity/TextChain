@@ -46,10 +46,10 @@
             <artifactId>textchain-platforms</artifactId>
             <version>${revision}</version>
         </dependency>
-        <!-- TextChain Bungee Chat (via local project) -->
+        <!-- TextChain BungeeCord Chat (via local project) -->
         <dependency>
             <groupId>community.leaf.textchain</groupId>
-            <artifactId>textchain-bungee-chat</artifactId>
+            <artifactId>textchain-platform-bungeecord-chat</artifactId>
             <version>${revision}</version>
         </dependency>
     </dependencies>

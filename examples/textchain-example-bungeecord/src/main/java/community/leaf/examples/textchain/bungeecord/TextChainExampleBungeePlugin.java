@@ -1,7 +1,7 @@
 package community.leaf.examples.textchain.bungeecord;
 
 import community.leaf.textchain.adventure.TextChain;
-import community.leaf.textchain.bungeecord.BungeeTextChainSource;
+import community.leaf.textchain.platforms.bungeecord.BungeeTextChainSource;
 import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.md_5.bungee.api.CommandSender;

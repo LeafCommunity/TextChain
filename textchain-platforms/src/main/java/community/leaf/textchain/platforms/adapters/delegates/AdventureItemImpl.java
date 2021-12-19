@@ -8,7 +8,7 @@
 package community.leaf.textchain.platforms.adapters.delegates;
 
 import community.leaf.textchain.adventure.Components;
-import community.leaf.textchain.adventure.ItemRarity;
+import community.leaf.textchain.platforms.ItemRarity;
 import community.leaf.textchain.platforms.adapters.ItemAdapter;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;

@@ -44,7 +44,7 @@
 
         <!-- Common Platform APIs -->
         <module>textchain-platforms</module>
-        <module>textchain-bungee-chat</module>
+        <module>textchain-platform-bungeecord-chat</module>
 
         <!-- Platform Implementations -->
         <module>textchain-platform-bukkit</module>
