@@ -37,9 +37,9 @@ public interface ChainedRecipientSender<R, S extends ChainedRecipientSender<R, S
      * @param recipient     the recipient to receive components
      * @return  self (for method chaining)
      *
-     * @see ChainedAudienceSender#send(Audience)
+     * @see ChainedAudienceSender#sendToAudience(Audience)
      */
-    default S send(R recipient) { return send(recipientToAudience(recipient)); }
+    default S sendToRecipient(R recipient) { return sendToAudience(recipientToAudience(recipient)); }
     
     /**
      * Converts into a component message and sends
@@ -51,9 +51,9 @@ public interface ChainedRecipientSender<R, S extends ChainedRecipientSender<R, S
      *                      components originate
      * @return  self (for method chaining)
      *
-     * @see ChainedAudienceSender#send(Audience, Identity)
+     * @see ChainedAudienceSender#sendToAudience(Audience, Identity)
      */
-    default S send(R recipient, Identity source) { return send(recipientToAudience(recipient), source); }
+    default S sendToRecipient(R recipient, Identity source) { return sendToAudience(recipientToAudience(recipient), source); }
     
     /**
      * Converts into a component message and sends
@@ -65,9 +65,9 @@ public interface ChainedRecipientSender<R, S extends ChainedRecipientSender<R, S
      *                      the components originate
      * @return  self (for method chaining)
      *
-     * @see ChainedAudienceSender#send(Audience, Identified)
+     * @see ChainedAudienceSender#sendToAudience(Audience, Identified)
      */
-    default S send(R recipient, Identified source) { return send(recipientToAudience(recipient), source); }
+    default S sendToRecipient(R recipient, Identified source) { return sendToAudience(recipientToAudience(recipient), source); }
     
     /**
      * Converts into a component action bar and
@@ -76,7 +76,7 @@ public interface ChainedRecipientSender<R, S extends ChainedRecipientSender<R, S
      * @param recipient     the recipient to receive components
      * @return  self (for method chaining)
      *
-     * @see ChainedAudienceSender#actionBar(Audience)
+     * @see ChainedAudienceSender#actionBarToAudience(Audience)
      */
-    default S actionBar(R recipient) { return actionBar(recipientToAudience(recipient)); }
+    default S actionBarToRecipient(R recipient) { return actionBarToAudience(recipientToAudience(recipient)); }
 }

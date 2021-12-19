@@ -33,7 +33,7 @@ public interface ChainedAudienceSender<S extends ChainedAudienceSender<S>> exten
      *
      * @see Audience#sendMessage(Component)
      */
-    default S send(Audience audience)
+    default S sendToAudience(Audience audience)
     {
         audience.sendMessage(asComponent());
         return self();
@@ -51,7 +51,7 @@ public interface ChainedAudienceSender<S extends ChainedAudienceSender<S>> exten
      *
      * @see Audience#sendMessage(Identity, Component)
      */
-    default S send(Audience audience, Identity source)
+    default S sendToAudience(Audience audience, Identity source)
     {
         audience.sendMessage(source, asComponent());
         return self();
@@ -69,7 +69,7 @@ public interface ChainedAudienceSender<S extends ChainedAudienceSender<S>> exten
      *
      * @see Audience#sendMessage(Identified, Component)
      */
-    default S send(Audience audience, Identified source)
+    default S sendToAudience(Audience audience, Identified source)
     {
         audience.sendMessage(source, asComponent());
         return self();
@@ -84,7 +84,7 @@ public interface ChainedAudienceSender<S extends ChainedAudienceSender<S>> exten
      *
      * @see Audience#sendActionBar(Component)
      */
-    default S actionBar(Audience audience)
+    default S actionBarToAudience(Audience audience)
     {
         audience.sendActionBar(asComponent());
         return self();

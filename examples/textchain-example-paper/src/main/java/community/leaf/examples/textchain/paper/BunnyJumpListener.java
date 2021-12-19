@@ -76,7 +76,7 @@ public class BunnyJumpListener implements Listener
                 .color(TextColor.color(0xfcad25))
                 .hover(BukkitToAdventure.items().hover(gift))
             .then(", you silly rabbit.")
-            .send((Audience) player)
-            .send(plugin.exampleAudience());
+            .sendToAudience((Audience) player)
+            .sendToAudience(plugin.exampleAudience());
     }
 }

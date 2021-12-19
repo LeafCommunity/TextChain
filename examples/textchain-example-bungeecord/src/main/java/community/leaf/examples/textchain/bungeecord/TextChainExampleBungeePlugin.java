@@ -23,7 +23,7 @@ public class TextChainExampleBungeePlugin extends Plugin implements BungeeTextCh
             .then("Enabled: ")
                 .color(NamedTextColor.LIGHT_PURPLE)
             .then("TextChain Example (BungeeCord version)")
-            .send(getProxy().getConsole());
+            .sendToRecipient(getProxy().getConsole());
     }
     
     @Override
@@ -70,7 +70,7 @@ public class TextChainExampleBungeePlugin extends Plugin implements BungeeTextCh
                     .color(NamedTextColor.LIGHT_PURPLE)
                     .tooltip("Click to check the global list.")
                     .command("/glist")
-                .send(sender);
+                .sendToRecipient(sender);
         }
     }
 }

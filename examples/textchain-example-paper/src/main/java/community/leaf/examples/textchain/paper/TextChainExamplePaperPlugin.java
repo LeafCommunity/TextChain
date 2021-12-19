@@ -34,8 +34,8 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
             .then("Enabled: ")
                 .color(NamedTextColor.GOLD)
             .then("TextChain Example (Paper version)")
-            .send((Audience) getServer().getConsoleSender())
-            .send(exampleAudience());
+            .sendToAudience((Audience) getServer().getConsoleSender())
+            .sendToAudience(exampleAudience());
     }
     
     @Override
@@ -71,8 +71,8 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
                         .then("/" + label + " insertion")
                             .color(TextColor.color(0xd0e2dc))
                     )
-                .send(sender)
-                .send(exampleAudience());
+                .sendToAudience(sender)
+                .sendToAudience(exampleAudience());
         }
         else if ("website".equalsIgnoreCase(args[0]))
         {
@@ -87,8 +87,8 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
                 )
                 .link("https://github.com/LeafCommunity/TextChain/")
                 .tooltip("Click to try: website")
-                .send(sender)
-                .send(exampleAudience());
+                .sendToAudience(sender)
+                .sendToAudience(exampleAudience());
         }
         else if ("suggestion".equalsIgnoreCase(args[0]))
         {
@@ -103,8 +103,8 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
                 )
                 .suggest("/" + label + " insertion <- try this one, eh?")
                 .tooltip("Click to try: suggestion")
-                .send(sender)
-                .send(exampleAudience());
+                .sendToAudience(sender)
+                .sendToAudience(exampleAudience());
         }
         else if ("insertion".equalsIgnoreCase(args[0]))
         {
@@ -119,8 +119,8 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
                 )
                 .insertion("consider yourself inserted")
                 .tooltip("Shift + click to try: insertion")
-                .send(sender)
-                .send(exampleAudience());
+                .sendToAudience(sender)
+                .sendToAudience(exampleAudience());
         }
         else
         {
@@ -129,8 +129,8 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
                 .then("&n" + args[0])
                     .tooltip("&4&oOops??")
                 .then(" is.")
-                .send(sender)
-                .send(exampleAudience());
+                .sendToAudience(sender)
+                .sendToAudience(exampleAudience());
         }
         
         return true;
@@ -158,8 +158,8 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
             .thenExtra(extra -> extra.then("(").then(BukkitToAdventure.items().clientName(hand)).then(")"))
                 .italic()
                 .color(NamedTextColor.DARK_AQUA)
-            .send((Audience) player)
-            .send(exampleAudience());
+            .sendToAudience((Audience) player)
+            .sendToAudience(exampleAudience());
     
         ItemRarity rarity = BukkitToAdventure.items().rarity(hand);
         
@@ -171,8 +171,8 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
             .then(rarity)
                 .bold()
                 .italic()
-            .send((Audience) player)
-            .send(exampleAudience());
+            .sendToAudience((Audience) player)
+            .sendToAudience(exampleAudience());
     }
     
     @EventHandler
@@ -188,8 +188,8 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
             .then(BukkitToAdventure.entities().component(damaged))
                 .color(TextColor.color(0xe8c3ae))
             .then("!")
-            .send((Audience) player)
-            .send(exampleAudience());
+            .sendToAudience((Audience) player)
+            .sendToAudience(exampleAudience());
     }
     
     //
@@ -213,7 +213,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
                 .then("Sent JSON component: ")
                 .then(GsonComponentSerializer.gson().serialize(message))
                 .color(NamedTextColor.YELLOW)
-                .send((Audience) getServer().getConsoleSender());
+                .sendToAudience((Audience) getServer().getConsoleSender());
         }
     }
 }

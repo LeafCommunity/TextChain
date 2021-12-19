@@ -41,8 +41,8 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
             .then("Enabled: ")
                 .color(NamedTextColor.DARK_AQUA)
             .then("TextChain Example (Bukkit version)")
-            .send(audiences.console())
-            .send(exampleAudience());
+            .sendToAudience(audiences.console())
+            .sendToAudience(exampleAudience());
     }
     
     @Override
@@ -75,8 +75,8 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
                 .color(TextColor.color(0xFF0000))
                 .tooltip("Click here to respond with \"pretty good\"")
                 .suggest("pretty good")
-            .send(adventure().sender(sender))
-            .send(exampleAudience());
+            .sendToAudience(adventure().sender(sender))
+            .sendToAudience(exampleAudience());
             
         return true;
     }
@@ -103,8 +103,8 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
             .thenExtra(extra -> extra.then("(").then(BukkitToAdventure.items().clientName(tool)).then(")"))
                 .italic()
                 .color(NamedTextColor.DARK_AQUA)
-            .send(player)
-            .send(exampleAudience());
+            .sendToRecipient(player)
+            .sendToAudience(exampleAudience());
         
         ItemRarity rarity = BukkitToAdventure.items().rarity(tool);
         
@@ -116,8 +116,8 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
             .then(rarity)
                 .bold()
                 .italic()
-            .send(player)
-            .send(exampleAudience());
+            .sendToRecipient(player)
+            .sendToAudience(exampleAudience());
     }
     
     @EventHandler
@@ -133,8 +133,8 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
             .then(BukkitToAdventure.entities().component(clicked))
                 .color(TextColor.color(0xe0c0e8))
             .then(".")
-            .send(player)
-            .send(exampleAudience());
+            .sendToRecipient(player)
+            .sendToAudience(exampleAudience());
     }
     
     //
@@ -158,7 +158,7 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
                 .then("Sent JSON component: ")
                 .then(GsonComponentSerializer.gson().serialize(message))
                 .color(NamedTextColor.AQUA)
-                .send(adventure().console());
+                .sendToAudience(adventure().console());
         }
     }
 }

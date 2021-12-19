@@ -63,6 +63,6 @@ public class VillagerPickpocketListener implements Listener
         TextChain.chain(plugin)
             .then("Pickpocket!")
                 .bold().italic().color(TextColor.color(0xfc3b1e))
-            .actionBar(player);
+            .actionBarToRecipient(player);
     }
 }
