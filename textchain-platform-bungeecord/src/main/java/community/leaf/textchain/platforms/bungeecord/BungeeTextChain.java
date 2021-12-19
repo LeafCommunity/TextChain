@@ -7,8 +7,8 @@
  */
 package community.leaf.textchain.platforms.bungeecord;
 
-import community.leaf.textchain.adventure.Chain;
-import community.leaf.textchain.adventure.ChainConstructor;
+import community.leaf.textchain.adventure.TextChain;
+import community.leaf.textchain.adventure.TextChainConstructor;
 import community.leaf.textchain.adventure.ChainedRecipientSender;
 import community.leaf.textchain.platforms.AdventureSource;
 import net.kyori.adventure.audience.Audience;
@@ -17,10 +17,10 @@ import net.md_5.bungee.api.CommandSender;
 
 public interface BungeeTextChain extends
     AdventureSource<BungeeAudiences>,
-    Chain<BungeeTextChain>,
-    ChainedRecipientSender<CommandSender, BungeeTextChain>
+    ChainedRecipientSender<CommandSender, BungeeTextChain>,
+    TextChain<BungeeTextChain>
 {
-    static ChainConstructor<BungeeTextChain> using(BungeeAudiences audiences)
+    static TextChainConstructor<BungeeTextChain> using(BungeeAudiences audiences)
     {
         return (builder, processor) -> new BungeeTextChainImpl(builder, processor, audiences);
     }

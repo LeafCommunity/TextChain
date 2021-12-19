@@ -7,15 +7,15 @@
  */
 package community.leaf.textchain.platforms.bungeecord;
 
-import community.leaf.textchain.adventure.ChainConstructor;
-import community.leaf.textchain.platforms.PlatformChainSource;
+import community.leaf.textchain.adventure.TextChainConstructor;
+import community.leaf.textchain.platforms.PlatformTextChainSource;
 import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 
 @FunctionalInterface
-public interface BungeeTextChainSource extends PlatformChainSource<BungeeAudiences, BungeeTextChain>
+public interface BungeeTextChainSource extends PlatformTextChainSource<BungeeAudiences, BungeeTextChain>
 {
     @Override
-    default ChainConstructor<BungeeTextChain> getChainConstructor()
+    default TextChainConstructor<BungeeTextChain> getChainConstructor()
     {
         return (builder, processor) -> new BungeeTextChainImpl(builder, processor, adventure());
     }

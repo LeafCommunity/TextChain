@@ -20,7 +20,7 @@ public interface TextProcessor
     TextComponent process(String text);
     
     @FunctionalInterface
-    interface Direct extends TextProcessor {}
+    interface Unprocessed extends TextProcessor {}
     
     @FunctionalInterface
     interface Legacy extends TextProcessor {}
@@ -32,7 +32,7 @@ public interface TextProcessor
      *
      * @return  a new component containing the input text
      */
-    static Direct none()
+    static Unprocessed none()
     {
         return Component::text;
     }

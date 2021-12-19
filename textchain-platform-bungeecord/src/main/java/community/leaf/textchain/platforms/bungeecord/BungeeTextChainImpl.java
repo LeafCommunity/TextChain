@@ -7,13 +7,13 @@
  */
 package community.leaf.textchain.platforms.bungeecord;
 
-import community.leaf.textchain.adventure.ChainConstructor;
+import community.leaf.textchain.adventure.TextChainConstructor;
 import community.leaf.textchain.adventure.LinearTextComponentBuilder;
 import community.leaf.textchain.adventure.TextProcessor;
-import community.leaf.textchain.platforms.AbstractPlatformChain;
+import community.leaf.textchain.platforms.AbstractPlatformTextChain;
 import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 
-final class BungeeTextChainImpl extends AbstractPlatformChain<BungeeAudiences, BungeeTextChain> implements BungeeTextChain
+final class BungeeTextChainImpl extends AbstractPlatformTextChain<BungeeAudiences, BungeeTextChain> implements BungeeTextChain
 {
     public BungeeTextChainImpl(LinearTextComponentBuilder builder, TextProcessor processor, BungeeAudiences audiences)
     {
@@ -21,7 +21,7 @@ final class BungeeTextChainImpl extends AbstractPlatformChain<BungeeAudiences, B
     }
     
     @Override
-    public ChainConstructor<BungeeTextChain> constructor()
+    public TextChainConstructor<BungeeTextChain> constructor()
     {
         return (builder, processor) -> new BungeeTextChainImpl(builder, processor, adventure());
     }

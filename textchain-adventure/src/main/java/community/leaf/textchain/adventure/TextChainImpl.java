@@ -7,7 +7,7 @@
  */
 package community.leaf.textchain.adventure;
 
-final class TextChainImpl extends AbstractChain<TextChain> implements TextChain
+final class TextChainImpl extends AbstractTextChain<TextChainImpl>
 {
     TextChainImpl(LinearTextComponentBuilder builder, TextProcessor processor)
     {
@@ -15,7 +15,7 @@ final class TextChainImpl extends AbstractChain<TextChain> implements TextChain
     }
     
     @Override
-    public ChainConstructor<TextChain> constructor()
+    public TextChainConstructor<TextChainImpl> constructor()
     {
         return TextChainImpl::new;
     }

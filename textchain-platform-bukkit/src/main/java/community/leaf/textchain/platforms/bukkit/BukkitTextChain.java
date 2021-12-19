@@ -7,8 +7,8 @@
  */
 package community.leaf.textchain.platforms.bukkit;
 
-import community.leaf.textchain.adventure.Chain;
-import community.leaf.textchain.adventure.ChainConstructor;
+import community.leaf.textchain.adventure.TextChain;
+import community.leaf.textchain.adventure.TextChainConstructor;
 import community.leaf.textchain.adventure.ChainedRecipientSender;
 import community.leaf.textchain.platforms.AdventureSource;
 import net.kyori.adventure.audience.Audience;
@@ -17,10 +17,10 @@ import org.bukkit.command.CommandSender;
 
 public interface BukkitTextChain extends
     AdventureSource<BukkitAudiences>,
-    Chain<BukkitTextChain>,
-    ChainedRecipientSender<CommandSender, BukkitTextChain>
+    ChainedRecipientSender<CommandSender, BukkitTextChain>,
+    TextChain<BukkitTextChain>
 {
-    static ChainConstructor<BukkitTextChain> using(BukkitAudiences audiences)
+    static TextChainConstructor<BukkitTextChain> of(BukkitAudiences audiences)
     {
         return (builder, processor) -> new BukkitTextChainImpl(builder, processor, audiences);
     }

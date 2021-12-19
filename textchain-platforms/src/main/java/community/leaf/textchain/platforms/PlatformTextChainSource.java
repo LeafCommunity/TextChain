@@ -7,9 +7,9 @@
  */
 package community.leaf.textchain.platforms;
 
-import community.leaf.textchain.adventure.Chain;
-import community.leaf.textchain.adventure.ChainSource;
+import community.leaf.textchain.adventure.TextChain;
+import community.leaf.textchain.adventure.TextChainSource;
 import net.kyori.adventure.platform.AudienceProvider;
 
-public interface PlatformChainSource<A extends AudienceProvider, C extends Chain<C>>
-    extends AdventureSource<A>, ChainSource<C> {}
+public interface PlatformTextChainSource<A extends AudienceProvider, T extends TextChain<T>>
+    extends AdventureSource<A>, TextChainSource<T> {}

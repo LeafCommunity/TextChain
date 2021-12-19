@@ -8,7 +8,7 @@
 package community.leaf.textchain.adventure.serializers;
 
 import community.leaf.textchain.adventure.Chain;
-import community.leaf.textchain.adventure.ChainConstructor;
+import community.leaf.textchain.adventure.TextChainConstructor;
 import community.leaf.textchain.adventure.LegacyColorAlias;
 import community.leaf.textchain.adventure.LinearTextComponentBuilder;
 import community.leaf.textchain.adventure.TextProcessor;
@@ -51,7 +51,7 @@ final class ChainSerializerImpl implements ChainSerializer
     }
     
     @Override
-    public <C extends Chain<C>> C deserializeAsChain(ChainConstructor<C> constructor, List<Map<String, Object>> input)
+    public <C extends Chain<C>> C deserializeAsChain(TextChainConstructor<C> constructor, List<Map<String, Object>> input)
     {
         return new Deserializer<>(constructor).deserialize(input);
     }
@@ -125,9 +125,9 @@ final class ChainSerializerImpl implements ChainSerializer
     
     class Deserializer<C extends Chain<C>>
     {
-        ChainConstructor<C> constructor;
+        TextChainConstructor<C> constructor;
         
-        Deserializer(ChainConstructor<C> constructor)
+        Deserializer(TextChainConstructor<C> constructor)
         {
             this.constructor = Objects.requireNonNull(constructor, "constructor");
         }

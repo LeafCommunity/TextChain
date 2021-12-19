@@ -10,10 +10,10 @@ package community.leaf.textchain.adventure;
 /**
  * Generates standard chain constructors.
  *
- * @param <C>   chain type
+ * @param <T>   chain type
  */
 @FunctionalInterface
-public interface ChainSource<C extends Chain<C>>
+public interface TextChainSource<T extends TextChain<T>>
 {
     /**
      * Generates a standard chain constructor by
@@ -22,5 +22,5 @@ public interface ChainSource<C extends Chain<C>>
      *
      * @return  a standard chain constructor
      */
-    ChainConstructor<C> getChainConstructor();
+    TextChainConstructor<T> getChainConstructor();
 }

@@ -7,19 +7,20 @@
  */
 package community.leaf.textchain.platforms;
 
-import community.leaf.textchain.adventure.AbstractChain;
-import community.leaf.textchain.adventure.Chain;
+import community.leaf.textchain.adventure.AbstractTextChain;
 import community.leaf.textchain.adventure.LinearTextComponentBuilder;
+import community.leaf.textchain.adventure.TextChain;
 import community.leaf.textchain.adventure.TextProcessor;
 import net.kyori.adventure.platform.AudienceProvider;
 
 import java.util.Objects;
 
-public abstract class AbstractPlatformChain<A extends AudienceProvider, C extends Chain<C>> extends AbstractChain<C> implements AdventureSource<A>
+public abstract class AbstractPlatformTextChain<A extends AudienceProvider, T extends TextChain<T>>
+    extends AbstractTextChain<T> implements AdventureSource<A>
 {
     private final A audiences;
     
-    protected AbstractPlatformChain(LinearTextComponentBuilder builder, TextProcessor processor, A audiences)
+    protected AbstractPlatformTextChain(LinearTextComponentBuilder builder, TextProcessor processor, A audiences)
     {
         super(builder, processor);
         this.audiences = Objects.requireNonNull(audiences, "audiences");

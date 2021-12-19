@@ -7,13 +7,13 @@
  */
 package community.leaf.textchain.platforms.bukkit;
 
-import community.leaf.textchain.adventure.ChainConstructor;
+import community.leaf.textchain.adventure.TextChainConstructor;
 import community.leaf.textchain.adventure.LinearTextComponentBuilder;
 import community.leaf.textchain.adventure.TextProcessor;
-import community.leaf.textchain.platforms.AbstractPlatformChain;
+import community.leaf.textchain.platforms.AbstractPlatformTextChain;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 
-final class BukkitTextChainImpl extends AbstractPlatformChain<BukkitAudiences, BukkitTextChain> implements BukkitTextChain
+final class BukkitTextChainImpl extends AbstractPlatformTextChain<BukkitAudiences, BukkitTextChain> implements BukkitTextChain
 {
     BukkitTextChainImpl(LinearTextComponentBuilder builder, TextProcessor processor, BukkitAudiences audiences)
     {
@@ -21,7 +21,7 @@ final class BukkitTextChainImpl extends AbstractPlatformChain<BukkitAudiences, B
     }
     
     @Override
-    public ChainConstructor<BukkitTextChain> constructor()
+    public TextChainConstructor<BukkitTextChain> constructor()
     {
         return (builder, processor) -> new BukkitTextChainImpl(builder, processor, adventure());
     }

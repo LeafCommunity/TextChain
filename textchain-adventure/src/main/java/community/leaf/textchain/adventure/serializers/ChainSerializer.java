@@ -8,8 +8,8 @@
 package community.leaf.textchain.adventure.serializers;
 
 import community.leaf.textchain.adventure.Chain;
-import community.leaf.textchain.adventure.ChainConstructor;
-import community.leaf.textchain.adventure.ChainSource;
+import community.leaf.textchain.adventure.TextChainConstructor;
+import community.leaf.textchain.adventure.TextChainSource;
 import community.leaf.textchain.adventure.TextChain;
 import community.leaf.textchain.adventure.TextProcessor;
 import net.kyori.adventure.text.Component;
@@ -39,16 +39,16 @@ public interface ChainSerializer extends
         return direct().toBuilder();
     }
     
-    <C extends Chain<C>> C deserializeAsChain(ChainConstructor<C> constructor, List<Map<String, Object>> input);
+    <C extends Chain<C>> C deserializeAsChain(TextChainConstructor<C> constructor, List<Map<String, Object>> input);
     
-    default <C extends Chain<C>> C deserializeAsChain(ChainSource<C> source, List<Map<String, Object>> input)
+    default <C extends Chain<C>> C deserializeAsChain(TextChainSource<C> source, List<Map<String, Object>> input)
     {
         return deserializeAsChain(source.getChainConstructor(), input);
     }
     
     default TextChain deserializeAsTextChain(List<Map<String, Object>> input)
     {
-        return deserializeAsChain((ChainConstructor<TextChain>) TextChain::chain, input);
+        return deserializeAsChain((TextChainConstructor<TextChain>) TextChain::chain, input);
     }
     
     @Override

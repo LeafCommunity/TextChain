@@ -9,12 +9,12 @@ package community.leaf.textchain.adventure;
 
 import java.util.Objects;
 
-public abstract class AbstractChain<C extends Chain<C>> implements Chain<C>
+public abstract class AbstractTextChain<T extends TextChain<T>> implements TextChain<T>
 {
     private final LinearTextComponentBuilder builder;
     private final TextProcessor processor;
     
-    protected AbstractChain(LinearTextComponentBuilder builder, TextProcessor processor)
+    protected AbstractTextChain(LinearTextComponentBuilder builder, TextProcessor processor)
     {
         this.builder = Objects.requireNonNull(builder, "builder");
         this.processor = Objects.requireNonNull(processor, "processor");

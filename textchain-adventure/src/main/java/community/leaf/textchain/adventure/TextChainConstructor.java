@@ -14,14 +14,14 @@ import net.kyori.adventure.text.TextComponent;
  * {@link LinearTextComponentBuilder}
  * and creates a new chain instance.
  *
- * @param <C>   chain type
+ * @param <T>   chain type
  */
 @FunctionalInterface
-public interface ChainConstructor<C extends Chain<C>>
+public interface TextChainConstructor<T extends TextChain<T>>
 {
-    C construct(LinearTextComponentBuilder builder, TextProcessor processor);
+    T construct(LinearTextComponentBuilder builder, TextProcessor processor);
     
-    default C construct(TextComponent.Builder builder, TextProcessor processor)
+    default T construct(TextComponent.Builder builder, TextProcessor processor)
     {
         return construct(LinearTextComponentBuilder.wrap(builder), processor);
     }
