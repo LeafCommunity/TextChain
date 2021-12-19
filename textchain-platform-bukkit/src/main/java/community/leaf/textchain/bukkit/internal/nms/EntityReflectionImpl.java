@@ -14,7 +14,6 @@ import pl.tlinkowski.annotation.basic.NullOr;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
 import java.util.Optional;
 
 final class EntityReflectionImpl implements EntityReflection
@@ -27,7 +26,7 @@ final class EntityReflectionImpl implements EntityReflection
         );
     
     final ThrowsOr<MethodHandle> nmsEntityTypesByName =
-        Arrays.stream(NMS_ENTITY_TYPES.getDeclaredMethods())
+        Reflect.on(NMS_ENTITY_TYPES).methods()
             .filter(method -> Modifier.isStatic(method.getModifiers()))
             .filter(method -> Modifier.isPublic(method.getModifiers()))
             .filter(method -> Optional.class.isAssignableFrom(method.getReturnType()))

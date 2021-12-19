@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 public interface ItemReflection
 {
-    static ItemReflection items() { return ItemReflections.ITEMS; }
+    static ItemReflection items() { return ItemReflectionImpl.INSTANCE.getOrThrow(); }
     
     String compoundTag(ItemStack item) throws Throwable;
     

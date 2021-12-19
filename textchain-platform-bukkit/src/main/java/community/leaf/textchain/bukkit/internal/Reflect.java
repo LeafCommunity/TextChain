@@ -169,5 +169,9 @@ public final class Reflect
                     ))
                 );
         }
+        
+        public Stream<Method> methods() { return Arrays.stream(clazz.getDeclaredMethods()); }
+        
+        public Stream<Field> fields() { return Arrays.stream(clazz.getDeclaredFields()); }
     }
 }
