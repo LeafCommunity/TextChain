@@ -10,7 +10,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>textchain-bukkit</artifactId>
+    <artifactId>textchain-platform-bukkit</artifactId>
 
     <repositories>
         <repository>

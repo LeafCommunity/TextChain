@@ -34,7 +34,7 @@
         <!-- TextChain (via local project) -->
         <dependency>
             <groupId>community.leaf.textchain</groupId>
-            <artifactId>textchain-bukkit</artifactId>
+            <artifactId>textchain-platform-bukkit</artifactId>
             <version>${revision}</version>
         </dependency>
     </dependencies>

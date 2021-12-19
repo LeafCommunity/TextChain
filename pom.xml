@@ -47,8 +47,8 @@
         <module>textchain-bungee-chat</module>
 
         <!-- Platform Implementations -->
-        <module>textchain-bukkit</module>
-        <module>textchain-bungeecord</module>
+        <module>textchain-platform-bukkit</module>
+        <module>textchain-platform-bungeecord</module>
     </modules>
 
     <properties>

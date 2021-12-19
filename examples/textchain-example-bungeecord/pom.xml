@@ -33,7 +33,7 @@
         <!-- TextChain BungeeCord (via local project) -->
         <dependency>
             <groupId>community.leaf.textchain</groupId>
-            <artifactId>textchain-bungeecord</artifactId>
+            <artifactId>textchain-platform-bungeecord</artifactId>
             <version>${revision}</version>
         </dependency>
     </dependencies>
