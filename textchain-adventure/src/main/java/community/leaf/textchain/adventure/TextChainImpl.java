@@ -9,6 +9,8 @@ package community.leaf.textchain.adventure;
 
 final class TextChainImpl extends AbstractTextChain<TextChainImpl>
 {
+    static final TextChainSource<TextChainImpl> SOURCE = () -> TextChainImpl::new;
+    
     TextChainImpl(LinearTextComponentBuilder builder, TextProcessor processor)
     {
         super(builder, processor);

@@ -40,6 +40,8 @@ import java.util.function.Function;
 @SuppressWarnings("unused")
 public interface TextChain<T extends TextChain<T>> extends ComponentLike, ChainedAudienceSender<T>
 {
+    static TextChainSource<?> source() { return TextChainImpl.SOURCE; }
+    
     static TextChain<?> chain(LinearTextComponentBuilder builder, TextProcessor processor)
     {
         return new TextChainImpl(builder, processor);
@@ -52,7 +54,7 @@ public interface TextChain<T extends TextChain<T>> extends ComponentLike, Chaine
     
     static <T extends TextChain<T>> T chain(TextChainSource<T> source, TextComponent.Builder builder, TextProcessor processor)
     {
-        return chain(source.getChainConstructor(), builder, processor);
+        return chain(source.textChainConstructor(), builder, processor);
     }
     
     /**
@@ -88,7 +90,7 @@ public interface TextChain<T extends TextChain<T>> extends ComponentLike, Chaine
      */
     static <T extends TextChain<T>> T chain(TextChainSource<T> source, TextComponent.Builder builder)
     {
-        return chain(source.getChainConstructor(), builder, TextProcessor.none());
+        return chain(source.textChainConstructor(), builder, TextProcessor.none());
     }
     
     /**
@@ -132,7 +134,7 @@ public interface TextChain<T extends TextChain<T>> extends ComponentLike, Chaine
     
     static <T extends TextChain<T>> T chain(TextChainSource<T> source, TextProcessor processor)
     {
-        return chain(source.getChainConstructor(), processor);
+        return chain(source.textChainConstructor(), processor);
     }
     
     /**
@@ -158,7 +160,7 @@ public interface TextChain<T extends TextChain<T>> extends ComponentLike, Chaine
      */
     static <T extends TextChain<T>> T chain(TextChainSource<T> source)
     {
-        return chain(source.getChainConstructor());
+        return chain(source.textChainConstructor());
     }
     
     /**
@@ -217,7 +219,7 @@ public interface TextChain<T extends TextChain<T>> extends ComponentLike, Chaine
      */
     static <T extends TextChain<T>> T chain(TextChainSource<T> source, Style style)
     {
-        return chain(source.getChainConstructor(), style);
+        return chain(source.textChainConstructor(), style);
     }
     
     /**
@@ -306,7 +308,7 @@ public interface TextChain<T extends TextChain<T>> extends ComponentLike, Chaine
      */
     static <T extends TextChain<T>> T chain(TextChainSource<T> source, ComponentLike componentLike)
     {
-        return chain(source.getChainConstructor(), componentLike);
+        return chain(source.textChainConstructor(), componentLike);
     }
     
     /**
@@ -398,7 +400,7 @@ public interface TextChain<T extends TextChain<T>> extends ComponentLike, Chaine
      */
     static <T extends TextChain<T>> T reset(TextChainSource<T> source)
     {
-        return reset(source.getChainConstructor());
+        return reset(source.textChainConstructor());
     }
     
     /**
@@ -506,7 +508,7 @@ public interface TextChain<T extends TextChain<T>> extends ComponentLike, Chaine
      */
     static <T extends TextChain<T>> T reset(TextChainSource<T> source, @NullOr TextColor color)
     {
-        return reset(source.getChainConstructor(), color);
+        return reset(source.textChainConstructor(), color);
     }
     
     /**
@@ -1470,4 +1472,3 @@ public interface TextChain<T extends TextChain<T>> extends ComponentLike, Chaine
      */
     default T tooltipUnprocessed(String tooltipText) { return tooltip(tooltipText, TextProcessor.none()); }
 }
-

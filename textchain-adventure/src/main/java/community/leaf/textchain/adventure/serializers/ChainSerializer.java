@@ -7,7 +7,6 @@
  */
 package community.leaf.textchain.adventure.serializers;
 
-import community.leaf.textchain.adventure.Chain;
 import community.leaf.textchain.adventure.TextChainConstructor;
 import community.leaf.textchain.adventure.TextChainSource;
 import community.leaf.textchain.adventure.TextChain;
@@ -24,7 +23,7 @@ public interface ChainSerializer extends
     Buildable<ChainSerializer, ChainSerializer.Builder>,
     ComponentSerializer<Component, TextComponent, List<Map<String, Object>>>
 {
-    static ChainSerializer direct()
+    static ChainSerializer unprocessed()
     {
         return ChainSerializerImpl.NONE;
     }
@@ -36,19 +35,19 @@ public interface ChainSerializer extends
     
     static ChainSerializer.Builder builder()
     {
-        return direct().toBuilder();
+        return unprocessed().toBuilder();
     }
     
-    <C extends Chain<C>> C deserializeAsChain(TextChainConstructor<C> constructor, List<Map<String, Object>> input);
+    <T extends TextChain<T>> T deserializeAsChain(TextChainConstructor<T> constructor, List<Map<String, Object>> input);
     
-    default <C extends Chain<C>> C deserializeAsChain(TextChainSource<C> source, List<Map<String, Object>> input)
+    default <T extends TextChain<T>> T deserializeAsChain(TextChainSource<T> source, List<Map<String, Object>> input)
     {
-        return deserializeAsChain(source.getChainConstructor(), input);
+        return deserializeAsChain(source.textChainConstructor(), input);
     }
     
-    default TextChain deserializeAsTextChain(List<Map<String, Object>> input)
+    default TextChain<?> deserializeAsTextChain(List<Map<String, Object>> input)
     {
-        return deserializeAsChain((TextChainConstructor<TextChain>) TextChain::chain, input);
+        return deserializeAsChain(TextChain.source(), input);
     }
     
     @Override
@@ -57,7 +56,7 @@ public interface ChainSerializer extends
         return deserializeAsTextChain(input).asComponent();
     }
     
-    default <C extends Chain<C>> List<Map<String, Object>> serialize(C chain)
+    default <T extends TextChain<T>> List<Map<String, Object>> serialize(T chain)
     {
         return serialize(chain.asComponent());
     }

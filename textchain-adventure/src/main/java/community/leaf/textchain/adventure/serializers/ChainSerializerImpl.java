@@ -7,7 +7,7 @@
  */
 package community.leaf.textchain.adventure.serializers;
 
-import community.leaf.textchain.adventure.Chain;
+import community.leaf.textchain.adventure.TextChain;
 import community.leaf.textchain.adventure.TextChainConstructor;
 import community.leaf.textchain.adventure.LegacyColorAlias;
 import community.leaf.textchain.adventure.LinearTextComponentBuilder;
@@ -51,7 +51,7 @@ final class ChainSerializerImpl implements ChainSerializer
     }
     
     @Override
-    public <C extends Chain<C>> C deserializeAsChain(TextChainConstructor<C> constructor, List<Map<String, Object>> input)
+    public <T extends TextChain<T>> T deserializeAsChain(TextChainConstructor<T> constructor, List<Map<String, Object>> input)
     {
         return new Deserializer<>(constructor).deserialize(input);
     }
@@ -123,23 +123,23 @@ final class ChainSerializerImpl implements ChainSerializer
             .collect(Collectors.toList());
     }
     
-    class Deserializer<C extends Chain<C>>
+    class Deserializer<T extends TextChain<T>>
     {
-        TextChainConstructor<C> constructor;
+        TextChainConstructor<T> constructor;
         
-        Deserializer(TextChainConstructor<C> constructor)
+        Deserializer(TextChainConstructor<T> constructor)
         {
             this.constructor = Objects.requireNonNull(constructor, "constructor");
         }
         
-        C deserialize(List<Map<String, Object>> input)
+        T deserialize(List<Map<String, Object>> input)
         {
-            C chain  = constructor.construct(LinearTextComponentBuilder.empty(), processor);
+            T chain  = constructor.construct(LinearTextComponentBuilder.empty(), processor);
             for (Map<String, Object> values : input) { deserialize(chain, values); }
             return chain;
         }
         
-        private Consumer<Chain<C>> resolveStyleAction(String option)
+        private Consumer<TextChain<T>> resolveStyleAction(String option)
         {
             @NullOr LegacyColorAlias alias = LegacyColorAlias.resolveByAlias(option).orElse(null);
             if (alias != null) { return chain -> chain.format(alias); }
@@ -150,7 +150,7 @@ final class ChainSerializerImpl implements ChainSerializer
             return chain -> {};
         }
         
-        private void deserialize(C chain, Map<String, Object> values)
+        private void deserialize(T chain, Map<String, Object> values)
         {
             @NullOr Component component = null;
             String text = string(values, "text").orElse("");
