@@ -25,4 +25,14 @@ public abstract class AbstractTextChain<T extends TextChain<T>> implements TextC
     
     @Override
     public final TextProcessor processor() { return processor; }
+    
+    static final class Impl extends AbstractTextChain<Impl>
+    {
+        static final TextChainSource<Impl> SOURCE = () -> Impl::new;
+        
+        Impl(LinearTextComponentBuilder builder, TextProcessor processor) { super(builder, processor); }
+        
+        @Override
+        public TextChainConstructor<Impl> constructor() { return Impl::new; }
+    }
 }

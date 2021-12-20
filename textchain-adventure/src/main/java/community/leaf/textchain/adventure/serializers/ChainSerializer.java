@@ -42,7 +42,7 @@ public interface ChainSerializer extends
     
     default <T extends TextChain<T>> T deserializeAsChain(TextChainSource<T> source, List<Map<String, Object>> input)
     {
-        return deserializeAsChain(source.textChainConstructor(), input);
+        return deserializeAsChain(source.getTextChainConstructor(), input);
     }
     
     default TextChain<?> deserializeAsTextChain(List<Map<String, Object>> input)

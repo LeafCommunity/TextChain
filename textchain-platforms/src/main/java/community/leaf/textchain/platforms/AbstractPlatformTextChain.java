@@ -27,8 +27,5 @@ public abstract class AbstractPlatformTextChain<A extends AudienceProvider, T ex
     }
     
     @Override
-    public A adventure()
-    {
-        return audiences;
-    }
+    public final A adventure() { return audiences; }
 }

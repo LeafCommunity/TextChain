@@ -20,7 +20,7 @@ public interface BukkitTextChain extends
     ChainedRecipientSender<CommandSender, BukkitTextChain>,
     TextChain<BukkitTextChain>
 {
-    static TextChainConstructor<BukkitTextChain> of(BukkitAudiences audiences)
+    static TextChainConstructor<BukkitTextChain> using(BukkitAudiences audiences)
     {
         return (builder, processor) -> new BukkitTextChainImpl(builder, processor, audiences);
     }

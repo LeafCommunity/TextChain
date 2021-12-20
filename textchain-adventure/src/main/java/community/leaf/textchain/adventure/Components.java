@@ -71,6 +71,14 @@ public class Components
         return Objects.requireNonNull(componentLike.asComponent(), "componentLike returned null");
     }
     
+    public static TextComponent.Builder safelyAsTextComponentBuilder(ComponentLike componentLike)
+    {
+        Component component = Components.safelyAsComponent(componentLike);
+        return (component instanceof TextComponent)
+            ? ((TextComponent) component).toBuilder()
+            : Component.text().append(component);
+    }
+    
     /**
      * Flattens a component's {@code extra} components
      * (its {@link Component#children() children})
