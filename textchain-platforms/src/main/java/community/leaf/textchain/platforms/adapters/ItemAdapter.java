@@ -8,8 +8,8 @@
 package community.leaf.textchain.platforms.adapters;
 
 import community.leaf.textchain.adventure.Components;
-import community.leaf.textchain.platforms.ItemRarity;
 import community.leaf.textchain.adventure.TextChain;
+import community.leaf.textchain.platforms.ItemRarity;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.nbt.api.BinaryTagHolder;
 import net.kyori.adventure.text.Component;

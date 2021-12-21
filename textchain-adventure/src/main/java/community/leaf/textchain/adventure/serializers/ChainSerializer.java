@@ -7,9 +7,9 @@
  */
 package community.leaf.textchain.adventure.serializers;
 
+import community.leaf.textchain.adventure.TextChain;
 import community.leaf.textchain.adventure.TextChainConstructor;
 import community.leaf.textchain.adventure.TextChainSource;
-import community.leaf.textchain.adventure.TextChain;
 import community.leaf.textchain.adventure.TextProcessor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;

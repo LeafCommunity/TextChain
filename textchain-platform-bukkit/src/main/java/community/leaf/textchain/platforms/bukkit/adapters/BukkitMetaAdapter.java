@@ -8,8 +8,8 @@
 package community.leaf.textchain.platforms.bukkit.adapters;
 
 import community.leaf.textchain.adventure.Components;
-import community.leaf.textchain.platforms.bukkit.LegacyBukkitComponentSerializer;
 import community.leaf.textchain.platforms.adapters.MetaAdapter;
+import community.leaf.textchain.platforms.bukkit.LegacyBukkitComponentSerializer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;

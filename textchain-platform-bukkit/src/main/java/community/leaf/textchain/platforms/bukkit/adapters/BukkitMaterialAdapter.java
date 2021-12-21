@@ -8,8 +8,8 @@
 package community.leaf.textchain.platforms.bukkit.adapters;
 
 import community.leaf.textchain.platforms.ItemRarity;
-import community.leaf.textchain.platforms.bukkit.internal.nms.ItemReflection;
 import community.leaf.textchain.platforms.adapters.ItemTypeAdapter;
+import community.leaf.textchain.platforms.bukkit.internal.nms.ItemReflection;
 import net.kyori.adventure.key.Key;
 import net.md_5.bungee.chat.TranslationRegistry;
 import org.bukkit.Material;

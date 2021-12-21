@@ -7,8 +7,8 @@
  */
 package community.leaf.textchain.platforms.bungeecord;
 
-import community.leaf.textchain.adventure.TextChainConstructor;
 import community.leaf.textchain.adventure.LinearTextComponentBuilder;
+import community.leaf.textchain.adventure.TextChainConstructor;
 import community.leaf.textchain.adventure.TextProcessor;
 import community.leaf.textchain.platforms.AbstractPlatformTextChain;
 import net.kyori.adventure.platform.bungeecord.BungeeAudiences;

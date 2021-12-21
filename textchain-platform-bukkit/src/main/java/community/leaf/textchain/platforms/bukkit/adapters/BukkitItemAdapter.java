@@ -8,10 +8,10 @@
 package community.leaf.textchain.platforms.bukkit.adapters;
 
 import community.leaf.textchain.platforms.ItemRarity;
-import community.leaf.textchain.platforms.bukkit.internal.nms.ItemReflection;
 import community.leaf.textchain.platforms.adapters.ItemMetaAdapter;
 import community.leaf.textchain.platforms.adapters.ItemTypeAdapter;
 import community.leaf.textchain.platforms.adapters.MetaAdapter;
+import community.leaf.textchain.platforms.bukkit.internal.nms.ItemReflection;
 import net.kyori.adventure.nbt.api.BinaryTagHolder;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

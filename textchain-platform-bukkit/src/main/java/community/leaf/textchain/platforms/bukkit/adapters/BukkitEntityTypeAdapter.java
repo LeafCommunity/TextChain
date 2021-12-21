@@ -7,8 +7,8 @@
  */
 package community.leaf.textchain.platforms.bukkit.adapters;
 
-import community.leaf.textchain.platforms.bukkit.internal.nms.EntityReflection;
 import community.leaf.textchain.platforms.adapters.EntityTypeAdapter;
+import community.leaf.textchain.platforms.bukkit.internal.nms.EntityReflection;
 import net.kyori.adventure.key.Key;
 import org.bukkit.entity.EntityType;
 

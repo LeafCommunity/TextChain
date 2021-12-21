@@ -7,9 +7,9 @@
  */
 package community.leaf.textchain.platforms.bukkit;
 
+import community.leaf.textchain.adventure.ChainedRecipientSender;
 import community.leaf.textchain.adventure.TextChain;
 import community.leaf.textchain.adventure.TextChainConstructor;
-import community.leaf.textchain.adventure.ChainedRecipientSender;
 import community.leaf.textchain.platforms.AdventureSource;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;

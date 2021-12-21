@@ -1,7 +1,7 @@
 package community.leaf.examples.textchain.paper;
 
-import community.leaf.textchain.platforms.ItemRarity;
 import community.leaf.textchain.adventure.TextChain;
+import community.leaf.textchain.platforms.ItemRarity;
 import community.leaf.textchain.platforms.bukkit.adapters.BukkitToAdventure;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.audience.MessageType;
