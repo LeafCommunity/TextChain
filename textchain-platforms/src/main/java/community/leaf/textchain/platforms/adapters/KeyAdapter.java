@@ -12,7 +12,7 @@ import net.kyori.adventure.key.Keyed;
 
 public interface KeyAdapter<K, H>
 {
-    Key key(K key);
-    
-    Keyed keyed(H keyed);
+	Key key(K key);
+	
+	Keyed keyed(H keyed);
 }

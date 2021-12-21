@@ -16,40 +16,40 @@ import java.util.Optional;
 
 public interface ItemMetaAdapter<T, I, M> extends ItemAdapter<T, I>
 {
-    MetaAdapter<M> meta();
-    
-    @SuppressWarnings("NullableProblems") // 404 no problem found
-    @NullOr M meta(I item);
-    
-    void meta(I item, @NullOr M meta);
-    
-    @Override
-    default Optional<Component> displayName(I item)
-    {
-        return meta().displayName(meta(item));
-    }
-    
-    @Override
-    default void displayName(I item, ComponentLike componentLike)
-    {
-        meta(item, meta().displayName(meta(item), componentLike));
-    }
-    
-    @Override
-    default List<Component> lore(I item)
-    {
-        return meta().lore(meta(item));
-    }
-    
-    @Override
-    default void lore(I item, List<Component> lore)
-    {
-         meta(item, meta().lore(meta(item), lore));
-    }
-    
-    @Override
-    default void lore(I item, ComponentLike componentLike)
-    {
-        meta(item, meta().lore(meta(item), componentLike));
-    }
+	MetaAdapter<M> meta();
+	
+	@SuppressWarnings("NullableProblems") // 404 no problem found
+	@NullOr M meta(I item);
+	
+	void meta(I item, @NullOr M meta);
+	
+	@Override
+	default Optional<Component> displayName(I item)
+	{
+		return meta().displayName(meta(item));
+	}
+	
+	@Override
+	default void displayName(I item, ComponentLike componentLike)
+	{
+		meta(item, meta().displayName(meta(item), componentLike));
+	}
+	
+	@Override
+	default List<Component> lore(I item)
+	{
+		return meta().lore(meta(item));
+	}
+	
+	@Override
+	default void lore(I item, List<Component> lore)
+	{
+		 meta(item, meta().lore(meta(item), lore));
+	}
+	
+	@Override
+	default void lore(I item, ComponentLike componentLike)
+	{
+		meta(item, meta().lore(meta(item), componentLike));
+	}
 }

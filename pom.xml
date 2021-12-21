@@ -1,252 +1,252 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>community.leaf.textchain</groupId>
-    <artifactId>textchain-parent</artifactId>
-    <packaging>pom</packaging>
-    <version>${revision}</version> <!-- Change the version number in .mvn/maven.config -->
+	<groupId>community.leaf.textchain</groupId>
+	<artifactId>textchain-parent</artifactId>
+	<packaging>pom</packaging>
+	<version>${revision}</version> <!-- Change the version number in .mvn/maven.config -->
 
-    <name>TextChain</name>
-    <inceptionYear>2021</inceptionYear>
-    <description>Build chains of adventure text components. </description>
+	<name>TextChain</name>
+	<inceptionYear>2021</inceptionYear>
+	<description>Build chains of adventure text components. </description>
 
-    <licenses>
-        <license>
-            <name>Mozilla Public License Version 2.0</name>
-            <url>http://mozilla.org/MPL/2.0</url>
-        </license>
-    </licenses>
+	<licenses>
+		<license>
+			<name>Mozilla Public License Version 2.0</name>
+			<url>http://mozilla.org/MPL/2.0</url>
+		</license>
+	</licenses>
 
-    <developers>
-        <developer>
-            <name>RezzedUp</name>
-            <url>https://github.com/RezzedUp</url>
-        </developer>
-    </developers>
+	<developers>
+		<developer>
+			<name>RezzedUp</name>
+			<url>https://github.com/RezzedUp</url>
+		</developer>
+	</developers>
 
-    <scm>
-        <connection>scm:git:git://github.com/LeafCommunity/TextChain.git</connection>
-        <developerConnection>scm:git:ssh://github.com:LeafCommunity/TextChain.git</developerConnection>
-        <url>http://github.com/LeafCommunity/TextChain</url>
-    </scm>
+	<scm>
+		<connection>scm:git:git://github.com/LeafCommunity/TextChain.git</connection>
+		<developerConnection>scm:git:ssh://github.com:LeafCommunity/TextChain.git</developerConnection>
+		<url>http://github.com/LeafCommunity/TextChain</url>
+	</scm>
 
-    <issueManagement>
-        <system>GitHub Issues</system>
-        <url>https://github.com/LeafCommunity/TextChain/issues</url>
-    </issueManagement>
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/LeafCommunity/TextChain/issues</url>
+	</issueManagement>
 
-    <modules>
-        <!-- Common API -->
-        <module>textchain-adventure</module>
+	<modules>
+		<!-- Common API -->
+		<module>textchain-adventure</module>
 
-        <!-- Common Platform APIs -->
-        <module>textchain-platforms</module>
-        <module>textchain-platform-bungeecord-chat</module>
+		<!-- Common Platform APIs -->
+		<module>textchain-platforms</module>
+		<module>textchain-platform-bungeecord-chat</module>
 
-        <!-- Platform Implementations -->
-        <module>textchain-platform-bukkit</module>
-        <module>textchain-platform-bungeecord</module>
-    </modules>
+		<!-- Platform Implementations -->
+		<module>textchain-platform-bukkit</module>
+		<module>textchain-platform-bungeecord</module>
+	</modules>
 
-    <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<properties>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <!-- License headers -->
-        <license.header.year>${project.inceptionYear}</license.header.year>
-        <license.header.owner>RezzedUp</license.header.owner>
-        <license.header.url>https://github.com/LeafCommunity/TextChain</license.header.url>
+		<!-- License headers -->
+		<license.header.year>${project.inceptionYear}</license.header.year>
+		<license.header.owner>RezzedUp</license.header.owner>
+		<license.header.url>https://github.com/LeafCommunity/TextChain</license.header.url>
 
-        <!-- Dependency versions -->
-        <versions.kyori.adventure>4.9.3</versions.kyori.adventure>
-        <versions.kyori.adventure-platform>4.0.1</versions.kyori.adventure-platform>
-        <versions.bungeecord.api>1.16-R0.4</versions.bungeecord.api>
-        <versions.minecraft.spigot>1.18.1-R0.1-SNAPSHOT</versions.minecraft.spigot>
-    </properties>
+		<!-- Dependency versions -->
+		<versions.kyori.adventure>4.9.3</versions.kyori.adventure>
+		<versions.kyori.adventure-platform>4.0.1</versions.kyori.adventure-platform>
+		<versions.bungeecord.api>1.16-R0.4</versions.bungeecord.api>
+		<versions.minecraft.spigot>1.18.1-R0.1-SNAPSHOT</versions.minecraft.spigot>
+	</properties>
 
-    <dependencies>
-        <!-- Nullness Annotations: @NullOr (via maven-central) -->
-        <dependency>
-            <groupId>pl.tlinkowski.annotation</groupId>
-            <artifactId>pl.tlinkowski.annotation.basic</artifactId>
-            <version>0.2.0</version>
-            <!-- Note: scope must be visible to dependent projects otherwise nullness annotations will not work as intended -->
-        </dependency>
-    </dependencies>
+	<dependencies>
+		<!-- Nullness Annotations: @NullOr (via maven-central) -->
+		<dependency>
+			<groupId>pl.tlinkowski.annotation</groupId>
+			<artifactId>pl.tlinkowski.annotation.basic</artifactId>
+			<version>0.2.0</version>
+			<!-- Note: scope must be visible to dependent projects otherwise nullness annotations will not work as intended -->
+		</dependency>
+	</dependencies>
 
-    <build>
-        <defaultGoal>install</defaultGoal>
-        <plugins>
-            <!-- Compile project -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
-                    <compilerArgs>
-                        <arg>-parameters</arg>
-                    </compilerArgs>
-                </configuration>
-            </plugin>
-            <!--
-            Flatten POM versioning so built JARs don't ship
-            with ${revision} properties as their version number.
-            -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>flatten-maven-plugin</artifactId>
-                <version>1.2.2</version>
-                <configuration>
-                    <updatePomFile>true</updatePomFile>
-                    <flattenMode>oss</flattenMode>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>flatten</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>flatten</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>flatten-clean</id>
-                        <phase>clean</phase>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- Add license header -->
-            <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>4.1</version>
-                <configuration>
-                    <properties>
-                        <year>${license.header.year}</year>
-                        <owner>${license.header.owner}</owner>
-                        <email>${license.header.url}</email>
-                    </properties>
-                    <licenseSets>
-                        <licenseSet>
-                            <header>com/mycila/maven/plugin/license/templates/MPL-2.txt</header>
-                            <excludes>
-                                <exclude>*.md</exclude>
-                                <exclude>*.txt</exclude>
-                                <exclude>*.xml</exclude>
-                                <exclude>*.yml</exclude>
-                                <exclude>.run/**</exclude>
-                                <exclude>examples/**</exclude>
-                                <exclude>src/test/resources/**</exclude>
-                                <exclude>src/main/resources/**</exclude>
-                            </excludes>
-                        </licenseSet>
-                    </licenseSets>
-                </configuration>
-            </plugin>
-        </plugins>
-        <resources>
-            <!-- Filter resource files -->
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
-    </build>
+	<build>
+		<defaultGoal>install</defaultGoal>
+		<plugins>
+			<!-- Compile project -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+					<compilerArgs>
+						<arg>-parameters</arg>
+					</compilerArgs>
+				</configuration>
+			</plugin>
+			<!--
+			Flatten POM versioning so built JARs don't ship
+			with ${revision} properties as their version number.
+			-->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>flatten-maven-plugin</artifactId>
+				<version>1.2.2</version>
+				<configuration>
+					<updatePomFile>true</updatePomFile>
+					<flattenMode>oss</flattenMode>
+				</configuration>
+				<executions>
+					<execution>
+						<id>flatten</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>flatten</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>flatten-clean</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Add license header -->
+			<plugin>
+				<groupId>com.mycila</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<version>4.1</version>
+				<configuration>
+					<properties>
+						<year>${license.header.year}</year>
+						<owner>${license.header.owner}</owner>
+						<email>${license.header.url}</email>
+					</properties>
+					<licenseSets>
+						<licenseSet>
+							<header>com/mycila/maven/plugin/license/templates/MPL-2.txt</header>
+							<excludes>
+								<exclude>*.md</exclude>
+								<exclude>*.txt</exclude>
+								<exclude>*.xml</exclude>
+								<exclude>*.yml</exclude>
+								<exclude>.run/**</exclude>
+								<exclude>examples/**</exclude>
+								<exclude>src/test/resources/**</exclude>
+								<exclude>src/main/resources/**</exclude>
+							</excludes>
+						</licenseSet>
+					</licenseSets>
+				</configuration>
+			</plugin>
+		</plugins>
+		<resources>
+			<!-- Filter resource files -->
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	</build>
 
-    <profiles>
-        <!-- Development (activated by default and disabled if JitPack profile is enabled) -->
-        <!-- Example modules only exist in this profile -->
-        <profile>
-            <id>development</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-                <property>
-                    <name>!env.JITPACK</name>
-                </property>
-            </activation>
-            <modules>
-                <module>examples</module>
-            </modules>
-        </profile>
-        <!-- JitPack (activated with `JITPACK=true` environment variable) -->
-        <profile>
-            <id>jitpack</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-                <property>
-                    <name>env.JITPACK</name>
-                </property>
-            </activation>
-            <build>
-                <pluginManagement>
-                    <!-- Aggregate javadocs (only here in the parent) -->
-                    <plugins>
-                        <plugin>
-                            <artifactId>maven-javadoc-plugin</artifactId>
-                            <inherited>false</inherited>
-                            <executions>
-                                <execution>
-                                    <id>aggregate</id>
-                                    <goals>
-                                        <goal>aggregate-jar</goal>
-                                    </goals>
-                                    <phase>package</phase>
-                                </execution>
-                            </executions>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
-                <plugins>
-                    <!-- Generate javadocs -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.2.0</version>
-                        <configuration>
-                            <doclint>none</doclint> <!-- Calm warnings due to not having *everything* documented -->
-                            <excludePackageNames>*.internal;*.internal.*;</excludePackageNames>
-                            <links>
-                                <link>https://jd.adventure.kyori.net/api/${versions.kyori.adventure}/</link>
-                                <link>https://jd.adventure.kyori.net/text-serializer-gson/${versions.kyori.adventure}/</link>
-                                <link>https://jd.adventure.kyori.net/text-serializer-legacy/${versions.kyori.adventure}/</link>
-                                <link>https://javadoc.io/doc/pl.tlinkowski.annotation/pl.tlinkowski.annotation.basic/0.2.0/</link>
-                                <link>https://hub.spigotmc.org/javadocs/spigot/</link>
-                            </links>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>attach-javadocs</id>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <!-- Attach sources -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <version>3.2.0</version>
-                        <executions>
-                            <execution>
-                                <id>attach-sources</id>
-                                <goals>
-                                    <goal>jar-no-fork</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+	<profiles>
+		<!-- Development (activated by default and disabled if JitPack profile is enabled) -->
+		<!-- Example modules only exist in this profile -->
+		<profile>
+			<id>development</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>!env.JITPACK</name>
+				</property>
+			</activation>
+			<modules>
+				<module>examples</module>
+			</modules>
+		</profile>
+		<!-- JitPack (activated with `JITPACK=true` environment variable) -->
+		<profile>
+			<id>jitpack</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<property>
+					<name>env.JITPACK</name>
+				</property>
+			</activation>
+			<build>
+				<pluginManagement>
+					<!-- Aggregate javadocs (only here in the parent) -->
+					<plugins>
+						<plugin>
+							<artifactId>maven-javadoc-plugin</artifactId>
+							<inherited>false</inherited>
+							<executions>
+								<execution>
+									<id>aggregate</id>
+									<goals>
+										<goal>aggregate-jar</goal>
+									</goals>
+									<phase>package</phase>
+								</execution>
+							</executions>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+				<plugins>
+					<!-- Generate javadocs -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>3.2.0</version>
+						<configuration>
+							<doclint>none</doclint> <!-- Calm warnings due to not having *everything* documented -->
+							<excludePackageNames>*.internal;*.internal.*;</excludePackageNames>
+							<links>
+								<link>https://jd.adventure.kyori.net/api/${versions.kyori.adventure}/</link>
+								<link>https://jd.adventure.kyori.net/text-serializer-gson/${versions.kyori.adventure}/</link>
+								<link>https://jd.adventure.kyori.net/text-serializer-legacy/${versions.kyori.adventure}/</link>
+								<link>https://javadoc.io/doc/pl.tlinkowski.annotation/pl.tlinkowski.annotation.basic/0.2.0/</link>
+								<link>https://hub.spigotmc.org/javadocs/spigot/</link>
+							</links>
+						</configuration>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<!-- Attach sources -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>3.2.0</version>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>

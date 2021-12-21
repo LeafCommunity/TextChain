@@ -12,4 +12,4 @@ import community.leaf.textchain.adventure.TextChainSource;
 import net.kyori.adventure.platform.AudienceProvider;
 
 public interface PlatformTextChainSource<A extends AudienceProvider, T extends TextChain<T>>
-    extends AdventureSource<A>, TextChainSource<T> {}
+	extends AdventureSource<A>, TextChainSource<T> {}

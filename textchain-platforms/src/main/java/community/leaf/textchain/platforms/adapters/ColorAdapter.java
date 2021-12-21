@@ -16,15 +16,15 @@ import java.util.Optional;
 @FunctionalInterface
 public interface ColorAdapter<C>
 {
-    LegacyColorAlias format(C color);
-    
-    default Optional<NamedTextColor> color(C color)
-    {
-        return format(color).asColor();
-    }
-    
-    default Optional<TextDecoration> decoration(C color)
-    {
-        return format(color).asDecoration();
-    }
+	LegacyColorAlias format(C color);
+	
+	default Optional<NamedTextColor> color(C color)
+	{
+		return format(color).asColor();
+	}
+	
+	default Optional<TextDecoration> decoration(C color)
+	{
+		return format(color).asDecoration();
+	}
 }

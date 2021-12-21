@@ -15,14 +15,14 @@ import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 
 final class BungeeTextChainImpl extends AbstractPlatformTextChain<BungeeAudiences, BungeeTextChain> implements BungeeTextChain
 {
-    public BungeeTextChainImpl(LinearTextComponentBuilder builder, TextProcessor processor, BungeeAudiences audiences)
-    {
-        super(builder, processor, audiences);
-    }
-    
-    @Override
-    public TextChainConstructor<BungeeTextChain> constructor()
-    {
-        return (builder, processor) -> new BungeeTextChainImpl(builder, processor, adventure());
-    }
+	public BungeeTextChainImpl(LinearTextComponentBuilder builder, TextProcessor processor, BungeeAudiences audiences)
+	{
+		super(builder, processor, audiences);
+	}
+	
+	@Override
+	public TextChainConstructor<BungeeTextChain> constructor()
+	{
+		return (builder, processor) -> new BungeeTextChainImpl(builder, processor, adventure());
+	}
 }

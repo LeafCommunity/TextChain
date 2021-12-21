@@ -13,12 +13,12 @@ import net.kyori.adventure.text.TranslatableComponent;
 
 public interface EntityTypeAdapter<T>
 {
-    Key key(T type);
-    
-    String translationKey(T type);
-    
-    default TranslatableComponent translatable(T type)
-    {
-        return Component.translatable(translationKey(type));
-    }
+	Key key(T type);
+	
+	String translationKey(T type);
+	
+	default TranslatableComponent translatable(T type)
+	{
+		return Component.translatable(translationKey(type));
+	}
 }

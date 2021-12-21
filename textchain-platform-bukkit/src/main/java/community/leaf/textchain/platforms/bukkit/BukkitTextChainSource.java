@@ -14,9 +14,9 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 @FunctionalInterface
 public interface BukkitTextChainSource extends PlatformTextChainSource<BukkitAudiences, BukkitTextChain>
 {
-    @Override
-    default TextChainConstructor<BukkitTextChain> getTextChainConstructor()
-    {
-        return (builder, processor) -> new BukkitTextChainImpl(builder, processor, adventure());
-    }
+	@Override
+	default TextChainConstructor<BukkitTextChain> getTextChainConstructor()
+	{
+		return (builder, processor) -> new BukkitTextChainImpl(builder, processor, adventure());
+	}
 }

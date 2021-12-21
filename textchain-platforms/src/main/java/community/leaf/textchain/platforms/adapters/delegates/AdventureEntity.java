@@ -22,28 +22,28 @@ import java.util.UUID;
 
 public interface AdventureEntity<E> extends ComponentLike, HoverEventSource<ShowEntity>, Keyed
 {
-    static <T, E> AdventureEntity<E> of(EntityAdapter<T, E> adapter, E entity)
-    {
-        return new AdventureEntityImpl<>(adapter, entity);
-    }
-    
-    E entity();
+	static <T, E> AdventureEntity<E> of(EntityAdapter<T, E> adapter, E entity)
+	{
+		return new AdventureEntityImpl<>(adapter, entity);
+	}
+	
+	E entity();
 
-    UUID uuid();
-    
-    String translationKey();
-    
-    TranslatableComponent asTranslatable();
-    
-    Optional<Component> customName();
-    
-    void customName(ComponentLike componentLike);
-    
-    Component customOrTranslatableName();
-    
-    HoverEvent<HoverEvent.ShowEntity> asHoverEvent(@NullOr ComponentLike customName);
-    
-    Component asComponent(String prefix, String suffix);
-    
-    Component asComponentInBrackets();
+	UUID uuid();
+	
+	String translationKey();
+	
+	TranslatableComponent asTranslatable();
+	
+	Optional<Component> customName();
+	
+	void customName(ComponentLike componentLike);
+	
+	Component customOrTranslatableName();
+	
+	HoverEvent<HoverEvent.ShowEntity> asHoverEvent(@NullOr ComponentLike customName);
+	
+	Component asComponent(String prefix, String suffix);
+	
+	Component asComponentInBrackets();
 }

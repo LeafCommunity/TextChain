@@ -16,16 +16,16 @@ import net.kyori.adventure.platform.AudienceProvider;
 import java.util.Objects;
 
 public abstract class AbstractPlatformTextChain<A extends AudienceProvider, T extends TextChain<T>>
-    extends AbstractTextChain<T> implements AdventureSource<A>
+	extends AbstractTextChain<T> implements AdventureSource<A>
 {
-    private final A audiences;
-    
-    protected AbstractPlatformTextChain(LinearTextComponentBuilder builder, TextProcessor processor, A audiences)
-    {
-        super(builder, processor);
-        this.audiences = Objects.requireNonNull(audiences, "audiences");
-    }
-    
-    @Override
-    public final A adventure() { return audiences; }
+	private final A audiences;
+	
+	protected AbstractPlatformTextChain(LinearTextComponentBuilder builder, TextProcessor processor, A audiences)
+	{
+		super(builder, processor);
+		this.audiences = Objects.requireNonNull(audiences, "audiences");
+	}
+	
+	@Override
+	public final A adventure() { return audiences; }
 }

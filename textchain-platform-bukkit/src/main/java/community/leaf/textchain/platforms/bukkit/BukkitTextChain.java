@@ -16,18 +16,18 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.command.CommandSender;
 
 public interface BukkitTextChain extends
-    AdventureSource<BukkitAudiences>,
-    ChainedRecipientSender<CommandSender, BukkitTextChain>,
-    TextChain<BukkitTextChain>
+	AdventureSource<BukkitAudiences>,
+	ChainedRecipientSender<CommandSender, BukkitTextChain>,
+	TextChain<BukkitTextChain>
 {
-    static TextChainConstructor<BukkitTextChain> using(BukkitAudiences audiences)
-    {
-        return (builder, processor) -> new BukkitTextChainImpl(builder, processor, audiences);
-    }
-    
-    @Override
-    default Audience recipientToAudience(CommandSender recipient)
-    {
-        return adventure().sender(recipient);
-    }
+	static TextChainConstructor<BukkitTextChain> using(BukkitAudiences audiences)
+	{
+		return (builder, processor) -> new BukkitTextChainImpl(builder, processor, audiences);
+	}
+	
+	@Override
+	default Audience recipientToAudience(CommandSender recipient)
+	{
+		return adventure().sender(recipient);
+	}
 }

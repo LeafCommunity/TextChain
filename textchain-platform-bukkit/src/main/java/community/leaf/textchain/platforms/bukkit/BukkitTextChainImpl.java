@@ -15,14 +15,14 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 
 final class BukkitTextChainImpl extends AbstractPlatformTextChain<BukkitAudiences, BukkitTextChain> implements BukkitTextChain
 {
-    BukkitTextChainImpl(LinearTextComponentBuilder builder, TextProcessor processor, BukkitAudiences audiences)
-    {
-        super(builder, processor, audiences);
-    }
-    
-    @Override
-    public TextChainConstructor<BukkitTextChain> constructor()
-    {
-        return (builder, processor) -> new BukkitTextChainImpl(builder, processor, adventure());
-    }
+	BukkitTextChainImpl(LinearTextComponentBuilder builder, TextProcessor processor, BukkitAudiences audiences)
+	{
+		super(builder, processor, audiences);
+	}
+	
+	@Override
+	public TextChainConstructor<BukkitTextChain> constructor()
+	{
+		return (builder, processor) -> new BukkitTextChainImpl(builder, processor, adventure());
+	}
 }

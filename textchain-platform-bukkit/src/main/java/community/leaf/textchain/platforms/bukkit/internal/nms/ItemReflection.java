@@ -13,13 +13,13 @@ import org.bukkit.inventory.ItemStack;
 
 public interface ItemReflection
 {
-    static ItemReflection items() { return ItemReflectionImpl.INSTANCE.getOrThrow(); }
-    
-    String compoundTag(ItemStack item) throws Throwable;
-    
-    String translationKey(Material type) throws Throwable;
-    
-    ItemRarity rarity(Material type) throws Throwable;
-    
-    ItemRarity rarity(ItemStack item) throws Throwable;
+	static ItemReflection items() { return ItemReflectionImpl.INSTANCE.getOrThrow(); }
+	
+	String compoundTag(ItemStack item) throws Throwable;
+	
+	String translationKey(Material type) throws Throwable;
+	
+	ItemRarity rarity(Material type) throws Throwable;
+	
+	ItemRarity rarity(ItemStack item) throws Throwable;
 }

@@ -11,7 +11,7 @@ import org.bukkit.entity.EntityType;
 
 public interface EntityReflection
 {
-    static EntityReflection entities() { return EntityReflectionImpl.INSTANCE.getOrThrow(); }
-    
-    String translationKey(EntityType type) throws Throwable;
+	static EntityReflection entities() { return EntityReflectionImpl.INSTANCE.getOrThrow(); }
+	
+	String translationKey(EntityType type) throws Throwable;
 }

@@ -16,34 +16,34 @@ import org.bukkit.Material;
 
 class BukkitMaterialAdapter implements ItemTypeAdapter<Material>
 {
-    private final BukkitKeyAdapter keys;
-    
-    public BukkitMaterialAdapter(BukkitKeyAdapter keys) { this.keys = keys; }
-    
-    @Override
-    public Key key(Material type)
-    {
-        return keys.key(type.getKey());
-    }
-    
-    @Override
-    public String translationKey(Material type)
-    {
-        try { return ItemReflection.items().translationKey(type); }
-        catch (Throwable throwable) { throw new RuntimeException(throwable); }
-    }
-    
-    @Override
-    public String clientName(Material type)
-    {
-        return TranslationRegistry.INSTANCE.translate(translationKey(type));
-    }
-    
-    @Override
-    public ItemRarity rarity(Material type)
-    {
-        if (!type.isItem()) { return ItemRarity.COMMON; }
-        try { return ItemReflection.items().rarity(type); }
-        catch (Throwable throwable) { throw new RuntimeException(throwable); }
-    }
+	private final BukkitKeyAdapter keys;
+	
+	public BukkitMaterialAdapter(BukkitKeyAdapter keys) { this.keys = keys; }
+	
+	@Override
+	public Key key(Material type)
+	{
+		return keys.key(type.getKey());
+	}
+	
+	@Override
+	public String translationKey(Material type)
+	{
+		try { return ItemReflection.items().translationKey(type); }
+		catch (Throwable throwable) { throw new RuntimeException(throwable); }
+	}
+	
+	@Override
+	public String clientName(Material type)
+	{
+		return TranslationRegistry.INSTANCE.translate(translationKey(type));
+	}
+	
+	@Override
+	public ItemRarity rarity(Material type)
+	{
+		if (!type.isItem()) { return ItemRarity.COMMON; }
+		try { return ItemReflection.items().rarity(type); }
+		catch (Throwable throwable) { throw new RuntimeException(throwable); }
+	}
 }

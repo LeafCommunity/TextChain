@@ -15,12 +15,12 @@ package community.leaf.textchain.adventure;
 @FunctionalInterface
 public interface TextChainSource<T extends TextChain<T>>
 {
-    /**
-     * Generates a standard chain constructor by
-     * supplying all other dependencies the specific
-     * chain type requires.
-     *
-     * @return  a standard chain constructor
-     */
-    TextChainConstructor<T> getTextChainConstructor();
+	/**
+	 * Generates a standard chain constructor by
+	 * supplying all other dependencies the specific
+	 * chain type requires.
+	 *
+	 * @return  a standard chain constructor
+	 */
+	TextChainConstructor<T> getTextChainConstructor();
 }

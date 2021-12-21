@@ -14,16 +14,16 @@ import net.kyori.adventure.text.TranslatableComponent;
 
 public interface ItemTypeAdapter<T>
 {
-    Key key(T type);
-    
-    String translationKey(T type);
-    
-    String clientName(T type);
-    
-    ItemRarity rarity(T type);
-    
-    default TranslatableComponent translatable(T type)
-    {
-        return Component.translatable(translationKey(type));
-    }
+	Key key(T type);
+	
+	String translationKey(T type);
+	
+	String clientName(T type);
+	
+	ItemRarity rarity(T type);
+	
+	default TranslatableComponent translatable(T type)
+	{
+		return Component.translatable(translationKey(type));
+	}
 }

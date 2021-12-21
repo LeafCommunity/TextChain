@@ -20,63 +20,63 @@ import pl.tlinkowski.annotation.basic.NullOr;
 
 class BukkitItemAdapter implements ItemMetaAdapter<Material, ItemStack, ItemMeta>
 {
-    private final BukkitMaterialAdapter materials;
-    private final BukkitMetaAdapter meta;
-    
-    public BukkitItemAdapter(BukkitMaterialAdapter materials, BukkitMetaAdapter meta)
-    {
-        this.materials = materials;
-        this.meta = meta;
-    }
-    
-    @Override
-    public ItemTypeAdapter<Material> types()
-    {
-        return materials;
-    }
-    
-    @Override
-    public Material type(ItemStack item)
-    {
-        return item.getType();
-    }
-    
-    @Override
-    public MetaAdapter<ItemMeta> meta()
-    {
-        return meta;
-    }
-    
-    @Override
-    public @NullOr ItemMeta meta(ItemStack item)
-    {
-        return item.getItemMeta();
-    }
-    
-    @Override
-    public void meta(ItemStack item, @NullOr ItemMeta meta)
-    {
-        item.setItemMeta(meta);
-    }
-    
-    @Override
-    public int amount(ItemStack item)
-    {
-        return item.getAmount();
-    }
-    
-    @Override
-    public BinaryTagHolder nbt(ItemStack item)
-    {
-        try { return BinaryTagHolder.of(ItemReflection.items().compoundTag(item)); }
-        catch (Throwable throwable) { throw new RuntimeException(throwable); }
-    }
-    
-    @Override
-    public ItemRarity rarity(ItemStack item)
-    {
-        if (!item.getType().isItem()) { return ItemRarity.COMMON; }
-        try { return ItemReflection.items().rarity(item); }
-        catch (Throwable throwable) { throw new RuntimeException(throwable); }
-    }
+	private final BukkitMaterialAdapter materials;
+	private final BukkitMetaAdapter meta;
+	
+	public BukkitItemAdapter(BukkitMaterialAdapter materials, BukkitMetaAdapter meta)
+	{
+		this.materials = materials;
+		this.meta = meta;
+	}
+	
+	@Override
+	public ItemTypeAdapter<Material> types()
+	{
+		return materials;
+	}
+	
+	@Override
+	public Material type(ItemStack item)
+	{
+		return item.getType();
+	}
+	
+	@Override
+	public MetaAdapter<ItemMeta> meta()
+	{
+		return meta;
+	}
+	
+	@Override
+	public @NullOr ItemMeta meta(ItemStack item)
+	{
+		return item.getItemMeta();
+	}
+	
+	@Override
+	public void meta(ItemStack item, @NullOr ItemMeta meta)
+	{
+		item.setItemMeta(meta);
+	}
+	
+	@Override
+	public int amount(ItemStack item)
+	{
+		return item.getAmount();
+	}
+	
+	@Override
+	public BinaryTagHolder nbt(ItemStack item)
+	{
+		try { return BinaryTagHolder.of(ItemReflection.items().compoundTag(item)); }
+		catch (Throwable throwable) { throw new RuntimeException(throwable); }
+	}
+	
+	@Override
+	public ItemRarity rarity(ItemStack item)
+	{
+		if (!item.getType().isItem()) { return ItemRarity.COMMON; }
+		try { return ItemReflection.items().rarity(item); }
+		catch (Throwable throwable) { throw new RuntimeException(throwable); }
+	}
 }

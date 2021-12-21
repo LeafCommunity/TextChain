@@ -13,9 +13,9 @@ import org.bukkit.ChatColor;
 
 class BukkitColorAdapter implements ColorAdapter<ChatColor>
 {
-    @Override
-    public LegacyColorAlias format(ChatColor color)
-    {
-        return LegacyColorAlias.resolveByCharacter(color.getChar()).orElseThrow();
-    }
+	@Override
+	public LegacyColorAlias format(ChatColor color)
+	{
+		return LegacyColorAlias.resolveByCharacter(color.getChar()).orElseThrow();
+	}
 }

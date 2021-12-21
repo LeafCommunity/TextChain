@@ -14,17 +14,17 @@ import org.bukkit.NamespacedKey;
 
 class BukkitKeyAdapter implements KeyAdapter<NamespacedKey, org.bukkit.Keyed>
 {
-    @SuppressWarnings("PatternValidation")
-    @Override
-    public Key key(NamespacedKey key)
-    {
-        return Key.key(key.getNamespace(), key.getKey());
-    }
-    
-    @Override
-    public Keyed keyed(org.bukkit.Keyed keyed)
-    {
-        Key converted = key(keyed.getKey());
-        return () -> converted;
-    }
+	@SuppressWarnings("PatternValidation")
+	@Override
+	public Key key(NamespacedKey key)
+	{
+		return Key.key(key.getNamespace(), key.getKey());
+	}
+	
+	@Override
+	public Keyed keyed(org.bukkit.Keyed keyed)
+	{
+		Key converted = key(keyed.getKey());
+		return () -> converted;
+	}
 }

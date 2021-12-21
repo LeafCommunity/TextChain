@@ -17,36 +17,36 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 @FunctionalInterface
 public interface TextProcessor
 {
-    TextComponent process(String text);
-    
-    @FunctionalInterface
-    interface Unprocessed extends TextProcessor {}
-    
-    @FunctionalInterface
-    interface Legacy extends TextProcessor {}
-    
-    /**
-     * Simply creates a text component containing
-     * the input string. The text isn't "processed"
-     * beyond that.
-     *
-     * @return  a new component containing the input text
-     */
-    static Unprocessed none()
-    {
-        return Component::text;
-    }
-    
-    /**
-     * Creates a text component by parsing legacy
-     * ampersand-style color codes contained
-     * within the input string.
-     *
-     * @return  a new component as a result of
-     *          processing ampersand color codes
-     */
-    static Legacy legacyAmpersand()
-    {
-        return LegacyComponentSerializer.legacyAmpersand()::deserialize;
-    }
+	TextComponent process(String text);
+	
+	@FunctionalInterface
+	interface Unprocessed extends TextProcessor {}
+	
+	@FunctionalInterface
+	interface Legacy extends TextProcessor {}
+	
+	/**
+	 * Simply creates a text component containing
+	 * the input string. The text isn't "processed"
+	 * beyond that.
+	 *
+	 * @return  a new component containing the input text
+	 */
+	static Unprocessed none()
+	{
+		return Component::text;
+	}
+	
+	/**
+	 * Creates a text component by parsing legacy
+	 * ampersand-style color codes contained
+	 * within the input string.
+	 *
+	 * @return  a new component as a result of
+	 *          processing ampersand color codes
+	 */
+	static Legacy legacyAmpersand()
+	{
+		return LegacyComponentSerializer.legacyAmpersand()::deserialize;
+	}
 }

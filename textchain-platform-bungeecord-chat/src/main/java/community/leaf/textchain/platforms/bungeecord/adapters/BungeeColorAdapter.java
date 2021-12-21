@@ -13,9 +13,9 @@ import net.md_5.bungee.api.ChatColor;
 
 class BungeeColorAdapter implements ColorAdapter<ChatColor>
 {
-    @Override
-    public LegacyColorAlias format(ChatColor color)
-    {
-        return LegacyColorAlias.resolveByAlias(color.getName()).orElseThrow();
-    }
+	@Override
+	public LegacyColorAlias format(ChatColor color)
+	{
+		return LegacyColorAlias.resolveByAlias(color.getName()).orElseThrow();
+	}
 }

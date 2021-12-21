@@ -16,18 +16,18 @@ import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 import net.md_5.bungee.api.CommandSender;
 
 public interface BungeeTextChain extends
-    AdventureSource<BungeeAudiences>,
-    ChainedRecipientSender<CommandSender, BungeeTextChain>,
-    TextChain<BungeeTextChain>
+	AdventureSource<BungeeAudiences>,
+	ChainedRecipientSender<CommandSender, BungeeTextChain>,
+	TextChain<BungeeTextChain>
 {
-    static TextChainConstructor<BungeeTextChain> using(BungeeAudiences audiences)
-    {
-        return (builder, processor) -> new BungeeTextChainImpl(builder, processor, audiences);
-    }
-    
-    @Override
-    default Audience recipientToAudience(CommandSender recipient)
-    {
-        return adventure().sender(recipient);
-    }
+	static TextChainConstructor<BungeeTextChain> using(BungeeAudiences audiences)
+	{
+		return (builder, processor) -> new BungeeTextChainImpl(builder, processor, audiences);
+	}
+	
+	@Override
+	default Audience recipientToAudience(CommandSender recipient)
+	{
+		return adventure().sender(recipient);
+	}
 }

@@ -14,20 +14,20 @@ import org.bukkit.entity.EntityType;
 
 class BukkitEntityTypeAdapter implements EntityTypeAdapter<EntityType>
 {
-    private final BukkitKeyAdapter keys;
-    
-    public BukkitEntityTypeAdapter(BukkitKeyAdapter keys) { this.keys = keys; }
-    
-    @Override
-    public Key key(EntityType type)
-    {
-        return keys.key(type.getKey());
-    }
-    
-    @Override
-    public String translationKey(EntityType type)
-    {
-        try { return EntityReflection.entities().translationKey(type); }
-        catch (Throwable throwable) { throw new RuntimeException(throwable); }
-    }
+	private final BukkitKeyAdapter keys;
+	
+	public BukkitEntityTypeAdapter(BukkitKeyAdapter keys) { this.keys = keys; }
+	
+	@Override
+	public Key key(EntityType type)
+	{
+		return keys.key(type.getKey());
+	}
+	
+	@Override
+	public String translationKey(EntityType type)
+	{
+		try { return EntityReflection.entities().translationKey(type); }
+		catch (Throwable throwable) { throw new RuntimeException(throwable); }
+	}
 }

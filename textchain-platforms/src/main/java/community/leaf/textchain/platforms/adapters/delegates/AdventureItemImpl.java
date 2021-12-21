@@ -23,69 +23,69 @@ import java.util.function.UnaryOperator;
 
 class AdventureItemImpl<I> implements AdventureItem<I>
 {
-    private final ItemAdapter<?, I> adapter;
-    private final I item;
-    
-    AdventureItemImpl(ItemAdapter<?, I> adapter, I item)
-    {
-        this.adapter = Objects.requireNonNull(adapter, "adapter");
-        this.item = Objects.requireNonNull(item, "item");
-    }
-    
-    @SuppressWarnings("NullableProblems")
-    @Override
-    public I item() { return item; }
-    
-    @Override
-    public Key key() { return adapter.key(item); }
-    
-    @Override
-    public String translationKey() { return adapter.translationKey(item); }
-    
-    @Override
-    public TranslatableComponent asTranslatable() { return adapter.translatable(item); }
-    
-    @Override
-    public Optional<Component> displayName() { return adapter.displayName(item); }
-    
-    @Override
-    public Component displayOrTranslatableName() { return adapter.displayOrTranslatableName(item); }
-    
-    @Override
-    public void displayName(ComponentLike componentLike) { adapter.displayName(item, componentLike); }
-    
-    @Override
-    public List<Component> lore() { return adapter.lore(item); }
-    
-    @Override
-    public void lore(List<Component> lore) { adapter.lore(item, lore); }
-    
-    @Override
-    public void lore(ComponentLike componentLike)
-    {
-        adapter.lore(item, Components.flattenExtraSplitByNewLine(Components.safelyAsComponent(componentLike)));
-    }
-    
-    @Override
-    public String clientName() { return adapter.clientName(item); }
-    
-    @Override
-    public ItemRarity rarity() { return adapter.rarity(item); }
-    
-    @Override
-    public HoverEvent<HoverEvent.ShowItem> asHoverEvent(UnaryOperator<HoverEvent.ShowItem> op)
-    {
-        HoverEvent<HoverEvent.ShowItem> hover = adapter.hover(item);
-        if (op == UnaryOperator.<HoverEvent.ShowItem>identity()) { return hover; }
-        return HoverEvent.showItem(op.apply(hover.value()));
-    }
-    
-    @Override
-    public Component asComponent() { return adapter.component(item); }
-    
-    @Override
-    public Component asComponent(String prefix, String suffix) { return adapter.component(item, prefix, suffix); }
-    
-    @Override
-    public Component asComponentInBrackets() { return adapter.componentInBrackets(item); }
+	private final ItemAdapter<?, I> adapter;
+	private final I item;
+	
+	AdventureItemImpl(ItemAdapter<?, I> adapter, I item)
+	{
+		this.adapter = Objects.requireNonNull(adapter, "adapter");
+		this.item = Objects.requireNonNull(item, "item");
+	}
+	
+	@SuppressWarnings("NullableProblems")
+	@Override
+	public I item() { return item; }
+	
+	@Override
+	public Key key() { return adapter.key(item); }
+	
+	@Override
+	public String translationKey() { return adapter.translationKey(item); }
+	
+	@Override
+	public TranslatableComponent asTranslatable() { return adapter.translatable(item); }
+	
+	@Override
+	public Optional<Component> displayName() { return adapter.displayName(item); }
+	
+	@Override
+	public Component displayOrTranslatableName() { return adapter.displayOrTranslatableName(item); }
+	
+	@Override
+	public void displayName(ComponentLike componentLike) { adapter.displayName(item, componentLike); }
+	
+	@Override
+	public List<Component> lore() { return adapter.lore(item); }
+	
+	@Override
+	public void lore(List<Component> lore) { adapter.lore(item, lore); }
+	
+	@Override
+	public void lore(ComponentLike componentLike)
+	{
+		adapter.lore(item, Components.flattenExtraSplitByNewLine(Components.safelyAsComponent(componentLike)));
+	}
+	
+	@Override
+	public String clientName() { return adapter.clientName(item); }
+	
+	@Override
+	public ItemRarity rarity() { return adapter.rarity(item); }
+	
+	@Override
+	public HoverEvent<HoverEvent.ShowItem> asHoverEvent(UnaryOperator<HoverEvent.ShowItem> op)
+	{
+		HoverEvent<HoverEvent.ShowItem> hover = adapter.hover(item);
+		if (op == UnaryOperator.<HoverEvent.ShowItem>identity()) { return hover; }
+		return HoverEvent.showItem(op.apply(hover.value()));
+	}
+	
+	@Override
+	public Component asComponent() { return adapter.component(item); }
+	
+	@Override
+	public Component asComponent(String prefix, String suffix) { return adapter.component(item, prefix, suffix); }
+	
+	@Override
+	public Component asComponentInBrackets() { return adapter.componentInBrackets(item); }
 }
