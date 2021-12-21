@@ -43,6 +43,13 @@ public interface TextChain<T extends TextChain<T>> extends ComponentLike, Chaine
      */
     static TextChainSource<?> source() { return AbstractTextChain.Impl.SOURCE; }
     
+    static TextChainFactory<?> using() { return new TextChainFactoryImpl<>(source()); }
+    
+    static <T extends TextChain<T>> TextChainFactory<T> using(TextChainSource<T> source)
+    {
+        return new TextChainFactoryImpl<>(source);
+    }
+    
     /**
      * Creates a new, empty {@link TextChain} instance.
      *

@@ -47,7 +47,7 @@ public class VillagerPickpocketListener implements Listener
         
         BukkitToAdventure.items().lore(
             emerald,
-            TextChain.reset()
+            TextChain.using().reset().chain()
                 .then("Wow, you ")
                 .then("pickpocketed")
                     .underlined()
@@ -60,7 +60,7 @@ public class VillagerPickpocketListener implements Listener
         
         player.getInventory().addItem(emerald);
         
-        TextChain.chain(plugin)
+        TextChain.using(plugin).chain()
             .then("Pickpocket!")
                 .bold().italic().color(TextColor.color(0xfc3b1e))
             .actionBarToRecipient(player);

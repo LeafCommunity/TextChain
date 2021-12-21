@@ -88,7 +88,7 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
         ItemStack broken = new ItemStack(event.getBlock().getType());
         ItemStack tool = player.getInventory().getItemInMainHand();
         
-        TextChain.chain(this)
+        TextChain.using(this).chain()
             .then("You broke ")
             .then(BukkitToAdventure.items().componentInBrackets(broken))
                 .color(NamedTextColor.RED)
@@ -108,7 +108,7 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
         
         ItemRarity rarity = BukkitToAdventure.items().rarity(tool);
         
-        TextChain.chain(this)
+        TextChain.using(this).chain()
             .then("Rarity of ")
             .then(BukkitToAdventure.items().componentInBrackets(tool))
                 .color(rarity)
@@ -128,7 +128,7 @@ public class TextChainExampleBukkitPlugin extends JavaPlugin implements BukkitTe
         Player player = event.getPlayer();
         Entity clicked = event.getRightClicked();
         
-        TextChain.chain(this)
+        TextChain.using(this).chain()
             .then("You clicked on ")
             .then(BukkitToAdventure.entities().component(clicked))
                 .color(TextColor.color(0xe0c0e8))
