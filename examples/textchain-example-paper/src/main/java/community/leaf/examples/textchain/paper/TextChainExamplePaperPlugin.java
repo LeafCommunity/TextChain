@@ -1,3 +1,10 @@
+/*
+ * Copyright © 2021, RezzedUp <https://github.com/LeafCommunity/TextChain>
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 package community.leaf.examples.textchain.paper;
 
 import community.leaf.textchain.adventure.TextChain;
@@ -124,7 +131,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
 		}
 		else
 		{
-			TextChain.legacy()
+			TextChain.using().legacy().chain()
 				.then("&c&o&lUhoh!&r I'm not sure what ")
 				.then("&n" + args[0])
 					.tooltip("&4&oOops??")
@@ -158,7 +165,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
 			.thenExtra(extra -> extra.then("(").then(BukkitToAdventure.items().clientName(hand)).then(")"))
 				.italic()
 				.color(NamedTextColor.DARK_AQUA)
-			.sendToAudience((Audience) player)
+			.sendToAudience(player)
 			.sendToAudience(exampleAudience());
 	
 		ItemRarity rarity = BukkitToAdventure.items().rarity(hand);
@@ -171,7 +178,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
 			.then(rarity)
 				.bold()
 				.italic()
-			.sendToAudience((Audience) player)
+			.sendToAudience(player)
 			.sendToAudience(exampleAudience());
 	}
 	
@@ -188,7 +195,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
 			.then(BukkitToAdventure.entities().component(damaged))
 				.color(TextColor.color(0xe8c3ae))
 			.then("!")
-			.sendToAudience((Audience) player)
+			.sendToAudience(player)
 			.sendToAudience(exampleAudience());
 	}
 	
@@ -213,7 +220,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
 				.then("Sent JSON component: ")
 				.then(GsonComponentSerializer.gson().serialize(message))
 				.color(NamedTextColor.YELLOW)
-				.sendToAudience((Audience) getServer().getConsoleSender());
+				.sendToAudience(getServer().getConsoleSender());
 		}
 	}
 }

@@ -1,3 +1,10 @@
+/*
+ * Copyright © 2021, RezzedUp <https://github.com/LeafCommunity/TextChain>
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 package community.leaf.examples.textchain.paper;
 
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
@@ -36,7 +43,7 @@ public class BunnyJumpListener implements Listener
 		ItemMeta meta = gift.getItemMeta();
 		
 		meta.displayName(
-			TextChain.reset()
+			TextChain.using().reset().chain()
 				.extra(chain -> chain
 					.then("A ")
 					.then("very ")
@@ -53,7 +60,7 @@ public class BunnyJumpListener implements Listener
 		);
 		
 		meta.lore(
-			TextChain.reset()
+			TextChain.using().reset().chain()
 				.then("You're a ")
 				.then("bunny")
 					.bold()

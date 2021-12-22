@@ -1,3 +1,10 @@
+/*
+ * Copyright © 2021, RezzedUp <https://github.com/LeafCommunity/TextChain>
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 package community.leaf.examples.textchain.bungeecord;
 
 import community.leaf.textchain.adventure.TextChain;
@@ -19,7 +26,7 @@ public class TextChainExampleBungeePlugin extends Plugin implements BungeeTextCh
 		this.audiences = BungeeAudiences.create(this);
 		getProxy().getPluginManager().registerCommand(this, new ExampleCommand(this));
 		
-		TextChain.chain(this)
+		TextChain.using(this).chain()
 			.then("Enabled: ")
 				.color(NamedTextColor.LIGHT_PURPLE)
 			.then("TextChain Example (BungeeCord version)")
@@ -56,7 +63,7 @@ public class TextChainExampleBungeePlugin extends Plugin implements BungeeTextCh
 		@Override
 		public void execute(CommandSender sender, String[] args)
 		{
-			TextChain.chain(plugin)
+			TextChain.using(plugin).chain()
 				.then("Why, yes! ")
 					.italic()
 				.then("This is a text chain...")
