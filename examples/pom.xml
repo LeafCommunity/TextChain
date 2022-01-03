@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<artifactId>textchain-parent</artifactId>
-		<groupId>community.leaf.textchain</groupId>
-		<version>${revision}</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>textchain-parent</artifactId>
+    <groupId>community.leaf.textchain</groupId>
+    <version>${revision}</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
 
-	<artifactId>textchain-examples</artifactId>
-	<packaging>pom</packaging>
+  <artifactId>textchain-examples</artifactId>
+  <packaging>pom</packaging>
 
-	<properties>
-		<!-- Note: examples target older version due to the project targeting Java 11 -->
-		<versions.minecraft.examples>1.16.5-R0.1-SNAPSHOT</versions.minecraft.examples>
-	</properties>
+  <properties>
+    <!-- Note: examples target older version due to the project targeting Java 11 -->
+    <versions.minecraft.examples>1.16.5-R0.1-SNAPSHOT</versions.minecraft.examples>
+  </properties>
 
-	<modules>
-		<module>textchain-example-bukkit</module>
-		<module>textchain-example-bungeecord</module>
-		<module>textchain-example-paper</module>
-	</modules>
+  <modules>
+    <module>textchain-example-bukkit</module>
+    <module>textchain-example-bungeecord</module>
+    <module>textchain-example-paper</module>
+  </modules>
 
-	<build>
-		<resources>
-			<!-- Filter resource files -->
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-	</build>
+  <build>
+    <resources>
+      <!-- Filter resource files -->
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+  </build>
 
 </project>

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2021, RezzedUp <https://github.com/LeafCommunity/TextChain>
+ * Copyright © 2021-2022, RezzedUp <https://github.com/LeafCommunity/TextChain>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -15,14 +15,14 @@ import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 
 final class BungeeTextChainImpl extends AbstractPlatformTextChain<BungeeAudiences, BungeeTextChain> implements BungeeTextChain
 {
-	public BungeeTextChainImpl(LinearTextComponentBuilder builder, TextProcessor processor, BungeeAudiences audiences)
-	{
-		super(builder, processor, audiences);
-	}
-	
-	@Override
-	public TextChainConstructor<BungeeTextChain> constructor()
-	{
-		return (builder, processor) -> new BungeeTextChainImpl(builder, processor, adventure());
-	}
+    public BungeeTextChainImpl(LinearTextComponentBuilder builder, TextProcessor processor, BungeeAudiences audiences)
+    {
+        super(builder, processor, audiences);
+    }
+    
+    @Override
+    public TextChainConstructor<BungeeTextChain> constructor()
+    {
+        return (builder, processor) -> new BungeeTextChainImpl(builder, processor, adventure());
+    }
 }

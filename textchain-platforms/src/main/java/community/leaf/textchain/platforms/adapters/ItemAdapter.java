@@ -1,5 +1,5 @@
 /*
- * Copyright © 2021, RezzedUp <https://github.com/LeafCommunity/TextChain>
+ * Copyright © 2021-2022, RezzedUp <https://github.com/LeafCommunity/TextChain>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -23,72 +23,72 @@ import java.util.Optional;
 
 public interface ItemAdapter<T, I>
 {
-	ItemTypeAdapter<T> types();
-	
-	T type(I item);
-	
-	int amount(I item);
-	
-	BinaryTagHolder nbt(I item);
-	
-	Optional<Component> displayName(I item);
-	
-	void displayName(I item, ComponentLike componentLike);
-	
-	List<Component> lore(I item);
-	
-	void lore(I item, List<Component> lore);
-	
-	ItemRarity rarity(I item);
-	
-	default Key key(I item)
-	{
-		return types().key(type(item));
-	}
-	
-	default HoverEvent<HoverEvent.ShowItem> hover(I item)
-	{
-		return HoverEvent.showItem(HoverEvent.ShowItem.of(key(item), amount(item), nbt(item)));
-	}
-	
-	default String translationKey(I item)
-	{
-		return types().translationKey(type(item));
-	}
-	
-	default TranslatableComponent translatable(I item)
-	{
-		return types().translatable(type(item));
-	}
-	
-	default Component displayOrTranslatableName(I item)
-	{
-		return displayName(item).orElseGet(() -> translatable(item));
-	}
-	
-	default void lore(I item, ComponentLike componentLike)
-	{
-		lore(item, Components.flattenExtraSplitByNewLine(Components.safelyAsComponent(componentLike)));
-	}
-	
-	default String clientName(I item)
-	{
-		return types().clientName(type(item));
-	}
-	
-	default TextComponent component(I item, String prefix, String suffix)
-	{
-		return TextChain.chain()
-			.extra(chain -> {
-				if (!prefix.isEmpty()) { chain.then(prefix); }
-				chain.then(displayOrTranslatableName(item));
-				if (!suffix.isEmpty()) { chain.then(suffix); }
-			})
-			.hover(hover(item))
-			.asComponent();
-	}
-	
-	default TextComponent component(I item) { return component(item, "", ""); }
-	
-	default TextComponent componentInBrackets(I item) { return component(item, "[", "]"); }
+    ItemTypeAdapter<T> types();
+    
+    T type(I item);
+    
+    int amount(I item);
+    
+    BinaryTagHolder nbt(I item);
+    
+    Optional<Component> displayName(I item);
+    
+    void displayName(I item, ComponentLike componentLike);
+    
+    List<Component> lore(I item);
+    
+    void lore(I item, List<Component> lore);
+    
+    ItemRarity rarity(I item);
+    
+    default Key key(I item)
+    {
+        return types().key(type(item));
+    }
+    
+    default HoverEvent<HoverEvent.ShowItem> hover(I item)
+    {
+        return HoverEvent.showItem(HoverEvent.ShowItem.of(key(item), amount(item), nbt(item)));
+    }
+    
+    default String translationKey(I item)
+    {
+        return types().translationKey(type(item));
+    }
+    
+    default TranslatableComponent translatable(I item)
+    {
+        return types().translatable(type(item));
+    }
+    
+    default Component displayOrTranslatableName(I item)
+    {
+        return displayName(item).orElseGet(() -> translatable(item));
+    }
+    
+    default void lore(I item, ComponentLike componentLike)
+    {
+        lore(item, Components.flattenExtraSplitByNewLine(Components.safelyAsComponent(componentLike)));
+    }
+    
+    default String clientName(I item)
+    {
+        return types().clientName(type(item));
+    }
+    
+    default TextComponent component(I item, String prefix, String suffix)
+    {
+        return TextChain.chain()
+            .extra(chain -> {
+                if (!prefix.isEmpty()) { chain.then(prefix); }
+                chain.then(displayOrTranslatableName(item));
+                if (!suffix.isEmpty()) { chain.then(suffix); }
+            })
+            .hover(hover(item))
+            .asComponent();
+    }
+    
+    default TextComponent component(I item) { return component(item, "", ""); }
+    
+    default TextComponent componentInBrackets(I item) { return component(item, "[", "]"); }
 }

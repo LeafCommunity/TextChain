@@ -1,57 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<artifactId>textchain-parent</artifactId>
-		<groupId>community.leaf.textchain</groupId>
-		<version>${revision}</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>textchain-parent</artifactId>
+    <groupId>community.leaf.textchain</groupId>
+    <version>${revision}</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
 
-	<artifactId>textchain-platform-bukkit</artifactId>
+  <artifactId>textchain-platform-bukkit</artifactId>
 
-	<repositories>
-		<repository>
-			<id>spigot-repo</id>
-			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-		</repository>
-	</repositories>
+  <repositories>
+    <repository>
+      <id>spigot-repo</id>
+      <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+    </repository>
+  </repositories>
 
-	<dependencies>
-		<!-- Spigot API (via spigot-repo) -->
-		<dependency>
-			<groupId>org.spigotmc</groupId>
-			<artifactId>spigot-api</artifactId>
-			<version>${versions.minecraft.spigot}</version>
-			<scope>provided</scope>
-		</dependency>
-		<!-- Kyori Adventure Bukkit Platform (via sonatype-oss) -->
-		<dependency>
-			<groupId>net.kyori</groupId>
-			<artifactId>adventure-platform-bukkit</artifactId>
-			<version>${versions.kyori.adventure-platform}</version>
-			<scope>provided</scope>
-		</dependency>
-		<!-- TextChain (via local project) -->
-		<dependency>
-			<groupId>community.leaf.textchain</groupId>
-			<artifactId>textchain-adventure</artifactId>
-			<version>${revision}</version>
-		</dependency>
-		<!-- TextChain Platforms (via local project) -->
-		<dependency>
-			<groupId>community.leaf.textchain</groupId>
-			<artifactId>textchain-platforms</artifactId>
-			<version>${revision}</version>
-		</dependency>
-		<!-- TextChain BungeeCord Chat (via local project) -->
-		<dependency>
-			<groupId>community.leaf.textchain</groupId>
-			<artifactId>textchain-platform-bungeecord-chat</artifactId>
-			<version>${revision}</version>
-		</dependency>
-	</dependencies>
+  <dependencies>
+    <!-- Spigot API (via spigot-repo) -->
+    <dependency>
+      <groupId>org.spigotmc</groupId>
+      <artifactId>spigot-api</artifactId>
+      <version>${versions.minecraft.spigot}</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- Kyori Adventure Bukkit Platform (via maven central) -->
+    <dependency>
+      <groupId>net.kyori</groupId>
+      <artifactId>adventure-platform-bukkit</artifactId>
+      <version>${versions.kyori.adventure-platform}</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- TextChain (via local project) -->
+    <dependency>
+      <groupId>community.leaf.textchain</groupId>
+      <artifactId>textchain-adventure</artifactId>
+      <version>${revision}</version>
+    </dependency>
+    <!-- TextChain Platforms (via local project) -->
+    <dependency>
+      <groupId>community.leaf.textchain</groupId>
+      <artifactId>textchain-platforms</artifactId>
+      <version>${revision}</version>
+    </dependency>
+    <!-- TextChain BungeeCord Chat (via local project) -->
+    <dependency>
+      <groupId>community.leaf.textchain</groupId>
+      <artifactId>textchain-platform-bungeecord-chat</artifactId>
+      <version>${revision}</version>
+    </dependency>
+  </dependencies>
 
 </project>

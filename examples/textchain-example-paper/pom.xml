@@ -1,84 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<artifactId>textchain-examples</artifactId>
-		<groupId>community.leaf.textchain</groupId>
-		<version>${revision}</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>textchain-examples</artifactId>
+    <groupId>community.leaf.textchain</groupId>
+    <version>${revision}</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
 
-	<artifactId>textchain-example-paper</artifactId>
+  <artifactId>textchain-example-paper</artifactId>
 
-	<properties>
-		<shade.relocation>community.leaf.examples.textchain.paper.shaded</shade.relocation>
-	</properties>
+  <properties>
+    <shade.relocation>community.leaf.examples.textchain.paper.shaded</shade.relocation>
+  </properties>
 
-	<repositories>
-		<repository>
-			<id>papermc</id>
-			<url>https://papermc.io/repo/repository/maven-public/</url>
-		</repository>
-	</repositories>
+  <repositories>
+    <repository>
+      <id>papermc</id>
+      <url>https://papermc.io/repo/repository/maven-public/</url>
+    </repository>
+  </repositories>
 
-	<dependencies>
-		<!-- Paper API (via papermc) -->
-		<dependency>
-			<groupId>com.destroystokyo.paper</groupId>
-			<artifactId>paper-api</artifactId>
-			<version>${versions.minecraft.examples}</version>
-			<scope>provided</scope>
-		</dependency>
-		<!-- TextChain (via local project) -->
-		<dependency>
-			<groupId>community.leaf.textchain</groupId>
-			<artifactId>textchain-platform-bukkit</artifactId>
-			<version>${revision}</version>
-		</dependency>
-	</dependencies>
+  <dependencies>
+    <!-- Paper API (via papermc) -->
+    <dependency>
+      <groupId>com.destroystokyo.paper</groupId>
+      <artifactId>paper-api</artifactId>
+      <version>${versions.minecraft.examples}</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- TextChain (via local project) -->
+    <dependency>
+      <groupId>community.leaf.textchain</groupId>
+      <artifactId>textchain-platform-bukkit</artifactId>
+      <version>${revision}</version>
+    </dependency>
+  </dependencies>
 
-	<build>
-		<finalName>${project.name}-v${project.version}</finalName>
-		<plugins>
-			<!-- Shade dependencies -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.2.4</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-							<createDependencyReducedPom>false</createDependencyReducedPom>
-						</configuration>
-					</execution>
-				</executions>
-				<configuration>
-					<relocations>
-						<!-- TextChain -->
-						<relocation>
-							<pattern>community.leaf.textchain</pattern>
-							<shadedPattern>${shade.relocation}.textchain</shadedPattern>
-						</relocation>
-					</relocations>
-					<artifactSet>
-						<!-- Exclude annotations from built jar -->
-						<excludes>
-							<exclude>org.checkerframework:checker-qual</exclude>
-							<exclude>org.jetbrains:annotations</exclude>
-							<exclude>org.jetbrains.kotlin:kotlin-annotations-jvm</exclude>
-							<exclude>com.google.code.findbugs:jsr305</exclude>
-							<exclude>pl.tlinkowski.annotation:pl.tlinkowski.annotation.basic</exclude>
-						</excludes>
-					</artifactSet>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+  <build>
+    <finalName>${project.name}-v${project.version}</finalName>
+    <plugins>
+      <!-- Shade dependencies -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.4</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <relocations>
+            <!-- TextChain -->
+            <relocation>
+              <pattern>community.leaf.textchain</pattern>
+              <shadedPattern>${shade.relocation}.textchain</shadedPattern>
+            </relocation>
+          </relocations>
+          <artifactSet>
+            <!-- Exclude annotations from built jar -->
+            <excludes>
+              <exclude>org.checkerframework:checker-qual</exclude>
+              <exclude>org.jetbrains:annotations</exclude>
+              <exclude>org.jetbrains.kotlin:kotlin-annotations-jvm</exclude>
+              <exclude>com.google.code.findbugs:jsr305</exclude>
+              <exclude>pl.tlinkowski.annotation:pl.tlinkowski.annotation.basic</exclude>
+            </excludes>
+          </artifactSet>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

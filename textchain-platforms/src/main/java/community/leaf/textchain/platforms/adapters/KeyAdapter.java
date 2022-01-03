@@ -1,5 +1,5 @@
 /*
- * Copyright © 2021, RezzedUp <https://github.com/LeafCommunity/TextChain>
+ * Copyright © 2021-2022, RezzedUp <https://github.com/LeafCommunity/TextChain>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -12,7 +12,7 @@ import net.kyori.adventure.key.Keyed;
 
 public interface KeyAdapter<K, H>
 {
-	Key key(K key);
-	
-	Keyed keyed(H keyed);
+    Key key(K key);
+    
+    Keyed keyed(H keyed);
 }

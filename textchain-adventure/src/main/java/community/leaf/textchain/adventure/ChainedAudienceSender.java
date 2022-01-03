@@ -1,5 +1,5 @@
 /*
- * Copyright © 2021, RezzedUp <https://github.com/LeafCommunity/TextChain>
+ * Copyright © 2021-2022, RezzedUp <https://github.com/LeafCommunity/TextChain>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -21,72 +21,72 @@ import net.kyori.adventure.text.ComponentLike;
  */
 public interface ChainedAudienceSender<S extends ChainedAudienceSender<S>> extends ComponentLike
 {
-	@SuppressWarnings("unchecked")
-	private S self() { return (S) this; }
-	
-	/**
-	 * Converts into a component message and sends
-	 * it to the provided audience.
-	 *
-	 * @param audience  the audience to receive components
-	 * @return  self (for method chaining)
-	 *
-	 * @see Audience#sendMessage(Component)
-	 */
-	default S sendToAudience(Audience audience)
-	{
-		audience.sendMessage(asComponent());
-		return self();
-	}
-	
-	/**
-	 * Converts into a component message and sends
-	 * it to the provided audience, identified by
-	 * the provided identity.
-	 *
-	 * @param audience  the audience to receive components
-	 * @param source    the identity from whom the
-	 *                  components originate
-	 * @return  self (for method chaining)
-	 *
-	 * @see Audience#sendMessage(Identity, Component)
-	 */
-	default S sendToAudience(Audience audience, Identity source)
-	{
-		audience.sendMessage(source, asComponent());
-		return self();
-	}
-	
-	/**
-	 * Converts into a component message and sends
-	 * it to the provided audience, identified by
-	 * the source's identity.
-	 *
-	 * @param audience  the audience to receive components
-	 * @param source    the identifiable source from whom
-	 *                  the components originate
-	 * @return  self (for method chaining)
-	 *
-	 * @see Audience#sendMessage(Identified, Component)
-	 */
-	default S sendToAudience(Audience audience, Identified source)
-	{
-		audience.sendMessage(source, asComponent());
-		return self();
-	}
-	
-	/**
-	 * Converts into a component action bar and
-	 * sends it to the provided audience.
-	 *
-	 * @param audience  the audience to receive components
-	 * @return  self (for method chaining)
-	 *
-	 * @see Audience#sendActionBar(Component)
-	 */
-	default S actionBarToAudience(Audience audience)
-	{
-		audience.sendActionBar(asComponent());
-		return self();
-	}
+    @SuppressWarnings("unchecked")
+    private S self() { return (S) this; }
+    
+    /**
+     * Converts into a component message and sends
+     * it to the provided audience.
+     *
+     * @param audience  the audience to receive components
+     * @return self (for method chaining)
+     *
+     * @see Audience#sendMessage(Component)
+     */
+    default S sendToAudience(Audience audience)
+    {
+        audience.sendMessage(asComponent());
+        return self();
+    }
+    
+    /**
+     * Converts into a component message and sends
+     * it to the provided audience, identified by
+     * the provided identity.
+     *
+     * @param audience  the audience to receive components
+     * @param source    the identity from whom the
+     *                  components originate
+     * @return self (for method chaining)
+     *
+     * @see Audience#sendMessage(Identity, Component)
+     */
+    default S sendToAudience(Audience audience, Identity source)
+    {
+        audience.sendMessage(source, asComponent());
+        return self();
+    }
+    
+    /**
+     * Converts into a component message and sends
+     * it to the provided audience, identified by
+     * the source's identity.
+     *
+     * @param audience  the audience to receive components
+     * @param source    the identifiable source from whom
+     *                  the components originate
+     * @return self (for method chaining)
+     *
+     * @see Audience#sendMessage(Identified, Component)
+     */
+    default S sendToAudience(Audience audience, Identified source)
+    {
+        audience.sendMessage(source, asComponent());
+        return self();
+    }
+    
+    /**
+     * Converts into a component action bar and
+     * sends it to the provided audience.
+     *
+     * @param audience  the audience to receive components
+     * @return self (for method chaining)
+     *
+     * @see Audience#sendActionBar(Component)
+     */
+    default S actionBarToAudience(Audience audience)
+    {
+        audience.sendActionBar(asComponent());
+        return self();
+    }
 }

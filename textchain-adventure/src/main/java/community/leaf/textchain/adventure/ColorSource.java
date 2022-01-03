@@ -1,5 +1,5 @@
 /*
- * Copyright © 2021, RezzedUp <https://github.com/LeafCommunity/TextChain>
+ * Copyright © 2021-2022, RezzedUp <https://github.com/LeafCommunity/TextChain>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -13,14 +13,14 @@ import net.kyori.adventure.util.RGBLike;
 @FunctionalInterface
 public interface ColorSource extends RGBLike
 {
-	TextColor color();
-	
-	@Override
-	default int red() { return color().red(); }
-	
-	@Override
-	default int green() { return color().green(); }
-	
-	@Override
-	default int blue() { return color().blue(); }
+    TextColor color();
+    
+    @Override
+    default int red() { return color().red(); }
+    
+    @Override
+    default int green() { return color().green(); }
+    
+    @Override
+    default int blue() { return color().blue(); }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2021, RezzedUp <https://github.com/LeafCommunity/TextChain>
+ * Copyright © 2021-2022, RezzedUp <https://github.com/LeafCommunity/TextChain>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -15,14 +15,14 @@ import net.md_5.bungee.api.chat.BaseComponent;
 
 public class BungeeToAdventure
 {
-	private BungeeToAdventure() { throw new UnsupportedOperationException(); }
-	
-	private static final BungeeColorAdapter colors = new BungeeColorAdapter();
-	
-	public static ColorAdapter<ChatColor> colors() { return colors; }
-	
-	public static Component component(BaseComponent[] baseComponents)
-	{
-		return BungeeComponentSerializer.get().deserialize(baseComponents);
-	}
+    private BungeeToAdventure() { throw new UnsupportedOperationException(); }
+    
+    private static final BungeeColorAdapter colors = new BungeeColorAdapter();
+    
+    public static ColorAdapter<ChatColor> colors() { return colors; }
+    
+    public static Component component(BaseComponent[] baseComponents)
+    {
+        return BungeeComponentSerializer.get().deserialize(baseComponents);
+    }
 }

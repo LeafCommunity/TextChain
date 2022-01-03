@@ -15,7 +15,6 @@ ij_visual_guides = 120
 ij_wrap_on_typing = false
 
 [*.java]
-indent_style = tab
 ij_continuation_indent_size = 0
 ij_visual_guides = none
 ij_java_align_consecutive_assignments = false
@@ -279,7 +278,7 @@ ij_editorconfig_space_before_comma = false
 ij_editorconfig_spaces_around_assignment_operators = true
 
 [{*.ant,*.fxml,*.jhm,*.jnlp,*.jrxml,*.pom,*.rng,*.tld,*.wadl,*.wsdd,*.wsdl,*.xjb,*.xml,*.xsd,*.xsl,*.xslt,*.xul}]
-indent_style = tab
+indent_size = 2
 ij_visual_guides = none
 ij_xml_align_attributes = true
 ij_xml_align_text = false

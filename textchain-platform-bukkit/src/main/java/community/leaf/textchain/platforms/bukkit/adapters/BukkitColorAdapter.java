@@ -1,5 +1,5 @@
 /*
- * Copyright © 2021, RezzedUp <https://github.com/LeafCommunity/TextChain>
+ * Copyright © 2021-2022, RezzedUp <https://github.com/LeafCommunity/TextChain>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -13,9 +13,9 @@ import org.bukkit.ChatColor;
 
 class BukkitColorAdapter implements ColorAdapter<ChatColor>
 {
-	@Override
-	public LegacyColorAlias format(ChatColor color)
-	{
-		return LegacyColorAlias.resolveByCharacter(color.getChar()).orElseThrow();
-	}
+    @Override
+    public LegacyColorAlias format(ChatColor color)
+    {
+        return LegacyColorAlias.resolveByCharacter(color.getChar()).orElseThrow();
+    }
 }

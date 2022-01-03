@@ -1,5 +1,5 @@
 /*
- * Copyright © 2021, RezzedUp <https://github.com/LeafCommunity/TextChain>
+ * Copyright © 2021-2022, RezzedUp <https://github.com/LeafCommunity/TextChain>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -19,10 +19,10 @@ import net.kyori.adventure.text.TextComponent;
 @FunctionalInterface
 public interface TextChainConstructor<T extends TextChain<T>>
 {
-	T construct(LinearTextComponentBuilder builder, TextProcessor processor);
-	
-	default T construct(TextComponent.Builder builder, TextProcessor processor)
-	{
-		return construct(LinearTextComponentBuilder.wrap(builder), processor);
-	}
+    T construct(LinearTextComponentBuilder builder, TextProcessor processor);
+    
+    default T construct(TextComponent.Builder builder, TextProcessor processor)
+    {
+        return construct(LinearTextComponentBuilder.wrap(builder), processor);
+    }
 }

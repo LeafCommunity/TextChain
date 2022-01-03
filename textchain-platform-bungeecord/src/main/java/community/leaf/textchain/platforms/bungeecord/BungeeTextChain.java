@@ -1,5 +1,5 @@
 /*
- * Copyright © 2021, RezzedUp <https://github.com/LeafCommunity/TextChain>
+ * Copyright © 2021-2022, RezzedUp <https://github.com/LeafCommunity/TextChain>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -16,18 +16,18 @@ import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 import net.md_5.bungee.api.CommandSender;
 
 public interface BungeeTextChain extends
-	AdventureSource<BungeeAudiences>,
-	ChainedRecipientSender<CommandSender, BungeeTextChain>,
-	TextChain<BungeeTextChain>
+    AdventureSource<BungeeAudiences>,
+    ChainedRecipientSender<CommandSender, BungeeTextChain>,
+    TextChain<BungeeTextChain>
 {
-	static TextChainConstructor<BungeeTextChain> using(BungeeAudiences audiences)
-	{
-		return (builder, processor) -> new BungeeTextChainImpl(builder, processor, audiences);
-	}
-	
-	@Override
-	default Audience recipientToAudience(CommandSender recipient)
-	{
-		return adventure().sender(recipient);
-	}
+    static TextChainConstructor<BungeeTextChain> using(BungeeAudiences audiences)
+    {
+        return (builder, processor) -> new BungeeTextChainImpl(builder, processor, audiences);
+    }
+    
+    @Override
+    default Audience recipientToAudience(CommandSender recipient)
+    {
+        return adventure().sender(recipient);
+    }
 }

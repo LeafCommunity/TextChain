@@ -1,5 +1,5 @@
 /*
- * Copyright © 2021, RezzedUp <https://github.com/LeafCommunity/TextChain>
+ * Copyright © 2021-2022, RezzedUp <https://github.com/LeafCommunity/TextChain>
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -14,9 +14,9 @@ import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 @FunctionalInterface
 public interface BungeeTextChainSource extends PlatformTextChainSource<BungeeAudiences, BungeeTextChain>
 {
-	@Override
-	default TextChainConstructor<BungeeTextChain> getTextChainConstructor()
-	{
-		return (builder, processor) -> new BungeeTextChainImpl(builder, processor, adventure());
-	}
+    @Override
+    default TextChainConstructor<BungeeTextChain> getTextChainConstructor()
+    {
+        return (builder, processor) -> new BungeeTextChainImpl(builder, processor, adventure());
+    }
 }
