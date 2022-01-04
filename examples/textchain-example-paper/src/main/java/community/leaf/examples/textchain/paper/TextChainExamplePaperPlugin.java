@@ -41,7 +41,7 @@ public class TextChainExamplePaperPlugin extends JavaPlugin implements Listener
             .then("Enabled: ")
                 .color(NamedTextColor.GOLD)
             .then("TextChain Example (Paper version)")
-            .sendToAudience((Audience) getServer().getConsoleSender())
+            .sendToAudience(getServer().getConsoleSender())
             .sendToAudience(exampleAudience());
     }
     

@@ -32,7 +32,6 @@ class AdventureItemImpl<I> implements AdventureItem<I>
         this.item = Objects.requireNonNull(item, "item");
     }
     
-    @SuppressWarnings("NullableProblems")
     @Override
     public I item() { return item; }
     

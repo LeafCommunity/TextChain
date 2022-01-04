@@ -17,10 +17,8 @@ import java.util.Optional;
 
 /**
  * Represents an item's rarity.
- * This enum is a one-to-one reimplementation of Minecraft's
- * internal {@code net.minecraft.server.EnumItemRarity},
- * but it uses Adventure colors, components, and isn't
- * restricted to a specific platform.
+ * This enum is a one-to-one reimplementation of Minecraft's internal {@code net.minecraft.EnumItemRarity},
+ * but it uses Adventure colors, components, and isn't restricted to a specific platform.
  */
 public enum ItemRarity implements ColorSource, ComponentLike
 {
@@ -39,8 +37,7 @@ public enum ItemRarity implements ColorSource, ComponentLike
     }
     
     /**
-     * Gets the color associated with this
-     * level of rarity.
+     * Gets the color associated with this level of rarity.
      *
      * @return rarity level's color
      */
@@ -51,10 +48,10 @@ public enum ItemRarity implements ColorSource, ComponentLike
     public Component asComponent() { return component; }
     
     /**
-     * Resolves the enum value that matches the
-     * case-insensitive input, or else empty.
+     * Resolves the enum value that matches the case-insensitive input, or else empty.
      *
      * @param name  possible name of an enum value
+     *
      * @return the resolved enum value or empty
      */
     public static Optional<ItemRarity> resolveByName(String name)

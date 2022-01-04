@@ -18,7 +18,6 @@ public interface ItemMetaAdapter<T, I, M> extends ItemAdapter<T, I>
 {
     MetaAdapter<M> meta();
     
-    @SuppressWarnings("NullableProblems") // 404 no problem found
     @NullOr M meta(I item);
     
     void meta(I item, @NullOr M meta);

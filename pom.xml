@@ -16,7 +16,7 @@
   <licenses>
     <license>
       <name>Mozilla Public License Version 2.0</name>
-      <url>http://mozilla.org/MPL/2.0</url>
+      <url>https://mozilla.org/MPL/2.0</url>
     </license>
   </licenses>
 
@@ -30,7 +30,7 @@
   <scm>
     <connection>scm:git:git://github.com/LeafCommunity/TextChain.git</connection>
     <developerConnection>scm:git:ssh://github.com:LeafCommunity/TextChain.git</developerConnection>
-    <url>http://github.com/LeafCommunity/TextChain</url>
+    <url>https://github.com/LeafCommunity/TextChain</url>
   </scm>
 
   <issueManagement>

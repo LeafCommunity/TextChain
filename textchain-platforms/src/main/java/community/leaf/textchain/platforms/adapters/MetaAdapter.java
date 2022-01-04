@@ -14,7 +14,6 @@ import pl.tlinkowski.annotation.basic.NullOr;
 import java.util.List;
 import java.util.Optional;
 
-@SuppressWarnings("NullableProblems") // no problems here
 public interface MetaAdapter<M>
 {
     Optional<Component> displayName(@NullOr M meta);

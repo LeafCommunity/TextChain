@@ -16,8 +16,7 @@ package community.leaf.textchain.adventure;
 public interface TextChainSource<T extends TextChain<T>>
 {
     /**
-     * Generates a standard chain constructor by
-     * supplying all other dependencies the specific
+     * Generates a standard chain constructor by supplying all other dependencies the specific
      * chain type requires.
      *
      * @return a standard chain constructor

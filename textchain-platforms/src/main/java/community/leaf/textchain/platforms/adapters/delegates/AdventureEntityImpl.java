@@ -31,7 +31,6 @@ class AdventureEntityImpl<E> implements AdventureEntity<E>
         this.entity = Objects.requireNonNull(entity, "entity");
     }
     
-    @SuppressWarnings("NullableProblems") // E
     @Override
     public E entity() { return entity; }
     

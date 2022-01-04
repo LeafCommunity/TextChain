@@ -26,9 +26,7 @@ public interface TextProcessor
     interface Legacy extends TextProcessor {}
     
     /**
-     * Simply creates a text component containing
-     * the input string. The text isn't "processed"
-     * beyond that.
+     * Simply creates a text component containing the input string. The text isn't "processed" beyond that.
      *
      * @return a new component containing the input text
      */
@@ -38,12 +36,9 @@ public interface TextProcessor
     }
     
     /**
-     * Creates a text component by parsing legacy
-     * ampersand-style color codes contained
-     * within the input string.
+     * Creates a text component by parsing legacy ampersand-style color codes contained within the input string.
      *
-     * @return a new component as a result of
-     *          processing ampersand color codes
+     * @return a new component as a result of processing ampersand color codes
      */
     static Legacy legacyAmpersand()
     {

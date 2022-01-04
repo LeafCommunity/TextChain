@@ -27,13 +27,9 @@ public class Components
     private Components() { throw new UnsupportedOperationException(); }
     
     /**
-     * Style constant that explicitly
-     * <b>disables</b> most formatting options
-     * (all {@link TextDecoration decoration types}
-     * are set to false). No color is specified,
-     * however, so the color from a parent style
-     * will still be inherited when it's applied
-     * to a child component.
+     * Style constant that explicitly <b>disables</b> most formatting options
+     * (all {@link TextDecoration decoration types} are set to false). No color is specified, however,
+     * so the color from a parent style will still be inherited when it's applied to a child component.
      */
     public static final Style UNFORMATTED =
         Style.style()
@@ -45,25 +41,20 @@ public class Components
             .build();
     
     /**
-     * Style constant that explicitly
-     * <b>disables</b> most formatting options
-     * (all {@link TextDecoration decoration types}
-     * are set to false), and it's set to <b>white</b>
+     * Style constant that explicitly <b>disables</b> most formatting options
+     * (all {@link TextDecoration decoration types} are set to false), and it's set to <b>white</b>
      * (emulating the {@code "&r"} legacy color code).
      */
     public static final Style RESET = UNFORMATTED.color(NamedTextColor.WHITE);
     
     /**
-     * Safely retrieves the component from the provided
-     * component-like by throwing NPEs if {@code null}
-     * is encountered anywhere in the component
-     * conversion process.
+     * Safely retrieves the component from the provided component-like by throwing NPEs if {@code null}
+     * is encountered anywhere in the component conversion process.
      *
-     * @param componentLike     a suspicious component-like
-     *                          (received via input)
+     * @param componentLike     a suspicious component-like (received via input)
+     *
      * @return the component version of the provided component-like
-     * @throws NullPointerException
-     *          if componentLike or the component it returns is null
+     * @throws NullPointerException if componentLike or the component it returns is null
      */
     public static Component safelyAsComponent(ComponentLike componentLike)
     {
@@ -71,6 +62,15 @@ public class Components
         return Objects.requireNonNull(componentLike.asComponent(), "componentLike returned null");
     }
     
+    /**
+     * Safely converts the provided component-like into a text component builder. If the component-like
+     * returns a {@link TextComponent}, it is converted directly into the resulting builder. Any other
+     * component type is simply appended to a new text component builder.
+     *
+     * @param componentLike     a suspicious component-like (received via input)
+     *
+     * @return a text component builder composed of the provided component-like
+     */
     public static TextComponent.Builder safelyAsTextComponentBuilder(ComponentLike componentLike)
     {
         Component component = Components.safelyAsComponent(componentLike);
@@ -80,13 +80,11 @@ public class Components
     }
     
     /**
-     * Flattens a component's {@code extra} components
-     * (its {@link Component#children() children})
-     * by applying the provided component's
-     * {@link Component#style() style}
-     * to each child component.
+     * Flattens a component's {@code extra} components (its {@link Component#children() children})
+     * by applying the provided component's {@link Component#style() style} to each child component.
      *
      * @param component     the component with "extra" to flatten
+     *
      * @return a list of the component's flattened children
      */
     public static List<Component> flattenExtra(Component component)
@@ -98,20 +96,15 @@ public class Components
     }
     
     /**
-     * Combines and flattens a component's {@code extra}
-     * components (its {@link Component#children() children})
-     * by first aggregating them until a new line is
-     * encountered and then applying the provided component's
-     * {@link Component#style() style} to each combined
-     * group of children. A child component is eligible
-     * to be combined unless it <b>equals</b>
-     * {@link Component#newline()} (a text component
-     * containing only {@code "\n"}), in which case
-     * a new group of children is started.
+     * Combines and flattens a component's {@code extra} components (its {@link Component#children() children})
+     * by first aggregating them until a new line is encountered and then applying the provided component's
+     * {@link Component#style() style} to each combined group of children. A child component is eligible
+     * to be combined unless it <b>equals</b> {@link Component#newline()} (a text component containing only
+     * {@code "\n"}), in which case a new group of children is started.
      *
      * @param component     the component with "extra" to flatten
-     * @return a list of components generated by combining
-     *          and flattening the component's children
+     *
+     * @return a list of components generated by combining and flattening the component's children
      */
     public static List<Component> flattenExtraSplitByNewLine(Component component)
     {

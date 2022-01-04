@@ -10,9 +10,7 @@ package community.leaf.textchain.adventure;
 import net.kyori.adventure.text.TextComponent;
 
 /**
- * Standard chain constructor: takes a
- * {@link LinearTextComponentBuilder}
- * and creates a new chain instance.
+ * Standard text chain constructor.
  *
  * @param <T>   chain type
  */

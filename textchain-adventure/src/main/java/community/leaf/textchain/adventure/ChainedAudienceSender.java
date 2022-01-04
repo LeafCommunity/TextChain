@@ -16,8 +16,7 @@ import net.kyori.adventure.text.ComponentLike;
 /**
  * Sends components to an audience.
  *
- * @param <S>   self-returning subtype
- *              (for method chaining)
+ * @param <S>   self-returning subtype (for method chaining)
  */
 public interface ChainedAudienceSender<S extends ChainedAudienceSender<S>> extends ComponentLike
 {
@@ -25,12 +24,11 @@ public interface ChainedAudienceSender<S extends ChainedAudienceSender<S>> exten
     private S self() { return (S) this; }
     
     /**
-     * Converts into a component message and sends
-     * it to the provided audience.
+     * Converts into a component message and sends it to the provided audience.
      *
      * @param audience  the audience to receive components
-     * @return self (for method chaining)
      *
+     * @return self (for method chaining)
      * @see Audience#sendMessage(Component)
      */
     default S sendToAudience(Audience audience)
@@ -40,15 +38,12 @@ public interface ChainedAudienceSender<S extends ChainedAudienceSender<S>> exten
     }
     
     /**
-     * Converts into a component message and sends
-     * it to the provided audience, identified by
-     * the provided identity.
+     * Converts into a component message and sends it to the provided audience, identified by he provided identity.
      *
      * @param audience  the audience to receive components
-     * @param source    the identity from whom the
-     *                  components originate
-     * @return self (for method chaining)
+     * @param source    the identity from whom the components originate
      *
+     * @return self (for method chaining)
      * @see Audience#sendMessage(Identity, Component)
      */
     default S sendToAudience(Audience audience, Identity source)
@@ -58,15 +53,12 @@ public interface ChainedAudienceSender<S extends ChainedAudienceSender<S>> exten
     }
     
     /**
-     * Converts into a component message and sends
-     * it to the provided audience, identified by
-     * the source's identity.
+     * Converts into a component message and sends it to the provided audience, identified by the source's identity.
      *
      * @param audience  the audience to receive components
-     * @param source    the identifiable source from whom
-     *                  the components originate
-     * @return self (for method chaining)
+     * @param source    the identifiable source from whom the components originate
      *
+     * @return self (for method chaining)
      * @see Audience#sendMessage(Identified, Component)
      */
     default S sendToAudience(Audience audience, Identified source)
@@ -76,12 +68,11 @@ public interface ChainedAudienceSender<S extends ChainedAudienceSender<S>> exten
     }
     
     /**
-     * Converts into a component action bar and
-     * sends it to the provided audience.
+     * Converts into a component action bar and sends it to the provided audience.
      *
      * @param audience  the audience to receive components
-     * @return self (for method chaining)
      *
+     * @return self (for method chaining)
      * @see Audience#sendActionBar(Component)
      */
     default S actionBarToAudience(Audience audience)

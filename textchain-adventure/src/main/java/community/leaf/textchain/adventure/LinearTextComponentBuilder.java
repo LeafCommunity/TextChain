@@ -15,11 +15,15 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * Contains text component builders for modification
- * and eventual component generation and caching.
+ * Contains text component builders for modification, eventual component generation, and caching.
  */
 public interface LinearTextComponentBuilder extends ComponentLike
 {
+    /**
+     * Creates a new, empty linear text component builder.
+     *
+     * @return an empty linear text component builder
+     */
     static LinearTextComponentBuilder empty()
     {
         return new LinearTextComponentBuilderImpl(Component.text());
@@ -30,8 +34,7 @@ public interface LinearTextComponentBuilder extends ComponentLike
      *
      * @param existing  an unwrapped text component builder
      *
-     * @return a linear text component builder containing
-     *          the provided builder
+     * @return a linear text component builder containing the provided builder
      */
     static LinearTextComponentBuilder wrap(TextComponent.Builder existing)
     {
@@ -39,97 +42,77 @@ public interface LinearTextComponentBuilder extends ComponentLike
     }
     
     /**
-     * Gets the internal Adventure text component builder
-     * contained within this wrapper.
+     * Gets the internal Adventure text component builder contained within this wrapper.
      *
      * @return the internal text component builder
      */
     TextComponent.Builder getComponentBuilder();
     
     /**
-     * Generates or gets the cached component resulting
-     * from aggregating all internal builders.
+     * Generates or gets the cached component resulting from aggregating all internal builders.
      *
      * @return the aggregate built component
-     *
      * @see #aggregateThenRebuildComponent()
      */
     @Override
     TextComponent asComponent();
     
     /**
-     * Generate a new component by cloning and
-     * appending all child builders.
+     * Generate a new component by cloning and appending all child builders.
      *
-     * <p><b>Note:</b> this method will <i>always</i>
-     * rebuild the component and all of its children,
-     * and invalidate all associated cached results.</p>
+     * <p><b>Note:</b> this <i>always</i> rebuilds the component and all of its children,
+     * and invalidates all associated cached results.</p>
      *
      * @return an aggregate built component
      */
     TextComponent aggregateThenRebuildComponent();
     
     /**
-     * Creates a new child wrapper containing
-     * the provided text component builder
-     * and returns it.
+     * Creates a new child wrapper containing the provided text component builder and returns it.
      *
-     * <p><b>Note:</b> this method will invalidate
-     * existing cached results since the builder's
-     * state will mutate upon calling this.</p>
+     * <p><b>Note:</b> any prior cached results are invalidated because this action mutates the builder's state</p>
      *
      * @param builder   the child's internal builder
+     *
      * @return a new child containing the provided builder
      */
     LinearTextComponentBuilder createNextChildWithBuilder(TextComponent.Builder builder);
     
     /**
-     * Creates a new child wrapper containing
-     * a new empty text component builder
-     * and returns it.
+     * Creates a new child wrapper containing a new empty text component builder and returns it.
      *
-     * <p><b>Note:</b> this method will invalidate
-     * existing cached results since the builder's
-     * state will mutate upon calling this.</p>
+     * <p><b>Note:</b> any prior cached results are invalidated because this action mutates the builder's state</p>
      *
      * @return a new child
      */
     LinearTextComponentBuilder createNextChild();
     
     /**
-     * Gets the latest child or creates
-     * one if none exist and returns it.
+     * Gets the latest child or creates one if none exist and returns it.
      *
-     * <p><b>Note:</b> this method will invalidate
-     * existing cached results since the builder's
-     * state will mutate upon calling this.</p>
+     * <p><b>Note:</b> any prior cached results are invalidated because this action mutates the builder's state</p>
      *
      * @return the latest child
      */
     LinearTextComponentBuilder peekOrCreateChild();
     
     /**
-     * Gets the latest child or creates one
-     * if none exist then performs the provided
-     * action on its internal text component
-     * builder.
+     * Gets the latest child or creates one if none exist then performs the provided
+     * action on its internal text component builder.
      *
-     * <p><b>Note:</b> this method will invalidate
-     * existing cached results since the builder's
-     * state will mutate upon calling this.</p>
+     * <p><b>Note:</b> any prior cached results are invalidated because this action mutates the builder's state</p>
      *
-     * @param action    the action to perform on the
-     *                  child's internal builder
+     * @param action    the action to perform on the child's internal builder
      */
     void peekThenApply(Consumer<TextComponent.Builder> action);
     
     /**
      * Puts this wrapped builder into something else.
-     * Applies the wrapper function with {@code this}
-     * instance and returns the result.
+     * Applies the wrapper function with {@code this} instance and returns the result.
      *
      * @param wrapper   wrapper function
-     * @param <W>   wrapper type
+     * @param <W>       wrapper type
+     *
      * @return result of applying the wrapper function
      */
     default  <W> W into(Function<LinearTextComponentBuilder, W> wrapper)
