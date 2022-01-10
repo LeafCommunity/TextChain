@@ -12,10 +12,18 @@
 
   <artifactId>textchain-platform-bukkit</artifactId>
 
+  <properties>
+    <shade.relocation>community.leaf.textchain.platforms.bukkit.internal</shade.relocation>
+  </properties>
+
   <repositories>
     <repository>
       <id>spigot-repo</id>
       <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+    </repository>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
     </repository>
   </repositories>
 
@@ -33,6 +41,13 @@
       <artifactId>adventure-platform-bukkit</artifactId>
       <version>${versions.kyori.adventure-platform}</version>
       <scope>provided</scope>
+    </dependency>
+    <!-- LeafCommunity Evergreen Server Version (via jitpack.io) -->
+    <dependency>
+      <groupId>community.leaf.evergreen</groupId>
+      <artifactId>bukkit-server-version</artifactId>
+      <version>0.0.1</version>
+      <optional>true</optional>
     </dependency>
     <!-- TextChain (via local project) -->
     <dependency>
@@ -53,5 +68,41 @@
       <version>${revision}</version>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <!-- Shade dependencies -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.4</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <relocations>
+            <!-- Evergreen Server Version -->
+            <relocation>
+              <pattern>community.leaf.evergreen.bukkit.versions</pattern>
+              <shadedPattern>${shade.relocation}.versions</shadedPattern>
+            </relocation>
+          </relocations>
+          <artifactSet>
+            <includes>
+              <include>community.leaf.evergreen:bukkit-server-version</include>
+            </includes>
+          </artifactSet>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

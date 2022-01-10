@@ -7,6 +7,8 @@
  */
 package community.leaf.textchain.platforms.bukkit.internal;
 
+import community.leaf.evergreen.bukkit.versions.CraftBukkitVersion;
+
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -29,9 +31,9 @@ public final class Reflect
         return new PackageResolver(packageName);
     }
     
-    public static PackageResolver inMinecraft() { return in(BukkitVersion.server().minecraftPackage()); }
+    public static PackageResolver inMinecraft() { return in(CraftBukkitVersion.server().minecraftPackage()); }
     
-    public static PackageResolver inCraftBukkit() { return in(BukkitVersion.server().craftBukkitPackage()); }
+    public static PackageResolver inCraftBukkit() { return in(CraftBukkitVersion.server().craftBukkitPackage()); }
     
     public static ClassResolver on(Class<?> clazz)
     {
