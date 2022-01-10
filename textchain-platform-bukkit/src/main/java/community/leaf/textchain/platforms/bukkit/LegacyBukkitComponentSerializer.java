@@ -7,7 +7,7 @@
  */
 package community.leaf.textchain.platforms.bukkit;
 
-import community.leaf.textchain.platforms.bukkit.internal.BukkitVersion;
+import community.leaf.evergreen.bukkit.versions.MinecraftVersion;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public class LegacyBukkitComponentSerializer
@@ -20,14 +20,15 @@ public class LegacyBukkitComponentSerializer
     
     static
     {
-        if (BukkitVersion.server().isAtLeast(1, 16))
+        if (MinecraftVersion.server().atLeast(1, 16))
         {
             LEGACY_HEX_SECTION =
                 LegacyComponentSerializer.builder()
                     .hexColors()
                     .useUnusualXRepeatedCharacterHexFormat()
+                    .character(LegacyComponentSerializer.SECTION_CHAR)
                     .build();
-    
+            
             LEGACY_HEX_AMPERSAND =
                 LegacyComponentSerializer.builder()
                     .hexColors()
