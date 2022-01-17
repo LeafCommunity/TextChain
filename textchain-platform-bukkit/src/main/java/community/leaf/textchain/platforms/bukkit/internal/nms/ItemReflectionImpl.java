@@ -62,6 +62,19 @@ final class ItemReflectionImpl implements ItemReflection
                 "Could not find method matching nmsNbtTagCompoundOfNmsItemStack"
             )));
     
+    // NMS ItemStack#getItem() -> NMS Item
+    final ThrowsOr<MethodHandle> nmsItemOfNmsItemStack =
+        Reflect.on(NMS_ITEM_STACK).methods()
+            .filter(method -> Modifier.isPublic(method.getModifiers()))
+            .filter(method -> method.getReturnType() == NMS_ITEM)
+            .filter(method -> method.getParameterCount() == 0)
+            .findFirst()
+            .flatMap(Reflect::unreflect)
+            .map(ThrowsOr::value)
+            .orElseGet(() -> ThrowsOr.raise(new IllegalStateException(
+                "Could not find method matching nmsItemOfNmsItemStack"
+            )));
+    
     // CraftMagicNumbers.getBlock(Material) -> NMS Block
     final ThrowsOr<MethodHandle> nmsBlockOfMaterial =
         Reflect.on(CRAFT_MAGIC_NUMBERS).requireStaticMethod("getBlock", NMS_BLOCK, Material.class);
@@ -85,7 +98,7 @@ final class ItemReflectionImpl implements ItemReflection
         Reflect.on(CRAFT_MAGIC_NUMBERS).requireStaticMethod("getItem", NMS_ITEM, Material.class);
     
     // NMS Item#getDescriptionId() -> String (translation key)
-    final ThrowsOr<MethodHandle> nameOfNmsItem =
+    final ThrowsOr<MethodHandle> translationKeyOfNmsItem =
         Reflect.on(NMS_ITEM).methods()
             .filter(method -> Modifier.isPublic(method.getModifiers()))
             .filter(method -> method.getReturnType() == String.class)
@@ -95,20 +108,25 @@ final class ItemReflectionImpl implements ItemReflection
             .flatMap(Reflect::unreflect)
             .map(ThrowsOr::value)
             .orElseGet(() -> ThrowsOr.raise(new IllegalStateException(
-                "Could not find method matching nameOfNmsItem"
+                "Could not find method matching translationKeyOfNmsItem"
             )));
     
-    // Bukkit (Paper) UnsafeValues.getTranslationKey(Bukkit ItemStack) -> String
-    final ThrowsOr<MethodHandle> translationKeyOfItemStack =
-        Reflect.on(UnsafeValues.class)
-            .resolveMethod("getTranslationKey", String.class, ItemStack.class)
+    // NMS Item#getDescriptionId(NMS ItemStack) -> String (translation key)
+    final ThrowsOr<MethodHandle> translationKeyOfNmsItemByNmsItemStack =
+        Reflect.on(NMS_ITEM).methods()
+            .filter(method -> Modifier.isPublic(method.getModifiers()))
+            .filter(method -> method.getReturnType() == String.class)
+            .filter(method -> method.getParameterCount() == 1)
+            .filter(method -> method.getParameterTypes()[0] == NMS_ITEM_STACK)
+            .findFirst()
+            .flatMap(Reflect::unreflect)
             .map(ThrowsOr::value)
             .orElseGet(() -> ThrowsOr.raise(new IllegalStateException(
-                "Could not find method matching translationKeyOfItemStack"
+                "Could not find method matching translationKeyOfNmsItemByNmsItemStack"
             )));
     
     // NMS Item#getRarity(NMS ItemStack) -> NMS EnumItemRarity
-    final ThrowsOr<MethodHandle> nmsRarityOfNmsItemStack =
+    final ThrowsOr<MethodHandle> nmsRarityOfNmsItemByNmsItemStack =
         Reflect.on(NMS_ITEM).methods()
             .filter(method -> Modifier.isPublic(method.getModifiers()))
             .filter(method -> method.getReturnType() == NMS_ENUM_ITEM_RARITY)
@@ -118,7 +136,7 @@ final class ItemReflectionImpl implements ItemReflection
             .flatMap(Reflect::unreflect)
             .map(ThrowsOr::value)
             .orElseGet(() -> ThrowsOr.raise(new IllegalStateException(
-                "Could not find method matching nmsRarityOfNmsItemStack"
+                "Could not find method matching nmsRarityOfNmsItemByNmsItemStack"
             )));
     
     // NMS Item#rarity -> NMS EnumItemRarity
@@ -150,20 +168,16 @@ final class ItemReflectionImpl implements ItemReflection
         else
         {
             Object nmsItem = nmsItemOfMaterial.getOrThrow().invoke(type);
-            return String.valueOf(nameOfNmsItem.getOrThrow().invoke(nmsItem));
+            return String.valueOf(translationKeyOfNmsItem.getOrThrow().invoke(nmsItem));
         }
     }
     
     @Override
     public String translationKey(ItemStack item) throws Throwable
     {
-        if (translationKeyOfItemStack.isPresent())
-        {
-            return String.valueOf(translationKeyOfItemStack.getOrThrow().invoke(Bukkit.getUnsafe(), item));
-        }
-        
-        // Get translation key from material
-        return translationKey(item.getType());
+        Object nmsItemStack = nmsItemStackByBukkitCopy.getOrThrow().invoke(item);
+        Object nmsItem = nmsItemOfNmsItemStack.getOrThrow().invoke(nmsItemStack);
+        return String.valueOf(translationKeyOfNmsItemByNmsItemStack.getOrThrow().invoke(nmsItem, nmsItemStack));
     }
 
     @Override
@@ -179,7 +193,7 @@ final class ItemReflectionImpl implements ItemReflection
     {
         Object nmsItem = nmsItemOfMaterial.getOrThrow().invoke(item.getType());
         Object nmsItemStack = nmsItemStackByBukkitCopy.getOrThrow().invoke(item);
-        Object nmsRarity = nmsRarityOfNmsItemStack.getOrThrow().invoke(nmsItem, nmsItemStack);
+        Object nmsRarity = nmsRarityOfNmsItemByNmsItemStack.getOrThrow().invoke(nmsItem, nmsItemStack);
         return ItemRarity.resolveByName(String.valueOf(nmsRarity)).orElse(ItemRarity.COMMON);
     }
 }
