@@ -15,11 +15,12 @@ import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.event.HoverEvent.ShowItem;
 import net.kyori.adventure.text.event.HoverEventSource;
+import net.kyori.adventure.translation.Translatable;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface AdventureItem<I> extends ComponentLike, HoverEventSource<ShowItem>, Keyed
+public interface AdventureItem<I> extends ComponentLike, HoverEventSource<ShowItem>, Keyed, Translatable
 {
     static <T, I> AdventureItem<I> of(ItemAdapter<T, I> adapter, I item)
     {

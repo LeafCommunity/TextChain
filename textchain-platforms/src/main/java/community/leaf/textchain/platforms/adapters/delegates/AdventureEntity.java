@@ -15,12 +15,13 @@ import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.event.HoverEvent.ShowEntity;
 import net.kyori.adventure.text.event.HoverEventSource;
+import net.kyori.adventure.translation.Translatable;
 import pl.tlinkowski.annotation.basic.NullOr;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public interface AdventureEntity<E> extends ComponentLike, HoverEventSource<ShowEntity>, Keyed
+public interface AdventureEntity<E> extends ComponentLike, HoverEventSource<ShowEntity>, Keyed, Translatable
 {
     static <T, E> AdventureEntity<E> of(EntityAdapter<T, E> adapter, E entity)
     {

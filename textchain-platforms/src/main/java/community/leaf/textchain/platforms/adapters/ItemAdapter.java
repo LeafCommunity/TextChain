@@ -39,6 +39,10 @@ public interface ItemAdapter<T, I>
     
     void lore(I item, List<Component> lore);
     
+    String translationKey(I item);
+    
+    String clientName(I item);
+    
     ItemRarity rarity(I item);
     
     default Key key(I item)
@@ -51,14 +55,9 @@ public interface ItemAdapter<T, I>
         return HoverEvent.showItem(HoverEvent.ShowItem.of(key(item), amount(item), nbt(item)));
     }
     
-    default String translationKey(I item)
-    {
-        return types().translationKey(type(item));
-    }
-    
     default TranslatableComponent translatable(I item)
     {
-        return types().translatable(type(item));
+        return Component.translatable(translationKey(item));
     }
     
     default Component displayOrTranslatableName(I item)
@@ -69,11 +68,6 @@ public interface ItemAdapter<T, I>
     default void lore(I item, ComponentLike componentLike)
     {
         lore(item, Components.flattenExtraSplitByNewLine(Components.safelyAsComponent(componentLike)));
-    }
-    
-    default String clientName(I item)
-    {
-        return types().clientName(type(item));
     }
     
     default TextComponent component(I item, String prefix, String suffix)

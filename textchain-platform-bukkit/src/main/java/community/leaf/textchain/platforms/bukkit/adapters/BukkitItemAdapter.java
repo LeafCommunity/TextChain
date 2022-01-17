@@ -11,8 +11,10 @@ import community.leaf.textchain.platforms.ItemRarity;
 import community.leaf.textchain.platforms.adapters.ItemMetaAdapter;
 import community.leaf.textchain.platforms.adapters.ItemTypeAdapter;
 import community.leaf.textchain.platforms.adapters.MetaAdapter;
+import community.leaf.textchain.platforms.bukkit.internal.Reflect;
 import community.leaf.textchain.platforms.bukkit.internal.nms.ItemReflection;
 import net.kyori.adventure.nbt.api.BinaryTagHolder;
+import net.md_5.bungee.chat.TranslationRegistry;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -69,7 +71,7 @@ class BukkitItemAdapter implements ItemMetaAdapter<Material, ItemStack, ItemMeta
     public BinaryTagHolder nbt(ItemStack item)
     {
         try { return BinaryTagHolder.of(ItemReflection.items().compoundTag(item)); }
-        catch (Throwable throwable) { throw new RuntimeException(throwable); }
+        catch (Throwable throwable) { throw Reflect.safelyRethrow(throwable); }
     }
     
     @Override
@@ -77,6 +79,19 @@ class BukkitItemAdapter implements ItemMetaAdapter<Material, ItemStack, ItemMeta
     {
         if (!item.getType().isItem()) { return ItemRarity.COMMON; }
         try { return ItemReflection.items().rarity(item); }
-        catch (Throwable throwable) { throw new RuntimeException(throwable); }
+        catch (Throwable throwable) { throw Reflect.safelyRethrow(throwable); }
+    }
+    
+    @Override
+    public String translationKey(ItemStack item)
+    {
+        try { return ItemReflection.items().translationKey(item); }
+        catch (Throwable throwable) { throw Reflect.safelyRethrow(throwable); }
+    }
+    
+    @Override
+    public String clientName(ItemStack item)
+    {
+        return TranslationRegistry.INSTANCE.translate(translationKey(item));
     }
 }

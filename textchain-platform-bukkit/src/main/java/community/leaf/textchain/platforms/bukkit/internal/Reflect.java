@@ -46,6 +46,12 @@ public final class Reflect
         catch (IllegalAccessException e) { return Optional.empty(); }
     }
     
+    public static RuntimeException safelyRethrow(Throwable throwable)
+    {
+        if (throwable instanceof Error) { throw (Error) throwable; }
+        throw new RuntimeException(throwable);
+    }
+    
     public static final class PackageResolver
     {
         private static Stream<Class<?>> resolve(String className)
@@ -104,7 +110,7 @@ public final class Reflect
             catch (NoSuchMethodException | IllegalAccessException ignored) { return Optional.empty(); }
         }
         
-        public Optional<MethodHandle> resolveExactStaticMethod(
+        public Optional<MethodHandle> resolveStaticMethod(
             String methodName,
             Class<?> returnType,
             Class<?> ... parameterTypes
@@ -140,7 +146,7 @@ public final class Reflect
         
         public ThrowsOr<MethodHandle> requireStaticMethod(String methodName, Class<?> returnType, Class<?> ... parameterTypes)
         {
-            return resolveExactStaticMethod(methodName, returnType, parameterTypes)
+            return resolveStaticMethod(methodName, returnType, parameterTypes)
                 .map(ThrowsOr::value)
                 .orElseGet(() ->
                     ThrowsOr.raise(new IllegalStateException(

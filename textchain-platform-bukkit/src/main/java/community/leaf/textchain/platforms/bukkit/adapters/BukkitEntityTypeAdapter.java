@@ -8,6 +8,7 @@
 package community.leaf.textchain.platforms.bukkit.adapters;
 
 import community.leaf.textchain.platforms.adapters.EntityTypeAdapter;
+import community.leaf.textchain.platforms.bukkit.internal.Reflect;
 import community.leaf.textchain.platforms.bukkit.internal.nms.EntityReflection;
 import net.kyori.adventure.key.Key;
 import org.bukkit.entity.EntityType;
@@ -28,6 +29,6 @@ class BukkitEntityTypeAdapter implements EntityTypeAdapter<EntityType>
     public String translationKey(EntityType type)
     {
         try { return EntityReflection.entities().translationKey(type); }
-        catch (Throwable throwable) { throw new RuntimeException(throwable); }
+        catch (Throwable throwable) { throw Reflect.safelyRethrow(throwable); }
     }
 }

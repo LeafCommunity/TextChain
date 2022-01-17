@@ -19,6 +19,8 @@ public interface ItemReflection
     
     String translationKey(Material type) throws Throwable;
     
+    String translationKey(ItemStack item) throws Throwable;
+    
     ItemRarity rarity(Material type) throws Throwable;
     
     ItemRarity rarity(ItemStack item) throws Throwable;
