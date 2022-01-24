@@ -12,7 +12,6 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.format.TextFormat;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Locale;
@@ -76,13 +75,13 @@ public enum LegacyColorCodeAlias
         Set<String> strict = permutate(name()).collect(Collectors.toCollection(LinkedHashSet::new));
         Set<String> extended = new LinkedHashSet<>(strict);
         
-        Arrays.stream(aliases).flatMap(LegacyColorCodeAlias::permutate).forEach(extended::add);
+        Arrays.stream(aliases).flatMap(this::permutate).forEach(extended::add);
         
         this.strictAliases = Set.copyOf(strict);
         this.extendedAliases = Set.copyOf(extended);
     }
     
-    private static Stream<String> permutate(String alias)
+    private Stream<String> permutate(String alias)
     {
         Stream.Builder<String> stream = Stream.builder();
         String lowercase = alias.toLowerCase(Locale.ROOT);
@@ -98,9 +97,9 @@ public enum LegacyColorCodeAlias
     
     public TextFormat format() { return format; }
     
-    public Set<String> strictAliases() { return Collections.unmodifiableSet(strictAliases); }
+    public Set<String> strictAliases() { return strictAliases; }
     
-    public Set<String> allAliases() { return Collections.unmodifiableSet(extendedAliases); }
+    public Set<String> allAliases() { return extendedAliases; }
     
     public boolean isColor() { return format instanceof NamedTextColor; }
     
