@@ -15,9 +15,11 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.serializer.ComponentSerializer;
 import net.kyori.adventure.util.Buildable;
+import pl.tlinkowski.annotation.basic.NullOr;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.UnaryOperator;
 
 public interface ChainSerializer extends
     Buildable<ChainSerializer, ChainSerializer.Builder>,
@@ -63,8 +65,8 @@ public interface ChainSerializer extends
     
     interface Builder extends Buildable.Builder<ChainSerializer>
     {
-        Builder processor(TextProcessor processor);
+        Builder processor(@NullOr TextProcessor processor);
         
-        Builder placeholders(ChainPlaceholderProcessor placeholders);
+        Builder placeholders(@NullOr UnaryOperator<String> placeholders);
     }
 }

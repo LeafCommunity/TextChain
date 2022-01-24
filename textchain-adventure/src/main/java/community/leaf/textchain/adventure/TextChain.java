@@ -353,7 +353,7 @@ public interface TextChain<T extends TextChain<T>> extends ComponentLike, Chaine
      *
      * <p><b>Note:</b> The inserted new line is its own distinct chain element.
      * This method is equivalent to calling:
-     * {@code .nextLine().thenUnprocessed(text)}</p>
+     * {@code .nextLine().thenPlainText(text)}</p>
      *
      * @param text  the text to append
      * @return self (for method chaining)
