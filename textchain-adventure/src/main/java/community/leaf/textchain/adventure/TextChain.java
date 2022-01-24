@@ -25,26 +25,36 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * A chain of text components.
+ * A linear chain of text components.
  *
- * @param <T>
+ * @param <T>   text chain type
  */
 @SuppressWarnings("unused")
 public interface TextChain<T extends TextChain<T>> extends ComponentLike, ChainedAudienceSender<T>
 {
-    //
-    //  Factory Methods
-    //
-    
     /**
-     * A source for basic text chains.
+     * Gets the source of standard text chains.
      *
-     * @return a source that generates text chains
+     * @return the standard text chain source
      */
     static TextChainSource<?> source() { return AbstractTextChain.Impl.SOURCE; }
     
+    /**
+     * Configures text chains by providing a new standard text chain factory.
+     *
+     * @return a customizable factory that generates text chains
+     */
     static TextChainFactory<?> using() { return new TextChainFactoryImpl<>(source()); }
     
+    /**
+     * Configures text chains by providing a new specialized text chain factory.
+     * Resulting chains will be generated using the provided source.
+     *
+     * @param source    a source of text chains
+     * @param <T>       text chain type
+     *
+     * @return a configurable factory that generates text chains
+     */
     static <T extends TextChain<T>> TextChainFactory<T> using(TextChainSource<T> source)
     {
         return new TextChainFactoryImpl<>(source);
@@ -60,14 +70,10 @@ public interface TextChain<T extends TextChain<T>> extends ComponentLike, Chaine
      */
     static TextChain<?> chain()
     {
-        return source().getTextChainConstructor().construct(
+        return source().textChainConstructor().construct(
             LinearTextComponentBuilder.empty(), TextProcessor.none()
         );
     }
-    
-    //
-    //  Interface Methods
-    //
 
     @SuppressWarnings("unchecked")
     private T self() { return (T) this; }
@@ -233,7 +239,7 @@ public interface TextChain<T extends TextChain<T>> extends ComponentLike, Chaine
         }
         else
         {
-            builder().createNextChild().getComponentBuilder().append(component);
+            builder().createNextChild().wrappedComponentBuilder().append(component);
         }
         
         return self();
@@ -264,7 +270,7 @@ public interface TextChain<T extends TextChain<T>> extends ComponentLike, Chaine
     /**
      * Creates a <b>new</b> chain element by first {@link #processor()} processing}
      * the input text using the chain's default processor. To skip processing
-     * altogether, use {@link #thenUnprocessed(String)}.
+     * altogether, use {@link #thenPlainText(String)}.
      *
      * @param text  the text to append
      * @return self (for method chaining)
@@ -278,7 +284,7 @@ public interface TextChain<T extends TextChain<T>> extends ComponentLike, Chaine
      * @param text  the text to append
      * @return self (for method chaining)
      */
-    default T thenUnprocessed(String text) { return then(text, TextProcessor.none()); }
+    default T thenPlainText(String text) { return then(text, TextProcessor.none()); }
     
     /**
      * Inserts a new line by creating a <b>new</b> chain element that <i>only</i>
@@ -326,7 +332,7 @@ public interface TextChain<T extends TextChain<T>> extends ComponentLike, Chaine
     /**
      * Creates <b>new</b> chain elements by inserting a {@link #nextLine() new line}
      * then appending the {@link #then(String) input text} using the chain's default
-     * processor. To skip processing altogether, use {@link #nextUnprocessed(String)}.
+     * processor. To skip processing altogether, use {@link #nextPlainText(String)}.
      *
      * <p><b>Note:</b> The inserted new line is its own distinct chain element.
      * This method is equivalent to calling:
@@ -342,7 +348,7 @@ public interface TextChain<T extends TextChain<T>> extends ComponentLike, Chaine
     
     /**
      * Creates <b>new</b> chain elements by inserting a {@link #nextLine() new line}
-     * then directly appending the {@link #thenUnprocessed(String) input text},
+     * then directly appending the {@link #thenPlainText(String) input text},
      * skipping processing entirely.
      *
      * <p><b>Note:</b> The inserted new line is its own distinct chain element.
@@ -353,9 +359,9 @@ public interface TextChain<T extends TextChain<T>> extends ComponentLike, Chaine
      * @return self (for method chaining)
      *
      * @see #nextLine()
-     * @see #thenUnprocessed(String)
+     * @see #thenPlainText(String)
      */
-    default T nextUnprocessed(String text) { return nextLine().thenUnprocessed(text); }
+    default T nextPlainText(String text) { return nextLine().thenPlainText(text); }
     
     /**
      * Sets the text content of the <b>latest</b> chain element,
@@ -366,7 +372,7 @@ public interface TextChain<T extends TextChain<T>> extends ComponentLike, Chaine
      *
      * @see TextComponent.Builder#content(String)
      */
-    default T overwriteText(String text)
+    default T overwritePlainText(String text)
     {
         Objects.requireNonNull(text, "text");
         builder().peekThenApply(child -> child.content(text));
@@ -458,7 +464,7 @@ public interface TextChain<T extends TextChain<T>> extends ComponentLike, Chaine
      * @see #color(RGBLike)
      * @see #format(TextDecoration)
      */
-    default T format(LegacyColorAlias alias)
+    default T format(LegacyColorCodeAlias alias)
     {
         Objects.requireNonNull(alias, "alias");
         if (alias.isColor()) { alias.asColor().ifPresent(this::color); }
@@ -838,7 +844,7 @@ public interface TextChain<T extends TextChain<T>> extends ComponentLike, Chaine
     /**
      * Sets the hover event of the <b>latest</b> chain element to a tooltip containing
      * the input text processed by the chain's default processor. To skip processing
-     * altogether, use {@link #tooltipUnprocessed(String)}.
+     * altogether, use {@link #tooltipPlainText(String)}.
      *
      * @param tooltipText   text to display when hovered over
      * @return self (for method chaining)
@@ -856,7 +862,7 @@ public interface TextChain<T extends TextChain<T>> extends ComponentLike, Chaine
      * @return self (for method chaining)
      *
      * @see #hover(HoverEventSource)
-     * @see #thenUnprocessed(String)
+     * @see #thenPlainText(String)
      */
-    default T tooltipUnprocessed(String tooltipText) { return tooltip(tooltipText, TextProcessor.none()); }
+    default T tooltipPlainText(String tooltipText) { return tooltip(tooltipText, TextProcessor.none()); }
 }

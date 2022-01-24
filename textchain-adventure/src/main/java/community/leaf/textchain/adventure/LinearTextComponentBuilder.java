@@ -46,7 +46,7 @@ public interface LinearTextComponentBuilder extends ComponentLike
      *
      * @return the internal text component builder
      */
-    TextComponent.Builder getComponentBuilder();
+    TextComponent.Builder wrappedComponentBuilder();
     
     /**
      * Generates or gets the cached component resulting from aggregating all internal builders.

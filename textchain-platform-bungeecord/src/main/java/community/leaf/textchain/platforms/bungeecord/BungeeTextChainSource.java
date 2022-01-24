@@ -15,7 +15,7 @@ import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 public interface BungeeTextChainSource extends PlatformTextChainSource<BungeeAudiences, BungeeTextChain>
 {
     @Override
-    default TextChainConstructor<BungeeTextChain> getTextChainConstructor()
+    default TextChainConstructor<BungeeTextChain> textChainConstructor()
     {
         return (builder, processor) -> new BungeeTextChainImpl(builder, processor, adventure());
     }

@@ -57,8 +57,8 @@ final class TextChainFactoryImpl<T extends TextChain<T>> implements TextChainFac
         
         TextProcessor processor = (this.processor != null) ? this.processor : TextProcessor.none();
         
-        if (style != null) { builder.getComponentBuilder().style(style); }
+        if (style != null) { builder.wrappedComponentBuilder().style(style); }
         
-        return source.getTextChainConstructor().construct(builder, processor);
+        return source.textChainConstructor().construct(builder, processor);
     }
 }

@@ -7,15 +7,15 @@
  */
 package community.leaf.textchain.platforms.bukkit.adapters;
 
-import community.leaf.textchain.adventure.LegacyColorAlias;
+import community.leaf.textchain.adventure.LegacyColorCodeAlias;
 import community.leaf.textchain.platforms.adapters.ColorAdapter;
 import org.bukkit.ChatColor;
 
 class BukkitColorAdapter implements ColorAdapter<ChatColor>
 {
     @Override
-    public LegacyColorAlias format(ChatColor color)
+    public LegacyColorCodeAlias format(ChatColor color)
     {
-        return LegacyColorAlias.resolveByCharacter(color.getChar()).orElseThrow();
+        return LegacyColorCodeAlias.resolveByCharacter(color.getChar()).orElseThrow();
     }
 }

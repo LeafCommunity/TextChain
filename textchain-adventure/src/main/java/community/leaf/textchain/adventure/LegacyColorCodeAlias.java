@@ -11,17 +11,18 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.format.TextFormat;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public enum LegacyColorAlias
+public enum LegacyColorCodeAlias
 {
     BLACK('0', NamedTextColor.BLACK),
     DARK_BLUE('1', NamedTextColor.DARK_BLUE),
@@ -46,14 +47,14 @@ public enum LegacyColorAlias
     ITALIC('o', TextDecoration.ITALIC),
     RESET('r', Reset.RESET, "clear");
     
-    private static final Map<Character, LegacyColorAlias> aliasesByCode = new HashMap<>();
-    private static final Map<TextFormat, LegacyColorAlias> aliasesByFormat = new HashMap<>();
-    private static final Map<String, LegacyColorAlias> aliasesByStrict = new HashMap<>();
-    private static final Map<String, LegacyColorAlias> aliasesByExtended = new HashMap<>();
+    private static final Map<Character, LegacyColorCodeAlias> aliasesByCode = new HashMap<>();
+    private static final Map<TextFormat, LegacyColorCodeAlias> aliasesByFormat = new HashMap<>();
+    private static final Map<String, LegacyColorCodeAlias> aliasesByStrict = new HashMap<>();
+    private static final Map<String, LegacyColorCodeAlias> aliasesByExtended = new HashMap<>();
     
     static
     {
-        for (LegacyColorAlias alias : values())
+        for (LegacyColorCodeAlias alias : values())
         {
             aliasesByCode.put(alias.character, alias);
             aliasesByFormat.put(alias.format, alias);
@@ -62,40 +63,44 @@ public enum LegacyColorAlias
         }
     }
     
-    private final Set<String> strictAliases = new LinkedHashSet<>(getPermutationsOfAlias(name()));
-    private final Set<String> extendedAliases = new LinkedHashSet<>();
-    
     private final char character;
     private final TextFormat format;
+    private final Set<String> strictAliases;
+    private final Set<String> extendedAliases;
     
-    LegacyColorAlias(char character, TextFormat format, String ... aliases)
+    LegacyColorCodeAlias(char character, TextFormat format, String ... aliases)
     {
         this.character = character;
         this.format = format;
-        this.extendedAliases.addAll(strictAliases);
         
-        Arrays.stream(aliases).map(this::getPermutationsOfAlias).forEach(this.extendedAliases::addAll);
+        Set<String> strict = permutate(name()).collect(Collectors.toCollection(LinkedHashSet::new));
+        Set<String> extended = new LinkedHashSet<>(strict);
+        
+        Arrays.stream(aliases).flatMap(LegacyColorCodeAlias::permutate).forEach(extended::add);
+        
+        this.strictAliases = Set.copyOf(strict);
+        this.extendedAliases = Set.copyOf(extended);
     }
     
-    private List<String> getPermutationsOfAlias(String alias)
+    private static Stream<String> permutate(String alias)
     {
-        List<String> mutations = new ArrayList<>();
-        String lowercase = alias.toLowerCase();
+        Stream.Builder<String> stream = Stream.builder();
+        String lowercase = alias.toLowerCase(Locale.ROOT);
         
-        mutations.add(lowercase);
-        mutations.add(lowercase.replace("_", "-"));
-        mutations.add(lowercase.replace("_", ""));
+        stream.add(lowercase);
+        stream.add(lowercase.replace("_", "-"));
+        stream.add(lowercase.replace("_", ""));
         
-        return mutations;
+        return stream.build();
     }
     
-    public char getCharacter() { return character; }
+    public char character() { return character; }
     
-    public TextFormat getFormat() { return format; }
+    public TextFormat format() { return format; }
     
-    public Set<String> getStrictAliases() { return Collections.unmodifiableSet(strictAliases); }
+    public Set<String> strictAliases() { return Collections.unmodifiableSet(strictAliases); }
     
-    public Set<String> getAllAliases() { return Collections.unmodifiableSet(extendedAliases); }
+    public Set<String> allAliases() { return Collections.unmodifiableSet(extendedAliases); }
     
     public boolean isColor() { return format instanceof NamedTextColor; }
     
@@ -113,34 +118,34 @@ public enum LegacyColorAlias
     
     public boolean isReset() { return format == Reset.RESET; }
     
-    public static Optional<LegacyColorAlias> resolveByCharacter(char code)
+    public static Optional<LegacyColorCodeAlias> resolveByCharacter(char code)
     {
         return Optional.ofNullable(aliasesByCode.get(Character.toLowerCase(code)));
     }
     
-    public static Optional<LegacyColorAlias> resolveByFormat(TextFormat format)
+    public static Optional<LegacyColorCodeAlias> resolveByFormat(TextFormat format)
     {
         return Optional.ofNullable(aliasesByFormat.get(format));
     }
     
-    public static LegacyColorAlias of(TextFormat format)
+    public static LegacyColorCodeAlias of(TextFormat format)
     {
         return resolveByFormat(format).orElseThrow(() ->
             new IllegalArgumentException("Unsupported format: " + format)
         );
     }
     
-    private static Optional<LegacyColorAlias> resolveByAlias(Map<String, LegacyColorAlias> map, String alias)
+    private static Optional<LegacyColorCodeAlias> resolveByAlias(Map<String, LegacyColorCodeAlias> map, String alias)
     {
         return Optional.ofNullable(map.get(alias.toLowerCase()));
     }
     
-    public static Optional<LegacyColorAlias> resolveByAlias(String alias)
+    public static Optional<LegacyColorCodeAlias> resolveByAlias(String alias)
     {
         return resolveByAlias(aliasesByExtended, alias);
     }
     
-    public static Optional<LegacyColorAlias> resolveByStrictAlias(String alias)
+    public static Optional<LegacyColorCodeAlias> resolveByStrictAlias(String alias)
     {
         return resolveByAlias(aliasesByStrict, alias);
     }

@@ -7,15 +7,15 @@
  */
 package community.leaf.textchain.platforms.bungeecord.adapters;
 
-import community.leaf.textchain.adventure.LegacyColorAlias;
+import community.leaf.textchain.adventure.LegacyColorCodeAlias;
 import community.leaf.textchain.platforms.adapters.ColorAdapter;
 import net.md_5.bungee.api.ChatColor;
 
 class BungeeColorAdapter implements ColorAdapter<ChatColor>
 {
     @Override
-    public LegacyColorAlias format(ChatColor color)
+    public LegacyColorCodeAlias format(ChatColor color)
     {
-        return LegacyColorAlias.resolveByAlias(color.getName()).orElseThrow();
+        return LegacyColorCodeAlias.resolveByAlias(color.getName()).orElseThrow();
     }
 }

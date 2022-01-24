@@ -21,5 +21,5 @@ public interface TextChainSource<T extends TextChain<T>>
      *
      * @return a standard chain constructor
      */
-    TextChainConstructor<T> getTextChainConstructor();
+    TextChainConstructor<T> textChainConstructor();
 }

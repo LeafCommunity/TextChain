@@ -10,9 +10,7 @@ package community.leaf.textchain.platforms.bukkit.internal.nms;
 import community.leaf.textchain.platforms.ItemRarity;
 import community.leaf.textchain.platforms.bukkit.internal.Reflect;
 import community.leaf.textchain.platforms.bukkit.internal.ThrowsOr;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.UnsafeValues;
 import org.bukkit.inventory.ItemStack;
 
 import java.lang.invoke.MethodHandle;

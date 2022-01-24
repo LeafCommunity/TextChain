@@ -7,7 +7,7 @@
  */
 package community.leaf.textchain.adventure.serializers;
 
-import community.leaf.textchain.adventure.LegacyColorAlias;
+import community.leaf.textchain.adventure.LegacyColorCodeAlias;
 import community.leaf.textchain.adventure.LinearTextComponentBuilder;
 import community.leaf.textchain.adventure.TextChain;
 import community.leaf.textchain.adventure.TextChainConstructor;
@@ -141,7 +141,7 @@ final class ChainSerializerImpl implements ChainSerializer
         
         private Consumer<TextChain<T>> resolveStyleAction(String option)
         {
-            @NullOr LegacyColorAlias alias = LegacyColorAlias.resolveByAlias(option).orElse(null);
+            @NullOr LegacyColorCodeAlias alias = LegacyColorCodeAlias.resolveByAlias(option).orElse(null);
             if (alias != null) { return chain -> chain.format(alias); }
             
             @NullOr TextColor color = TextColor.fromCSSHexString(option.replaceFirst("(?i)^0x", "#"));

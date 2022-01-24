@@ -31,7 +31,7 @@ final class LinearTextComponentBuilderImpl implements LinearTextComponentBuilder
     }
     
     @Override
-    public TextComponent.Builder getComponentBuilder() { return builder; }
+    public TextComponent.Builder wrappedComponentBuilder() { return builder; }
     
     @Override
     public TextComponent asComponent()
@@ -79,6 +79,6 @@ final class LinearTextComponentBuilderImpl implements LinearTextComponentBuilder
     public void peekThenApply(Consumer<TextComponent.Builder> action)
     {
         // result invalidated in peekOrCreateChild()
-        action.accept(peekOrCreateChild().getComponentBuilder());
+        action.accept(peekOrCreateChild().wrappedComponentBuilder());
     }
 }

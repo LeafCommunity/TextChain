@@ -7,7 +7,7 @@
  */
 package community.leaf.textchain.platforms.adapters;
 
-import community.leaf.textchain.adventure.LegacyColorAlias;
+import community.leaf.textchain.adventure.LegacyColorCodeAlias;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 
@@ -16,7 +16,7 @@ import java.util.Optional;
 @FunctionalInterface
 public interface ColorAdapter<C>
 {
-    LegacyColorAlias format(C color);
+    LegacyColorCodeAlias format(C color);
     
     default Optional<NamedTextColor> color(C color)
     {
