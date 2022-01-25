@@ -21,21 +21,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.UnaryOperator;
 
-public interface ChainSerializer extends
-    Buildable<ChainSerializer, ChainSerializer.Builder>,
+public interface TextChainSerializer extends
+    Buildable<TextChainSerializer, TextChainSerializer.Builder>,
     ComponentSerializer<Component, TextComponent, List<Map<String, Object>>>
 {
-    static ChainSerializer unprocessed()
+    static TextChainSerializer unprocessed()
     {
-        return ChainSerializerImpl.NONE;
+        return TextChainSerializerImpl.NONE;
     }
     
-    static ChainSerializer legacyAmpersand()
+    static TextChainSerializer legacyAmpersand()
     {
-        return ChainSerializerImpl.LEGACY;
+        return TextChainSerializerImpl.LEGACY;
     }
     
-    static ChainSerializer.Builder builder()
+    static TextChainSerializer.Builder builder()
     {
         return unprocessed().toBuilder();
     }
@@ -63,7 +63,7 @@ public interface ChainSerializer extends
         return serialize(chain.asComponent());
     }
     
-    interface Builder extends Buildable.Builder<ChainSerializer>
+    interface Builder extends Buildable.Builder<TextChainSerializer>
     {
         Builder processor(@NullOr TextProcessor processor);
         

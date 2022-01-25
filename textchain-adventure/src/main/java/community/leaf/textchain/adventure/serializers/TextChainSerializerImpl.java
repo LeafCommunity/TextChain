@@ -33,16 +33,16 @@ import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
-final class ChainSerializerImpl implements ChainSerializer
+final class TextChainSerializerImpl implements TextChainSerializer
 {
-    static final ChainSerializer NONE = new ChainSerializerImpl(TextProcessor.none(), UnaryOperator.identity());
+    static final TextChainSerializer NONE = new TextChainSerializerImpl(TextProcessor.none(), UnaryOperator.identity());
     
-    static final ChainSerializer LEGACY = new ChainSerializerImpl(TextProcessor.legacyAmpersand(), UnaryOperator.identity());
+    static final TextChainSerializer LEGACY = new TextChainSerializerImpl(TextProcessor.legacyAmpersand(), UnaryOperator.identity());
     
     private final TextProcessor processor;
     private final UnaryOperator<String> placeholders;
     
-    ChainSerializerImpl(TextProcessor processor, UnaryOperator<String> placeholders)
+    TextChainSerializerImpl(TextProcessor processor, UnaryOperator<String> placeholders)
     {
         this.processor = Objects.requireNonNull(processor, "processor");
         this.placeholders = Objects.requireNonNull(placeholders, "placeholders");
@@ -61,12 +61,12 @@ final class ChainSerializerImpl implements ChainSerializer
     }
     
     @Override
-    public ChainSerializer.Builder toBuilder()
+    public TextChainSerializer.Builder toBuilder()
     {
         return new BuilderImpl(processor, placeholders);
     }
     
-    static class BuilderImpl implements ChainSerializer.Builder
+    static class BuilderImpl implements TextChainSerializer.Builder
     {
         @NullOr TextProcessor processor;
         @NullOr UnaryOperator<String> placeholders;
@@ -92,9 +92,9 @@ final class ChainSerializerImpl implements ChainSerializer
         }
         
         @Override
-        public ChainSerializer build()
+        public TextChainSerializer build()
         {
-            return new ChainSerializerImpl(
+            return new TextChainSerializerImpl(
                 (processor != null) ? processor : TextProcessor.none(),
                 (placeholders != null) ? placeholders : UnaryOperator.identity()
             );
