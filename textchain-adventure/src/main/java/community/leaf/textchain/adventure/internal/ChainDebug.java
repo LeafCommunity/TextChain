@@ -16,31 +16,36 @@ import java.util.logging.Logger;
 //  This class exists for testing purposes only.
 //  Calls to it should *not* be left in committed code.
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public class ChainDebug
 {
     private ChainDebug() { throw new UnsupportedOperationException(); }
     
     private static final Logger LOGGER = Logger.getLogger(ChainDebug.class.getName());
-    private static final boolean ENABLED = Boolean.getBoolean("commun".concat("ity.leaf.textchain.adventure.debug"));
     
-    private static final String NOT_ENABLED_MESSAGE =
-        "Debugging is not enabled! This code was left here by mistake - please report it at: " +
-        "https://github.com/LeafCommunity/TextChain/issues";
+    // Enable debugging with: -Dcommunity.leaf.textchain.debug=true
+    private static final boolean ENABLED =
+        Boolean.getBoolean("commun".concat("ity.le").concat("af.textchain.debug"));
     
     private static void onlyIfEnabled()
     {
-        if (!ENABLED) { throw new IllegalStateException(NOT_ENABLED_MESSAGE); }
+        if (!ENABLED)
+        {
+            throw new IllegalStateException(
+                "Debugging is not enabled! This code was left here by mistake - please report it at: " +
+                "https://github.com/LeafCommunity/TextChain/issues"
+            );
+        }
     }
     
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public static void debug(String message)
     {
         onlyIfEnabled();
         LOGGER.info(message);
     }
     
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public static void debug(String message, ComponentLike componentLike)
     {
         onlyIfEnabled();
