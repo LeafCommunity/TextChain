@@ -64,10 +64,10 @@
     <license.header.url>https://github.com/LeafCommunity/TextChain</license.header.url>
 
     <!-- Dependency versions -->
-    <versions.kyori.adventure>4.9.3</versions.kyori.adventure>
-    <versions.kyori.adventure-platform>4.0.1</versions.kyori.adventure-platform>
+    <versions.kyori.adventure>4.10.1</versions.kyori.adventure>
+    <versions.kyori.adventure-platform>4.1.0</versions.kyori.adventure-platform>
     <versions.bungeecord.api>1.16-R0.4</versions.bungeecord.api>
-    <versions.minecraft.spigot>1.18.1-R0.1-SNAPSHOT</versions.minecraft.spigot>
+    <versions.minecraft.spigot>1.18.2-R0.1-SNAPSHOT</versions.minecraft.spigot>
   </properties>
 
   <dependencies>
