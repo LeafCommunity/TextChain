@@ -116,8 +116,8 @@ public enum LegacyColorCodeAlias implements StyleBuilderApplicable
      * Reset (<b>style</b>): {@code &r}
      *
      * <p>Unlike every other legacy color code, Adventure does not offer an analogous
-     * formatting option for "resetting" the style. Only text chains and style builders
-     * will recognize this as a valid format.</p>
+     * formatting option for "resetting" the style. Therefore, this is neither a color
+     * nor a decoration. Only text chains will recognize this as a valid format.</p>
      */
     RESET('r', Reset.RESET, "clear");
     
