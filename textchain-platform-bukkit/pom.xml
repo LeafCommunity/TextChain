@@ -46,7 +46,7 @@
     <dependency>
       <groupId>community.leaf.evergreen</groupId>
       <artifactId>bukkit-server-version</artifactId>
-      <version>0.0.1</version>
+      <version>0.0.2</version>
       <optional>true</optional>
     </dependency>
     <!-- TextChain (via local project) -->
