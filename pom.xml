@@ -64,10 +64,17 @@
     <license.header.url>https://github.com/LeafCommunity/TextChain</license.header.url>
 
     <!-- Dependency versions -->
-    <versions.kyori.adventure>4.15.0</versions.kyori.adventure>
+    <versions.kyori.adventure>4.16.0</versions.kyori.adventure>
     <versions.kyori.adventure-platform>4.3.2</versions.kyori.adventure-platform>
-    <versions.bungeecord.api>1.16-R0.4</versions.bungeecord.api>
+    <versions.bungeecord.api>1.20-R0.2</versions.bungeecord.api>
+    <!-- Minecraft 1.18: last version to support Java 11 -->
     <versions.minecraft.spigot>1.18.2-R0.1-SNAPSHOT</versions.minecraft.spigot>
+
+    <!-- Maven Plugin Versions -->
+    <versions.maven-compiler-plugin>3.13.0</versions.maven-compiler-plugin>
+    <versions.maven-javadoc-plugin>3.6.3</versions.maven-javadoc-plugin>
+    <versions.maven-shade-plugin>3.5.3</versions.maven-shade-plugin>
+    <versions.maven-source-plugin>3.3.1</versions.maven-source-plugin>
   </properties>
 
   <dependencies>
@@ -87,7 +94,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
+        <version>${versions.maven-compiler-plugin}</version>
         <configuration>
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
@@ -212,7 +219,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.2.0</version>
+            <version>${versions.maven-javadoc-plugin}</version>
             <configuration>
               <doclint>none</doclint> <!-- Calm warnings due to not having *everything* documented -->
               <excludePackageNames>*.internal;*.internal.*;</excludePackageNames>
@@ -237,7 +244,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
-            <version>3.2.0</version>
+            <version>${versions.maven-source-plugin}</version>
             <executions>
               <execution>
                 <id>attach-sources</id>
